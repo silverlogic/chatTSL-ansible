@@ -76,19 +76,47 @@ be retrieved from the sub account.
 
 ## Rundeck (ops.tsl.io)
 
-Each project uses the global TSL rundeck server for automating deployments.  How to:
+Each project uses the global TSL rundeck server for automating deployments.  The rundeck
+job templates for this app can be found in the `rundeck` directory.
 
 1. Create a new rundeck project if one does not exist named `<project_full_name>`
-2. TODO
+2. Create a new key storage entry for the ansible vault password. One for each live environment.
+    * clients/<project_name>/ansible-vault-staging
+    * clients/<project_name>/ansible-vault-production
+3. Upload a rundeck job for each environment for:
+    * deploy `<app_name>`
+    * deploy `<app_name>` api docs
 
 ## Sendgrid
 
-TODO
+Each project has it's own sendgrid account for sending emails.
+
+1. Create a new sendgrid account
+    * username `<project_full_name>`
+    * email `dev+<project_code_name>@tsl.io`
+2. Fill in the sendgrid profile info
+    * Use as many client details as possible.  If we don't have client details for one of the
+      fields use TSL details.
+3. Disable click tracking.  It causes branch.io to not work
+    * Settings -> Tracking
+4. Create an API key for each app environment.
+    * Settings -> API keys
+    * Name `<app_name> <environment>`
+    * Restricted Access permssions
+    * Allow only Mail Send
 
 ## Sentry
 
-TODO
+Each project has it's own team on the [TSL sentry instance](https://tsl.io).  Each app gets one project in that
+team for each live environment (staging, production).
+
+1. Create a new team named `<project_verbose_name>`
+2. Create a new project in that team named `<app_name> (<environment>)`
 
 ## Code Cov
 
-TODO
+Each app has it's code coverage tracked using [codecov.io](codecov.io)
+
+1. Login to codecov using your bitbucket account
+2. Enable the app repository
+3. Use the new codecov token in the corresponding Django repo build.
