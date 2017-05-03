@@ -1,5 +1,5 @@
 ---
-webapp_branch: 'master'
+app_version: 'master'
 
 # conf env
-webapp_facebook_app_id: ''
+app_facebook_app_id: ''
