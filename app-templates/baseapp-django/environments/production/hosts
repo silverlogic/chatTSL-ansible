@@ -1,0 +1,11 @@
+[db]
+
+[amqp]
+
+[load-balancer]
+
+[web]
+
+[worker]
+
+[scheduler]

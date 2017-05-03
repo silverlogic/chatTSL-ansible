@@ -1,12 +1,10 @@
 [db]
-192.168.10.11
 
 [amqp]
 
 [load-balancer]
 
 [web]
-192.168.10.12
 
 [worker]
 
