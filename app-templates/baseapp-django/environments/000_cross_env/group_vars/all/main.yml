@@ -39,7 +39,7 @@ app_django_conf_env:
   SENTRY_DSN: '{{ app_sentry_dsn }}'
   BRANCHIO_KEY: '{{ app_branchio_key }}'
   URL: '{{ app_url }}'
-  FRONT_URL: '????'
+  FRONT_URL: 'TODO'
 
 # Load balancer
 app_is_load_balanced: "{{ groups['load-balancer'] | default([]) | length | bool }}"
