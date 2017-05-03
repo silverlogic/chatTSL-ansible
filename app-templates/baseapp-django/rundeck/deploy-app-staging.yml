@@ -1,0 +1,57 @@
+- description: ''
+  executionEnabled: true
+  loglevel: INFO
+  name: deploy <TODO:app_name>
+  options:
+  - name: ansible-vault-password
+    secure: true
+    storagePath: keys/clients/<TODO:project_full_name>/ansible-vault-staging
+    valueExposed: true
+  - description: Branch, Commit SHA, or tag
+    name: version
+    required: true
+    value: master
+  scheduleEnabled: false
+  sequence:
+    commands:
+    - description: Clone playbooks
+      interpreterArgsQuoted: false
+      script: |-
+        rm -rf "/root/@job.project@-@job.id@-playbooks"
+        git clone git@bitbucket.org:silverlogic/<TODO:project_code_name>-ansible.git "/root/@job.project@-@job.id@-playbooks"
+      scriptInterpreter: bash
+    - description: Install ansible
+      interpreterArgsQuoted: false
+      script: |-
+        cd "/root/@job.project@-@job.id@-playbooks"
+        virtualenv -p /usr/bin/python venv
+        source venv/bin/activate
+        pip install -U setuptools
+        pip install -r requirements.txt
+      scriptInterpreter: bash
+    - description: Install playbook requirements.yml
+      interpreterArgsQuoted: false
+      script: |-
+        cd "/root/@job.project@-@job.id@-playbooks"
+        source venv/bin/activate
+        ansible-galaxy install -r requirements.yml
+      scriptInterpreter: bash
+    - description: create vault password file
+      interpreterArgsQuoted: false
+      script: |-
+        cd "/root/@job.project@-@job.id@-playbooks"
+        echo "$RD_OPTION_ANSIBLE_VAULT_PASSWORD" > vault-password
+      scriptInterpreter: bash
+    - description: Run the playbook
+      interpreterArgsQuoted: false
+      script: |-
+        cd "/root/@job.project@-@job.id@-playbooks"
+        source venv/bin/activate
+        cd "apps/api"
+        export ANSIBLE_HOST_KEY_CHECKING=False
+        ansible-playbook config_all.yml -i environments/staging -t deploy -e "app_version=@option.version@" --vault-password-file="../../vault-password"
+      scriptInterpreter: bash
+    - description: Clean up playbooks
+      script: rm -rf "/root/@job.project@-@job.id@-playbooks"
+    keepgoing: true
+    strategy: node-first
