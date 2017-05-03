@@ -8,8 +8,8 @@ upstream app {
 server {
     server_name _ default;
 
-    listen 80
-    listen 443 ssl
+    listen 80;
+    listen 443 ssl;
     ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
 
