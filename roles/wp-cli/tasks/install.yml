@@ -1,0 +1,13 @@
+---
+
+- name: install wp-cli
+  get_url:
+    url: "{{ wp_cli_phar_url }}"
+    dest: "{{ wp_cli_bin_path }}"
+    mode: 0755
+
+- name: install wp-cli tab completions
+  get_url:
+    url: "{{ wp_cli_completion_url }}"
+    dest: "{{ wp_cli_completion_path }}"
+    mode: 0644

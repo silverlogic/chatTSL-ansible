@@ -1,0 +1,33 @@
+---
+- name: configure web
+  hosts: web
+  vars:
+    loggly_for_nginx: yes
+
+    # For live servers
+    letsencrypt_cert_domains:
+      - '{{ app_domain }}'
+
+    nginx_sites: '{{ app_nginx_sites }}'
+
+    nodejs_version: '{{ app_nodejs_version }}'
+    nodeapp_user: '{{ app_user }}'
+    nodeapp_use_git_clone: '{{ is_live_env }}'
+    nodeapp_repo: '{{ app_repo }}'
+    nodeapp_branch: '{{ app_version }}'
+    nodeapp_conf_env: '{{ app_conf_env }}'
+  roles:
+    - { role: sudo, tags: [ server ] }
+    - { role: sshd, tags: [ server ] }
+    - { role: fail2ban, tags: [ server ] }
+    - { role: ntp, tags: [ server ] }
+    - { role: swapfile, swapfile_size: 1G, tags: [ server ] }
+
+    - { role: newrelic, tags: [ monitoring ], when: is_live_env }
+    - { role: loggly, tags: [ monitoring ], when: is_live_env }
+
+    - { role: git, tags: [ app ] }
+    - { role: letsencrypt, tags: [ app ], when: is_live_env and app_use_ssl }
+    - { role: nginx, tags: [ app ] }
+    - { role: nodejs, tags: [ app ] }
+    - { role: nodeapp, tags: [ app,deploy ] }

@@ -1,0 +1,21 @@
+---
+# App
+app_version: 'production'
+
+# Services
+app_aws_access_key_id: '{{ vault_app_aws_access_key_id }}'
+app_aws_secret_access_key: '{{ vault_app_aws_secret_access_key }}'
+app_sentry_dsn: '{{ vault_app_sentry_dsn }}'
+app_branchio_key: '{{ vault_app_branchio_key }}'
+
+# Database
+app_db_password: '{{ vault_app_db_password }}'
+
+# AMQP
+app_amqp_password: '{{ vault_app_amqp_password }}'
+
+# Django
+app_django_requirements_txt: 'requirements/live.txt'
+app_django_superuser_password: '{{ vault_app_django_superuser_password }}'
+app_django_settings_module: 'settings.live'
+app_django_secret_key: '{{ vault_app_django_secret_key }}'

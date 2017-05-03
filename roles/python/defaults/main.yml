@@ -1,0 +1,10 @@
+---
+python_version: 3.5.3
+python_prefix: '/usr/local/python-{{ python_version }}'
+python_exec: '{{ python_prefix }}/bin/python'
+python_pip_exec: '{{ python_prefix }}/bin/pip'
+python_venv_exec: '{{ python_prefix }}/bin/virtualenv'
+
+python_source_url: 'https://www.python.org/ftp/python/{{ python_version }}/Python-{{ python_version }}.tar.xz'
+python_source_dest: '/tmp'
+python_source_dir: '{{ python_source_dest }}/Python-{{ python_version }}'

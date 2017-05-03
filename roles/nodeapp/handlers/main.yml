@@ -1,0 +1,6 @@
+---
+- name: restart nodeapp
+  service: name={{ nodeapp_service }} state=restarted
+
+- name: systemctl daemon-reload
+  shell: systemctl daemon-reload

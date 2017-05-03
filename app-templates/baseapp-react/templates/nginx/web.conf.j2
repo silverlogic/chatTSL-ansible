@@ -1,0 +1,59 @@
+server {
+    server_name _ default;
+
+    listen 80
+    {% if app_web_use_ssl %}
+    listen 443 ssl
+    ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
+    {% endif %}
+
+    return 444;
+}
+
+server {
+    server_name {{ app_domain }};
+
+    {% if app_use_ssl %}
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
+    {% else %}
+    listen 80;
+    {% endif %}
+
+    root {{ nodeapp_home }}/www/static;
+
+    location @proxy {
+        add_header 'Access-Control-Allow-Origin' '*';
+        proxy_pass http://localhost:3000;
+    }
+
+    location /static {
+        alias {{ nodeapp_home }}/www/static;
+    }
+
+    location / {
+        try_files $uri @proxy;
+    }
+
+}
+
+{% if app_use_ssl %}
+server {
+    server_name {{ app_domain }};
+    listen 80;
+
+    location / {
+        return 301 https://{{ app_domain }}$request_uri;
+    }
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/letsencrypt;
+    }
+
+    location = /.well-known/acme-challenge/ {
+        return 404;
+    }
+}
+{% endif %}

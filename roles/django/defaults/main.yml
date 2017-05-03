@@ -1,0 +1,38 @@
+---
+django_user: 'django'
+django_group: 'www-data'
+django_home: '/opt/{{ django_user }}'
+# django_repo: ''
+# django_branch: ''
+# django_use_git_clone: yes
+django_ssh_key: '{{ django_home }}/id_rsa'
+django_ssh_key_src: 'files/ssh/id_rsa'
+django_dest: '{{ django_home }}/site'
+
+# python / virtualenv
+django_python: '{{ python_exec }}'
+django_virtualenv: '{{ django_home }}/venv-{{ python_version }}'
+django_virtualenv_command: '{{ python_venv_exec }}'
+# django_requirements_txt: 'requirements/live.txt'
+
+# environment variable configs
+django_conf_env: {}
+
+# superuser
+# django_superuser_email: ''
+# django_superuser_password: ''
+
+# service
+django_service: '{{ django_user }}'
+django_service_file: '/etc/systemd/system/{{ django_service }}.service'
+django_service_env_file: '/etc/opt/{{ django_user }}/{{ django_user }}.env'
+django_sock: '/run/{{ django_user }}/{{ django_user }}.sock'
+
+# gunicorn config
+django_gunicorn_workers: '{{ ansible_processor_cores * 2 }}'
+
+# hooks (files that get run if specified)
+django_pre_clone_hook: ''
+django_post_clone_hook: ''
+django_post_virtualenv_hook: ''
+django_post_migrate_hook: ''

@@ -1,0 +1,17 @@
+---
+
+- name: check if wp-cli is intalled
+  stat: path={{ wp_cli_bin_path }}
+  register: p
+
+- name: install wp-cli if needed
+  include: install.yml
+  when: not p.stat.exists
+
+- name: get current wp-cli version
+  shell: '{{ wp_cli_bin_path }} --allow-root --version'
+  register: out
+
+- name: upgrade wp-cli if needed
+  include: upgrade.yml
+  when: (out.stdout | regex_replace('^WP-CLI ', '')) != wp_cli_version

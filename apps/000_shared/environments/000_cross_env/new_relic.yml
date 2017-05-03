@@ -1,0 +1,5 @@
+---
+newrelic_license_key: '{{ vault_newrelic_license_key }}'
+newrelic_labels:
+  Project: '{{ project_full_name }}'
+  Environment: '{{ env }}'

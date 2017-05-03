@@ -1,0 +1,3 @@
+---
+xvfb_display: ':1'
+xvfb_resolution: '1x1'

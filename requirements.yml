@@ -1,0 +1,71 @@
+# Server
+- name: locales
+  src: tersmitten.locales
+  version: v1.0.7
+
+- name: ntp
+  src: geerlingguy.ntp
+  version: 1.4.0
+
+- name: sshd
+  src: willshersystems.sshd
+  version: v0.4.9
+
+- name: swapfile
+  src: https://github.com/Oefenweb/ansible-swapfile
+  version: 175ddb02972977d0341851c4f93170d00374998a
+
+# Monitoring
+- name: newrelic
+  src: https://github.com/virtru/ansible-newrelic.git
+  version: fb727899bdfbdd05e76600fb3b468cb5029751bd
+
+# Languages
+- name: nodejs
+  src: geerlingguy.nodejs
+  version: 4.0.0
+
+- name: php
+  src: geerlingguy.php
+  version: 3.4.4
+
+# Services
+- name: mysql
+  src: geerlingguy.mysql
+  version: 2.0.1
+
+- name: elasticsearch
+  src: https://github.com/elastic/ansible-elasticsearch
+  version: 32c7a13b69db2b29e5c767ef668a61201d091aae
+
+- name: redis
+  src: DavidWittman.redis
+  version: 1.2.2
+
+- name: rabbitmq
+  src: https://github.com/amothic/ansible-playbook-rabbitmq
+  version: 260276d34482acb3ec88e4b0ca6e9447b4e882b8
+
+- name: nginx
+  src: jdauphant.nginx
+  version: v2.7.4
+
+- name: postgresql
+  src: https://github.com/ANXS/postgresql
+  version: 50dcf769cc5c7ada6e8c3a97fdf4e5dbd11ff02e
+
+# Misc
+- name: composer
+  src: geerlingguy.composer
+  version: 1.6.1
+
+- name: letsencrypt
+  src: https://github.com/thefinn93/ansible-letsencrypt
+  version: cfc0b938dc2c9a8985be30a2f9ece8f4df0dd6fe
+
+- src: geerlingguy.daemonize
+  version: 1.1.1
+
+- name: mailhog
+  src: geerlingguy.mailhog
+  version: 2.1.1

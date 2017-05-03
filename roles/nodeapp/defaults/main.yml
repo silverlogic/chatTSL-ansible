@@ -1,0 +1,15 @@
+nodeapp_user: 'nodeapp'
+nodeapp_group: 'www-data'
+nodeapp_home: '/opt/{{ nodeapp_user }}'
+# nodeapp_repo: ''
+# nodeapp_branch: ''
+# nodeapp_use_git_clone: yes
+nodeapp_ssh_key: '{{ nodeapp_home }}/id_rsa'
+nodeapp_ssh_key_src: 'files/ssh/id_rsa'
+nodeapp_dest: '{{ nodeapp_home }}/site'
+
+# settings.js configs
+nodeapp_conf_env: {}
+
+# service
+nodeapp_service: '{{ nodeapp_user }}'

@@ -1,0 +1,19 @@
+---
+- name: ensure syslog listening on udp port 514
+  lineinfile: dest=/etc/rsyslog.conf line={{ item }}
+  with_items:
+    - '$ModLoad imudp'
+    - '$UDPServerRun 514'
+  notify:
+    - restart rsyslog
+
+- name: create rsyslog config 22-loggly.conf
+  template: dest=/etc/rsyslog.d/22-loggly.conf src=22-loggly.conf.j2
+  notify:
+    - restart rsyslog
+
+- name: create rsyslog config 21-nginx-loggly.conf
+  template: dest=/etc/rsyslog.d/21-nginx-loggly.conf src=21-nginx-loggly.conf.j2
+  notify:
+    - restart rsyslog
+  when: loggly_for_nginx

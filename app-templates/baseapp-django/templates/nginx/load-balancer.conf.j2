@@ -1,0 +1,50 @@
+upstream app {
+    {% for host_name in groups['web'] %}
+    {% set host = hostvars[host_name] %}
+    server {{ host.ansible_eth1.ipv4.address }}:80;
+    {% endfor %}
+}
+
+server {
+    server_name _ default;
+
+    listen 80
+    listen 443 ssl
+    ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
+
+    return 444;
+}
+
+server {
+    server_name {{ app_domain }};
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
+
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Protocol $scheme;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_pass http://app;
+        break;
+    }
+}
+
+server {
+    server_name {{ app_domain }};
+    listen 80;
+
+    location / {
+        return 301 https://{{ app_domain }}$request_uri;
+    }
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/letsencrypt;
+    }
+
+    location = /.well-known/acme-challenge/ {
+        return 404;
+    }
+}

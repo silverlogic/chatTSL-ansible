@@ -1,0 +1,23 @@
+---
+- name: configure amqp
+  hosts: amqp
+  vars:
+    rabbitmq_ssl: no
+    rabbitmq_conf_tcp_listeners_address: '{{ ansible_eth1.ipv4.address }}'
+    rabbitmq_vhost_definitions:
+      - name: '{{ app_amqp_vhost }}'
+    rabbitmq_users_definitions:
+      - vhost: '{{ app_amqp_vhost }}'
+        user: '{{ app_amqp_user }}'
+        password: '{{ app_amqp_password }}'
+  roles:
+    - { role: sudo, tags: [ server ] }
+    - { role: locales, tags: [ server ] }
+    - { role: sshd, tags: [ server ] }
+    - { role: fail2ban, tags: [ server ] }
+    - { role: ntp, tags: [ server ] }
+
+    - { role: newrelic, tags: [ monitoring ], when: is_live_env }
+    - { role: loggly, tags: [ monitoring ], when: is_live_env }
+
+    - { role: rabbitmq, tags: [ app ] }

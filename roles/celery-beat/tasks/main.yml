@@ -1,0 +1,85 @@
+---
+- name: install packages
+  apt: name={{ item }} state=present update_cache=yes cache_valid_time={{ 60*60*24 }}
+  with_items:
+    - 'libjpeg-dev'
+    - 'libpq-dev'
+    - 'gdal-bin'
+
+- name: create celery beat group
+  group:
+    name: '{{ celery_beat_group }}'
+    state: 'present'
+
+- name: create celery beat user
+  user:
+    name: '{{ celery_beat_user }}'
+    group: '{{ celery_beat_group }}'
+    home: '{{ celery_beat_home }}'
+    state: 'present'
+
+- name: ensure home directory permissions
+  file:
+    path: '{{ celery_beat_home }}'
+    owner: '{{ celery_beat_user }}'
+    group: '{{ celery_beat_group }}'
+    state: 'directory'
+
+- block:
+  - name: get ssh key
+    copy:
+      src: '{{ celery_beat_ssh_key_src }}'
+      dest: '{{ celery_beat_ssh_key }}'
+      mode: 0600
+    when: celery_beat_use_git_clone
+
+  - name: clone celery_beat repo
+    git:
+      repo: '{{ celery_beat_repo }}'
+      version: '{{ celery_beat_branch }}'
+      dest: '{{ celery_beat_dest }}'
+      key_file: '{{ celery_beat_ssh_key }}'
+      accept_hostkey: yes
+      force: yes
+    notify:
+      - restart celery beat
+    when: celery_beat_use_git_clone
+
+  - name: create virtualenv
+    pip:
+      virtualenv: '{{ celery_beat_virtualenv }}'
+      virtualenv_command: '{{ celery_beat_virtualenv_command }}'
+      virtualenv_python: '{{ celery_beat_python }}'
+      requirements: '{{ celery_beat_dest }}/{{ celery_beat_requirements_txt }}'
+    notify:
+      - restart celery beat
+
+  become: yes
+  become_user: '{{ celery_beat_user }}'
+
+- name: create celery beat service file
+  template:
+    src: 'celery-beat.service.j2'
+    dest: '{{ celery_beat_service_file }}'
+    mode: 0644
+  notify:
+    - restart celery beat
+
+- name: create config directory
+  file:
+    path: '{{ celery_beat_service_env_file|dirname }}'
+    state: 'directory'
+
+- name: create celery beat service environment file
+  template:
+    src: 'celery-beat.service.env.j2'
+    dest: '{{ celery_beat_service_env_file }}'
+    mode: 0644
+  notify:
+    - restart celery beat
+
+- name: ensure service files are up to date
+  shell: systemctl daemon-reload
+
+- name: ensure celery_beat service is started & enabled
+  service: name={{ celery_beat_service }} state=started enabled=yes

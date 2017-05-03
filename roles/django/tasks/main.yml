@@ -1,0 +1,134 @@
+---
+- name: install packages
+  apt: name={{ item }} state=present update_cache=yes cache_valid_time={{ 60*60*24 }}
+  with_items:
+    - 'libjpeg-dev'
+    - 'libpq-dev'
+    - 'gdal-bin'
+
+- name: create django group
+  group:
+    name: '{{ django_group }}'
+    state: 'present'
+
+- name: create django user
+  user:
+    name: '{{ django_user }}'
+    group: '{{ django_group }}'
+    home: '{{ django_home }}'
+    state: 'present'
+
+- name: ensure home directory permissions
+  file:
+    path: '{{ django_home }}'
+    owner: '{{ django_user }}'
+    group: '{{ django_group }}'
+    state: 'directory'
+
+- block:
+  - name: create environment helper
+    template:
+      src: 'env.sh.j2'
+      dest: '{{ django_home }}/env.sh'
+      mode: 0755
+
+  - name: get ssh key
+    copy:
+      src: '{{ django_ssh_key_src }}'
+      dest: '{{ django_ssh_key }}'
+      mode: 0600
+    when: django_use_git_clone
+
+  - name: run pre-clone hook
+    include: '{{ django_pre_clone_hook }}'
+    when: django_pre_clone_hook != ''
+
+  - name: clone django repo
+    git:
+      repo: '{{ django_repo }}'
+      version: '{{ django_branch }}'
+      dest: '{{ django_dest }}'
+      key_file: '{{ django_ssh_key }}'
+      accept_hostkey: yes
+      force: yes
+    notify:
+      - restart django
+    when: django_use_git_clone
+
+  - name: run post-clone hook
+    include: '{{ django_post_clone_hook }}'
+    when: django_post_clone_hook != ''
+
+  - name: create virtualenv
+    pip:
+      virtualenv: '{{ django_virtualenv }}'
+      virtualenv_command: '{{ django_virtualenv_command }}'
+      virtualenv_python: '{{ django_python }}'
+      requirements: '{{ django_dest }}/{{ django_requirements_txt }}'
+    notify:
+      - restart django
+
+  - name: run post-virtualenv hook
+    include: '{{ django_post_virtualenv_hook }}'
+    when: django_post_virtualenv_hook != ''
+
+  - name: collect static files (manage.py collectstatic)
+    django_manage:
+      command: 'collectstatic'
+      app_path: '{{ django_dest }}'
+      virtualenv: '{{ django_virtualenv }}'
+    run_once: yes
+    environment: '{{ django_conf_env }}'
+    register: result
+    changed_when: "'0 static files' not in result.out"
+
+  - name: migrate database (manage.py migrate)
+    django_manage:
+      command: 'migrate'
+      app_path: '{{ django_dest }}'
+      virtualenv: '{{ django_virtualenv }}'
+    run_once: yes
+    environment: '{{ django_conf_env }}'
+    notify:
+      - restart django
+
+  - name: run post-migrate hook
+    include: '{{ django_post_migrate_hook }}'
+    when: django_post_migrate_hook != ''
+
+  - name: create superuser
+    shell: /bin/bash -c "source {{ django_virtualenv }}/bin/activate && cd {{ django_dest }} && echo \"from apps.users.models import User; User.objects.create_superuser('{{ django_superuser_email }}', '{{ django_superuser_password }}');\" | ./manage.py shell"
+    run_once: yes
+    environment: '{{ django_conf_env }}'
+    register: result
+    changed_when: "'already exists' not in result.stdout"
+
+  become: yes
+  become_user: '{{ django_user }}'
+
+- name: create django service file
+  template:
+    src: 'django.service.j2'
+    dest: '{{ django_service_file }}'
+    mode: 0644
+  notify:
+    - restart django
+
+- name: create config directory
+  file:
+    path: '{{ django_service_env_file|dirname }}'
+    state: 'directory'
+
+- name: create django service environment file
+  template:
+    src: 'django.service.env.j2'
+    dest: '{{ django_service_env_file }}'
+    mode: 0644
+  notify:
+    - restart django
+
+- name: ensure service files are up to date
+  shell: systemctl daemon-reload
+
+- name: ensure django service is started & enabled
+  service: name={{ django_service }} state=started enabled=yes

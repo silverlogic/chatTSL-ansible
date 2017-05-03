@@ -1,0 +1,10 @@
+[Unit]
+Description=node server
+After=network.target
+
+[Service]
+WorkingDirectory={{ nodeapp_home }}/www
+ExecStart=/usr/bin/npm start
+
+[Install]
+WantedBy=multi-user.target

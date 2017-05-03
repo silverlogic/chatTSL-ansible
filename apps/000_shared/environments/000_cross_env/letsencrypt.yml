@@ -1,0 +1,4 @@
+---
+letsencrypt_webroot_path: '/var/www/letsencrypt'
+letsencrypt_email: 'dev+{{ project_code_name }}@tsl.io'
+letsencrypt_renewal_command_args: '--renew-hook "systemctl reload nginx"'

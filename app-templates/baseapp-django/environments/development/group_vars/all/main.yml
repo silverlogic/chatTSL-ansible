@@ -1,0 +1,22 @@
+---
+# App
+app_version: 'N/A'
+app_use_ssl: false
+
+# Services
+app_aws_access_key_id: 'N/A'
+app_aws_secret_access_key: 'N/A'
+app_sentry_dsn: 'N/A'
+app_branchio_key: 'N/A'
+
+# Database
+app_db_password: '1234'
+
+# AMQP
+app_amqp_password: '1234'
+
+# Django
+app_django_requirements_txt: 'requirements/dev.txt'
+app_django_superuser_password: '1234'
+app_django_settings_module: 'settings.dev'
+app_django_secret_key: '1234'

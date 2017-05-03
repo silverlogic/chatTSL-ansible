@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+
+root={{ ssmtp_root }}
+{% if ssmtp_rewrite_domain is defined %}
+rewriteDomain={{ ssmtp_rewrite_domain }}
+{% endif %}
+FromLineOverride={{ ssmtp_from_override }}
+UseTLS={{ ssmtp_tls }}
+UseSTARTTLS={{ ssmtp_start_tls }}
+
+hostname={{ ssmtp_hostname }}
+mailhub={{ ssmtp_mailhub }}
+AuthUser={{ ssmtp_user }}
+AuthPass={{ ssmtp_password }}

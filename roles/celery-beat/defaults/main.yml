@@ -1,0 +1,30 @@
+---
+celery_beat_user: 'celery-beat'
+celery_beat_group: 'celery-beat'
+celery_beat_home: '/opt/{{ celery_beat_user }}'
+# celery_beat_repo: ''
+# celery_beat_branch: ''
+# celery_beat_use_git_clone: yes
+celery_beat_ssh_key: '{{ celery_beat_home }}/id_rsa'
+celery_beat_ssh_key_src: 'files/ssh/id_rsa'
+celery_beat_dest: '{{ celery_beat_home }}/site'
+
+# python / virtualenv
+celery_beat_python: '{{ python_exec }}'
+celery_beat_virtualenv: '{{ celery_beat_home }}/venv-{{ python_version }}'
+celery_beat_virtualenv_command: '{{ python_venv_exec }}'
+# celery_beat_requirements_txt: 'requirements/live.txt'
+
+# environment variable configs
+celery_beat_conf_env: {}
+
+# service
+celery_beat_service: '{{ celery_beat_user }}'
+celery_beat_service_file: '/etc/systemd/system/{{ celery_beat_service }}.service'
+celery_beat_service_env_file: '/etc/opt/{{ celery_beat_user }}/{{ celery_beat_user }}.env'
+
+# beat configs
+celery_beat_app: 'apps'
+celery_beat_schedule_file: '{{ celery_beat_home }}/celery-beat-schedule'
+celery_beat_concurrency: '{{ ansible_processor_cores }}'
+celery_beat_log_level: debug

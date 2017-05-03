@@ -1,0 +1,16 @@
+---
+- name: install packages
+  apt: name={{ item }} state=present update_cache=yes cache_valid_time={{ 60*60*24 }}
+  with_items:
+    - 'xvfb'
+
+- name: create service file
+  template:
+    src: 'xvfb.service.j2'
+    dest: '/etc/systemd/system/xvfb.service'
+    mode: 0644
+  notify:
+    - restart xvfb
+
+- name: ensure xvfb is started
+  service: name=xvfb state=started enabled=yes

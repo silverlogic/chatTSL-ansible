@@ -1,0 +1,7 @@
+---
+- include: 'config_db.yml'
+- include: 'config_amqp.yml'
+- include: 'config_load_balancer.yml'
+- include: 'config_web.yml'
+- include: 'config_worker.yml'
+- include: 'config_scheduler.yml'

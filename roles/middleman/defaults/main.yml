@@ -1,0 +1,14 @@
+---
+middleman_user: 'middleman'
+middleman_group: 'www-data'
+middleman_home: '/opt/{{ middleman_user }}'
+# middleman_repo: ''
+# middleman_branch: ''
+# middleman_use_git_clone: yes
+middleman_ssh_key: '{{ middleman_home }}/id_rsa'
+middleman_ssh_key_src: 'files/ssh/id_rsa'
+middleman_dest: '{{ middleman_home }}/site'
+
+# Relative path of the middleman source files from the middleman_dest
+middleman_rel_path: '/./'
+middleman_path: '{{ middleman_dest }}{{ middleman_rel_path }}'

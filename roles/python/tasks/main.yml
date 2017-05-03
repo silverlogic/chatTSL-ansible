@@ -1,0 +1,25 @@
+---
+
+- name: check if python is installed
+  stat: path={{ python_exec }}
+  register: p
+
+- name: install python
+  include: install.yml
+  when: not p.stat.exists
+
+- name: check if pip is installed
+  stat: path={{ python_pip_exec }}
+  register: p
+
+- name: install pip
+  include: install_pip.yml
+  when: not p.stat.exists
+
+- name: check if virtualenv is installed
+  stat: path={{ python_venv_exec }}
+  register: p
+
+- name: install virtualenv
+  shell: '{{ python_pip_exec }} install virtualenv'
+  when: not p.stat.exists

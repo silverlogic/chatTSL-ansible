@@ -1,0 +1,40 @@
+---
+- name: collect related component facts
+  hosts: db:amqp
+  tasks: []
+
+- name: configure web
+  hosts: web
+  vars:
+    loggly_for_nginx: yes
+
+    # For live servers
+    letsencrypt_cert_domains:
+      - '{{ app_domain }}'
+
+    nginx_sites: '{{ app_web_nginx_sites }}'
+
+    django_user: '{{ app_user }}'
+    django_repo: '{{ app_repo }}'
+    django_branch: '{{ app_version }}'
+    django_use_git_clone: '{{ is_live_env }}'
+    django_requirements_txt: '{{ app_django_requirements_txt }}'
+    django_superuser_email: '{{ app_django_superuser_email }}'
+    django_superuser_password: '{{ app_django_superuser_password }}'
+    django_conf_env: '{{ app_web_conf_env }}'
+  roles:
+    - { role: sudo, tags: [ server ] }
+    - { role: locales, tags: [ server ] }
+    - { role: sshd, tags: [ server ] }
+    - { role: fail2ban, tags: [ server ] }
+    - { role: ntp, tags: [ server ] }
+    - { role: swapfile, swapfile_size: 1G, tags: [server] }
+
+    - { role: newrelic, tags: [ monitoring ], when: is_live_env }
+    - { role: loggly, tags: [ monitoring ], when: is_live_env }
+
+    - { role: git, tags: [ app ] }
+    - { role: letsencrypt, tags: [ app ], when: is_live_env and app_web_use_ssl }
+    - { role: nginx, tags: [ app ] }
+    - { role: python, tags: [ app,deploy ] }
+    - { role: django, tags: [ app,deploy ] }

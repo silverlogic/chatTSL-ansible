@@ -1,0 +1,34 @@
+---
+celery_user: 'celery'
+celery_group: 'www-data'
+celery_home: '/opt/{{ celery_user }}'
+# celery_repo: ''
+# celery_branch: ''
+# celery_use_git_clone: yes
+celery_ssh_key: '{{ celery_home }}/id_rsa'
+celery_ssh_key_src: 'files/ssh/id_rsa'
+celery_dest: '{{ celery_home }}/site'
+
+# python / virtualenv
+celery_python: '{{ python_exec }}'
+celery_virtualenv: '{{ celery_home }}/venv-{{ python_version }}'
+celery_virtualenv_command: '{{ python_venv_exec }}'
+# celery_requirements_txt: 'requirements/live.txt'
+
+# environment variable configs
+celery_conf_env: {}
+
+# service
+celery_service: '{{ celery_user }}'
+celery_service_file: '/etc/systemd/system/{{ celery_service }}.service'
+celery_service_env_file: '/etc/opt/{{ celery_user }}/{{ celery_user }}.env'
+
+# worker configs
+celery_app: 'apps'
+celery_concurrency: '{{ ansible_processor_cores }}'
+celery_log_level: info
+
+# hooks (files that get run if specified)
+celery_pre_clone_hook: ''
+celery_post_clone_hook: ''
+celery_post_virtualenv_hook: ''

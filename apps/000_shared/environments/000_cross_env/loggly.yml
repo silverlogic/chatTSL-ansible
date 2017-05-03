@@ -1,0 +1,2 @@
+---
+loggly_customer_token: '{{ vault_loggly_customer_token }}'

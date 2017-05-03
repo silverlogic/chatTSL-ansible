@@ -1,0 +1,56 @@
+---
+- name: install packages
+  apt: pkg={{ item }} state=installed update_cache=yes cache_valid_time={{ 60*60*24 }}
+  with_items:
+    - zlib1g-dev
+    - ruby
+    - bundler
+
+- name: create middleman group
+  group:
+    name: '{{ middleman_group }}'
+    state: 'present'
+
+- name: create middleman user
+  user:
+    name: '{{ middleman_user }}'
+    group: '{{ middleman_group }}'
+    home: '{{ middleman_home }}'
+    state: 'present'
+
+- name: ensure home directory permissions
+  file:
+    path: '{{ middleman_home }}'
+    owner: '{{ middleman_user }}'
+    group: '{{ middleman_group }}'
+    state: 'directory'
+
+- block:
+  - name: get ssh key
+    copy:
+      src: '{{ middleman_ssh_key_src }}'
+      dest: '{{ middleman_ssh_key }}'
+      mode: 0600
+    when: middleman_use_git_clone
+
+  - name: clone repo
+    git:
+      repo: '{{ middleman_repo }}'
+      version: '{{ middleman_branch }}'
+      dest: '{{ middleman_dest }}'
+      key_file: '{{ middleman_ssh_key }}'
+      accept_hostkey: yes
+      force: yes
+    when: middleman_use_git_clone
+
+  - name: bundle install
+    bundler:
+      chdir: '{{ middleman_path }}'
+      state: present
+    become: no
+
+  - name: build website
+    shell: bundle exec middleman build chdir={{ middleman_path }}
+
+  become: yes
+  become_user: '{{ middleman_user }}'

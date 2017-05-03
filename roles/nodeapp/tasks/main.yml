@@ -1,0 +1,98 @@
+---
+- name: install packages
+  apt: name={{ item }}
+  with_items:
+    - libcairo2-dev
+    - libjpeg-dev
+    - libgif-dev
+
+- name: install global npm packages
+  npm: name={{ item }} global=yes
+  with_items:
+    - bower
+    - gulp
+
+- name: create user
+  user:
+    name: '{{ nodeapp_user }}'
+    group: '{{ nodeapp_group }}'
+    home: '{{ nodeapp_home }}'
+    state: 'present'
+  when: nodeapp_user != 'vagrant'
+
+- block:
+  - name: get ssh key
+    copy:
+      src: '{{ nodeapp_ssh_key_src }}'
+      dest: '{{ nodeapp_ssh_key }}'
+      mode: 0600
+    when: nodeapp_use_git_clone
+
+  - name: clone nodeapp repo
+    git:
+      repo: '{{ nodeapp_repo }}'
+      version: '{{ nodeapp_branch }}'
+      dest: '{{ nodeapp_dest }}'
+      key_file: '{{ nodeapp_ssh_key }}'
+      accept_hostkey: yes
+      force: yes
+    when: nodeapp_use_git_clone
+    notify:
+      - restart nodeapp
+
+  - name: npm install
+    npm: path={{ nodeapp_dest }}
+    notify:
+      - restart nodeapp
+
+  - name: npm update
+    npm: path={{ nodeapp_dest }} state=latest
+    notify:
+      - restart nodeapp
+
+  - name: bower install
+    bower: path={{ nodeapp_dest }}
+    notify:
+      - restart nodeapp
+
+  - name: bower update
+    bower: path={{ nodeapp_dest }} state=latest
+    notify:
+      - restart nodeapp
+
+  - name: create settings.js
+    template:
+      src: settings.js.j2
+      dest: '{{ nodeapp_dest }}/config/settings.js'
+      mode: 0644
+    notify:
+      - restart nodeapp
+
+  - name: build release
+    shell: npm run build
+    args:
+      chdir: '{{ nodeapp_dest }}'
+    notify:
+      - restart nodeapp
+
+  - name: sync build files to www
+    shell: 'rsync --archive --delete --delay-updates {{ nodeapp_dest }}/{compiled,config,node_modules,static,package.json} {{ nodeapp_home }}/www/'
+    args:
+      executable: '/bin/bash'
+    notify:
+      - restart nodeapp
+
+  become: yes
+  become_user: '{{ nodeapp_user }}'
+
+- name: create nodeapp service
+  template:
+    src: 'nodeapp.service.j2'
+    dest: '/etc/systemd/system/{{ nodeapp_service }}.service'
+    mode: 0644
+  notify:
+    - systemctl daemon-reload
+    - restart nodeapp
+
+- name: ensure nodeapp is running
+  service: name={{ nodeapp_service }} state=started enabled=yes

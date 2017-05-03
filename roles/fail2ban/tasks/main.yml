@@ -1,0 +1,3 @@
+---
+- name: install fail2ban package
+  apt: name=fail2ban state=present update_cache=yes cache_valid_time={{ 60*60*24 }} force=yes

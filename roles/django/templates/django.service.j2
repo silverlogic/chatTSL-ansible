@@ -1,0 +1,19 @@
+[Unit]
+Description=runs the {{ django_user }} django website
+After=network.target
+
+[Service]
+EnvironmentFile={{ django_service_env_file }}
+WorkingDirectory={{ django_dest }}
+ExecStartPre=/bin/mkdir -p {{ django_sock|dirname }}
+ExecStartPre=/bin/chown {{ django_user }}:{{ django_group }} {{ django_sock|dirname }}
+ExecStart={{ django_virtualenv }}/bin/gunicorn apps.wsgi:application \
+      --name {{ django_user }} \
+      --user {{ django_user }} \
+      --group {{ django_group }} \
+      --preload \
+      --bind=unix:{{ django_sock }} \
+      --workers {{ django_gunicorn_workers }}
+
+[Install]
+WantedBy=multi-user.target

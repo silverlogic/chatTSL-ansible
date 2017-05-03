@@ -1,0 +1,10 @@
+---
+ssmtp_root: 'admin@{{ ssmtp_hostname }}'
+ssmtp_from_override: 'Yes'
+ssmtp_tls: 'Yes'
+ssmtp_start_tls: 'Yes'
+
+# ssmtp_hostname: ''
+# ssmtp_mailhub: ''
+# ssmtp_user: ''
+# ssmtp_password: ''

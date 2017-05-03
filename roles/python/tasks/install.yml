@@ -1,0 +1,45 @@
+---
+
+- name: install required packages
+  apt: name={{ item }} state=present update_cache=yes cache_valid_time=6000
+  with_items:
+    - build-essential
+    - libncurses5-dev
+    - libncursesw5-dev
+    - libreadline6-dev
+    - libdb5.3-dev
+    - libgdbm-dev
+    - libsqlite3-dev
+    - libssl-dev
+    - libbz2-dev
+    - libexpat1-dev
+    - liblzma-dev
+    - zlib1g-dev
+
+- name: download and extract python source
+  unarchive: >
+    src={{ python_source_url }}
+    copy=no
+    dest={{ python_source_dest }}
+
+- name: compile and install
+  shell: '{{ item }}'
+  args:
+    chdir: '{{ python_source_dir }}'
+  with_items:
+    - './configure --prefix={{ python_prefix }}'
+    - 'make'
+    - 'make install'
+
+- name: delete source files
+  file: path={{ python_source_dir }} state=absent
+
+- name: normalize python exec name
+  shell: 'mv python? python || true'
+  args:
+    chdir: '{{ python_prefix }}/bin'
+
+- name: normalize pip exec name
+  shell: 'mv pip? pip || true'
+  args:
+    chdir: '{{ python_prefix }}/bin'

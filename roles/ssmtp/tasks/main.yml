@@ -1,0 +1,8 @@
+---
+- name: install ssmtp
+  apt: name=ssmtp state=present update_cache=yes cache_valid_time={{ 60*60*24 }}
+
+- name: create ssmtp config
+  template:
+    src: 'ssmtp.conf.j2'
+    dest: '/etc/ssmtp/ssmtp.conf'

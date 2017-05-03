@@ -1,0 +1,24 @@
+---
+- name: collect related component facts
+  hosts: web
+  tasks: []
+
+- name: configure load balancer
+  hosts: load-balancer
+  vars:
+    loggly_for_nginx: yes
+    letsencrypt_cert_domains:
+      - '{{ app_domain }}'
+    nginx_sites: '{{ app_load_balancer_nginx_sites }}'
+  roles:
+    - { role: sudo, tags: [ server ] }
+    - { role: locales, tags: [ server ] }
+    - { role: sshd, tags: [ server ] }
+    - { role: fail2ban, tags: [ server ] }
+    - { role: ntp, tags: [ server ] }
+
+    - { role: newrelic, tags: [ monitoring ], when: is_live_env }
+    - { role: loggly, tags: [ monitoring ], when: is_live_env }
+
+    - { role: letsencrypt, tags: [ app ], when: is_live_env }
+    - { role: nginx, tags: [ app,deploy ] }

@@ -1,0 +1,34 @@
+---
+wordpress_user: 'wordpress'
+wordpress_group: 'www-data'
+wordpress_home: '/opt/{{ wordpress_user }}'
+# wordpress_repo: ''
+# wordpress_branch: ''
+# wordpress_use_git_clone: yes
+wordpress_ssh_key: '{{ wordpress_home }}/id_rsa'
+wordpress_ssh_key_src: 'files/ssh/id_rsa'
+wordpress_dest: '{{ wordpress_home }}/site'
+wordpress_www_root: '{{ wordpress_dest }}/web'
+
+# install settings
+wordpress_site_title: 'Wordpress'
+wordpress_admin_user: 'admin'
+# wordpress_admin_password: ''
+# wordpress_admin_email: ''
+
+# .env configs
+# wordpress_db_name: ''
+# wordpress_db_user: ''
+# wordpress_db_password: ''
+# wordpress_db_host: ''
+# wordpress_env: ''
+# wordpress_homeurl: ''
+wordpress_siteurl: '{{ wordpress_homeurl }}/wp'
+# wordpress_auth_key: ''
+# wordpress_secure_auth_key: ''
+# wordpress_logged_in_key: ''
+# wordpress_nonce_key: ''
+# wordpress_auth_salt: ''
+# wordpress_secure_auth_salt: ''
+# wordpress_logged_in_salt: ''
+# wordpress_nonce_salt: ''
