@@ -32,7 +32,7 @@
     - { role: fail2ban, tags: [ server ] }
     - { role: ntp, tags: [ server ] }
 
-    - { role: newrelic, tags: [ monitoring ], when: is_live_env }
+    - { role: newrelic-infrastructure, tags: [ monitoring ], when: is_live_env }
     - { role: loggly, tags: [ monitoring ], when: is_live_env }
 
     - { role: postgresql, tags: [ app ] }

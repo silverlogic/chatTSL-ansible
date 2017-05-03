@@ -16,9 +16,9 @@
   version: 175ddb02972977d0341851c4f93170d00374998a
 
 # Monitoring
-- name: newrelic
-  src: https://github.com/virtru/ansible-newrelic.git
-  version: fb727899bdfbdd05e76600fb3b468cb5029751bd
+- name: newrelic-infrastructure
+  src: https://github.com/newrelic/infrastructure-agent-ansible.git
+  version: 40bede71674f1a5b734ff30fc01e7e4da493c93a
 
 # Languages
 - name: nodejs

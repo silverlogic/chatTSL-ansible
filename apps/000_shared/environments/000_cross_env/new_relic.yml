@@ -1,5 +1,9 @@
 ---
 newrelic_license_key: '{{ vault_newrelic_license_key }}'
 newrelic_labels:
-  Project: '{{ project_full_name }}'
-  Environment: '{{ env }}'
+  environmentName: '{{ env }}'
+  projectName: '{{ project_full_name }}'
+  appName: '{{ app_name }}'
+  componentName: '{{ component_name }}'
+nrinfragent_license_key: '{{ newrelic_license_key }}'
+nrinfragent_custom_attributes: '{{ newrelic_labels }}'

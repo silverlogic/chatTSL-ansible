@@ -30,7 +30,7 @@
     - { role: ntp, tags: [ server ] }
     - { role: swapfile, swapfile_size: 1G, tags: [server] }
 
-    - { role: newrelic, tags: [ monitoring ], when: is_live_env }
+    - { role: newrelic-infrastructure, tags: [ monitoring ], when: is_live_env }
     - { role: loggly, tags: [ monitoring ], when: is_live_env }
 
     - { role: git, tags: [ app ] }
