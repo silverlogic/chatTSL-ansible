@@ -1,7 +1,8 @@
-- description: ''
+- name: deploy <TODO:app_name>
+  description: ''
+  group: staging
   executionEnabled: true
   loglevel: INFO
-  name: deploy <TODO:app_name>
   options:
   - name: ansible-vault-password
     secure: true

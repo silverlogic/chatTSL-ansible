@@ -1,8 +1,8 @@
-- description: ''
+- name: deploy <TODO:app_name>
+  description: ''
+  group: production
   executionEnabled: true
   loglevel: INFO
-  name: deploy <TODO:app_name>
-  group: production
   options:
   - name: ansible-vault-password
     secure: true
