@@ -2,6 +2,7 @@
   executionEnabled: true
   loglevel: INFO
   name: deploy <TODO:app_name>
+  group: staging
   options:
   - name: ansible-vault-password
     secure: true
@@ -47,7 +48,7 @@
       script: |-
         cd "/root/@job.project@-@job.id@-playbooks"
         source venv/bin/activate
-        cd "apps/api"
+        cd "apps/<TODO:app_name>"
         export ANSIBLE_HOST_KEY_CHECKING=False
         ansible-playbook config_all.yml -i environments/staging -t deploy -e "app_version=@option.version@" --vault-password-file="../../vault-password"
       scriptInterpreter: bash

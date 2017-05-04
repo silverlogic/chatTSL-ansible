@@ -47,7 +47,7 @@
       script: |-
         cd "/root/@job.project@-@job.id@-playbooks"
         source venv/bin/activate
-        cd "apps/api"
+        cd "apps/<TODO:app_name>"
         export ANSIBLE_HOST_KEY_CHECKING=False
         ansible-playbook config_all.yml -i environments/production -t deploy -e "app_version=@option.version@" --vault-password-file="../../vault-password"
       scriptInterpreter: bash
