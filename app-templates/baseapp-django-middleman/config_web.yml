@@ -1,0 +1,29 @@
+---
+- name: deploy web
+  hosts: web
+  vars:
+    loggly_for_nginx: yes
+
+    letsencrypt_cert_domains:
+      - '{{ app_domain }}'
+
+    nginx_sites: '{{ app_nginx_sites }}'
+
+    middleman_user: '{{ app_user }}'
+    middleman_repo: '{{ app_repo }}'
+    middleman_branch: '{{ app_version }}'
+    middleman_use_git_clone: '{{ is_live_env }}'
+    middleman_rel_path: '/apidocs/'
+  roles:
+    - { role: sudo, tags: [ server ] }
+    - { role: sshd, tags: [ server ] }
+    - { role: fail2ban, tags: [ server ] }
+    - { role: ntp, tags: [ server ] }
+
+    - { role: newrelic-infrastructure, tags: [ monitoring ], when: is_live_env }
+    - { role: loggly, tags: [ monitoring ], when: is_live_env }
+
+    - { role: git, tags: [ app ] }
+    - { role: letsencrypt, tags: [ app ], when: is_live_env and app_use_ssl }
+    - { role: nginx, tags: [ app ] }
+    - { role: middleman, tags: [ app,deploy ] }

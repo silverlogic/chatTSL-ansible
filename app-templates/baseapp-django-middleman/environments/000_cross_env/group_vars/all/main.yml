@@ -1,0 +1,13 @@
+---
+# App
+app_name: 'TODO'  # eg. docs
+app_user: '{{ app_name }}'
+app_repo: 'TODO'  # the bitbucket repo
+app_domain: 'TODO'
+app_use_ssl: true
+app_url: '{{ app_use_ssl | ternary("https", "http") }}://{{ app_domain }}'
+
+# Web
+app_nginx_sites:
+  app:
+    template: 'nginx/web.conf.j2'
