@@ -1,0 +1,63 @@
+server {
+    server_name _ default;
+
+    listen 80
+    {% if app_web_use_ssl %}
+    listen 443 ssl
+    ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
+    {% endif %}
+
+    return 444;
+}
+
+server {
+    server_name {{ app_domain }};
+
+    {% if app_web_use_ssl %}
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
+    {% else %}
+    listen 80;
+    {% endif %}
+
+    index index.php index.htm index.html;
+    root {{ wordpress_www_root }};
+    client_max_body_size 100M
+
+    location ~* /app/uploads/.*\\.php$ {
+        deny all;
+    }
+
+    location ~ \\.php$ {
+        try_files $uri =404;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        fastcgi_pass unix:{{ php_fpm_listen }};
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+}
+
+{% if app_web_use_ssl %}
+server {
+    server_name {{ app_domain }};
+    listen 80;
+
+    location / {
+        return 301 https://{{ app_domain }}$request_uri;
+    }
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/letsencrypt;
+    }
+
+    location = /.well-known/acme-challenge/ {
+        return 404;
+    }
+}
+{% endif %}

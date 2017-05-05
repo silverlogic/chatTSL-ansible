@@ -1,0 +1,18 @@
+---
+# App
+app_version: 'production'
+
+# Database
+app_db_password: '{{ vault_app_db_password }}'
+
+# Wordpress
+app_admin_password: '{{ vault_app_admin_password }}'
+app_env: 'production'
+app_auth_key: '{{ vault_app_auth_key }}'
+app_secure_auth_key: '{{ vault_app_secure_auth_key }}'
+app_logged_in_key: '{{ vault_app_logged_in_key }}'
+app_nonce_key: '{{ vault_app_nonce_key }}'
+app_auth_salt: '{{ vault_app_auth_sault }}'
+app_secure_auth_salt: '{{ vault_app_secure_auth_salt }}'
+app_logged_in_salt: '{{ vault_app_logged_in_salt }}'
+app_nonce_salt: '{{ vault_app_nonce_salt }}'

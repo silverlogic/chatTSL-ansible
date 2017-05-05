@@ -1,0 +1,3 @@
+---
+- include: 'config_db.yml'
+- include: 'config_web.yml'

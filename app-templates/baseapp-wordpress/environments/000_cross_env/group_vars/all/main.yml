@@ -1,0 +1,32 @@
+---
+# App
+app_name: 'TODO' # eg. marketing
+app_user: '{{ app_name }}'
+app_repo: 'TODO' # the git repo
+app_domain: 'TODO'
+app_use_ssl: true
+app_url: '{{ app_use_ssl | ternary("https", "http") }}://{{ app_domain }}'
+
+# Database
+app_db_host: "{{ hostvars[groups['db'][0]].ansible_eth1.ipv4.address }}"
+app_db_name: '{{ app_name }}'
+app_db_user: '{{ app_name }}'
+
+# SSMTP
+ssmtp_mailhub: '{{ mail_smtp_host }}:{{ mail_smtp_port }}'
+ssmtp_user: '{{ mail_smtp_username }}'
+ssmtp_password: '{{ mail_smtp_password }}'
+ssmtp_tls: 'Yes'
+ssmtp_start_tls: 'Yes'
+
+# Wordpress
+app_site_title: '{{ project_verbose_name }}'
+app_admin_user: '{{ project_full_name }}'
+app_admin_email: 'dev+{{ project_code_name }}@tsl.io'
+app_homeurl: '{{ app_url }}'
+
+# Web
+app_web_use_ssl: true
+app_web_nginx_sites:
+  app:
+    template: 'nginx/web.conf.j2'

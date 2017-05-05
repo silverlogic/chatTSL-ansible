@@ -1,0 +1,23 @@
+---
+- name: configure database
+  hosts: db
+  vars:
+    mysql_databases:
+      - name: '{{ app_db_name }}'
+        state: present
+    mysql_users:
+      - name: '{{ app_db_user }}'
+        password: '{{ app_db_password }}'
+        host: '%'
+        priv: '{{ app_db_name }}.*:ALL'
+  roles:
+    - { role: sudo, tags: [ server ] }
+    - { role: sshd, tags: [ server ] }
+    - { role: fail2ban, tags: [ server ] }
+    - { role: ntp, tags: [ server ] }
+
+    - { role: newrelic-infrastructure, tags: [ monitoring ], when: is_live_env }
+    - { role: loggly, tags: [ monitoring ], when: is_live_env }
+
+    - { role: mysql, tags: [ app ] }
+

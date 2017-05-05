@@ -1,0 +1,23 @@
+---
+# App
+app_version: 'NA'
+app_use_ssl: false
+
+# Database
+app_db_password: '1234'
+
+# SSMTP
+ssmtp_tls: 'No'
+ssmtp_start_tls: 'No'
+
+# Wordpress
+app_admin_password: '1234'
+app_env: 'development'
+app_auth_key: '1234'
+app_secure_auth_key: '1234'
+app_logged_in_key: '1234'
+app_nonce_key: '1234'
+app_auth_salt: '1234'
+app_secure_auth_salt: '1234'
+app_logged_in_salt: '1234'
+app_nonce_salt: '1234'
