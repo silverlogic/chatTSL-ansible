@@ -24,7 +24,7 @@ server {
 
     index index.php index.htm index.html;
     root {{ wordpress_www_root }};
-    client_max_body_size 100M
+    client_max_body_size 100M;
 
     location ~* /app/uploads/.*\\.php$ {
         deny all;
