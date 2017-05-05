@@ -13,6 +13,7 @@ app_db_name: '{{ app_name }}'
 app_db_user: '{{ app_name }}'
 
 # SSMTP
+ssmtp_hostname: 'noreply@{{ app_domain }}'
 ssmtp_mailhub: '{{ mail_smtp_host }}:{{ mail_smtp_port }}'
 ssmtp_user: '{{ mail_smtp_username }}'
 ssmtp_password: '{{ mail_smtp_password }}'
