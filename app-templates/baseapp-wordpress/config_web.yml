@@ -45,7 +45,7 @@
     wordpress_secure_auth_key: '{{ app_secure_auth_key }}'
     wordpress_logged_in_key: '{{ app_logged_in_key }}'
     wordpress_nonce_key: '{{ app_nonce_key }}'
-    wordpress_auth_salt: '{{ app_auth_sault }}'
+    wordpress_auth_salt: '{{ app_auth_salt }}'
     wordpress_secure_auth_salt: '{{ app_secure_auth_salt }}'
     wordpress_logged_in_salt: '{{ app_logged_in_salt }}'
     wordpress_nonce_salt: '{{ app_nonce_salt }}'
