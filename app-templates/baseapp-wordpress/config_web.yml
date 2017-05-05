@@ -1,4 +1,8 @@
 ---
+- name: collect related component facts
+  hosts: db
+  tasks: []
+
 - name: deploy web
   hosts: web
   vars:
