@@ -36,7 +36,7 @@
 
 - name: elasticsearch
   src: https://github.com/elastic/ansible-elasticsearch
-  version: 32c7a13b69db2b29e5c767ef668a61201d091aae
+  version: 362156147300a7e8ada558f30b04df81ee440709
 
 - name: redis
   src: DavidWittman.redis
