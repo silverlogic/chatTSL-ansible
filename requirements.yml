@@ -21,6 +21,10 @@
   version: 0319bf594347367861c068ec18b0433c22a3fe6f
 
 # Languages
+- name: java
+  src: williamyeh.oracle-java
+  version: 2.11.0
+
 - name: nodejs
   src: geerlingguy.nodejs
   version: 4.0.0
