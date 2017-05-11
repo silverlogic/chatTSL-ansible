@@ -1,5 +1,0 @@
----
-mail_smtp_username: 'apikey'
-mail_smtp_password: '{{ vault_mail_smtp_password }}'  # API key
-mail_smtp_host: 'smtp.sendgrid.net'
-mail_smtp_port: '587'
