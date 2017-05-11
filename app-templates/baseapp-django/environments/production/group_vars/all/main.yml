@@ -5,6 +5,11 @@ app_version: 'production'
 # Services
 app_aws_access_key_id: '{{ vault_app_aws_access_key_id }}'
 app_aws_secret_access_key: '{{ vault_app_aws_secret_access_key }}'
+app_email_username: 'apikey'
+app_email_password: '{{ vault_app_email_password }}'  # API key
+app_email_host: 'smtp.sendgrid.net'
+app_email_port: '587'
+app_email_use_tls: true
 app_sentry_dsn: '{{ vault_app_sentry_dsn }}'
 app_branchio_key: '{{ vault_app_branchio_key }}'
 

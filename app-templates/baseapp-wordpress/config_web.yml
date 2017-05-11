@@ -8,9 +8,15 @@
   vars:
     loggly_for_nginx: yes
 
-    # For live servers
     letsencrypt_cert_domains:
       - '{{ app_domain }}'
+
+    ssmtp_hostname: 'noreply@{{ app_domain }}'
+    ssmtp_mailhub: '{{ app_email_host }}:{{ app_email_port }}'
+    ssmtp_user: '{{ app_email_username }}'
+    ssmtp_password: '{{ app_email_password }}'
+    ssmtp_tls: '{{ app_email_use_tls | ternary("Yes", "No") }}'
+    ssmtp_start_tls: '{{ app_email_use_tls | ternary("Yes", "No") }}'
 
     nginx_sites: '{{ app_web_nginx_sites }}'
 

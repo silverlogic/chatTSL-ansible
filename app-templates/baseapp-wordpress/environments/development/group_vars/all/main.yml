@@ -6,9 +6,12 @@ app_use_ssl: false
 # Database
 app_db_password: '1234'
 
-# SSMTP
-ssmtp_tls: 'No'
-ssmtp_start_tls: 'No'
+# Services
+app_email_username: 'N/A'
+app_email_password: 'N/A'
+app_email_host: 'N/A'
+app_email_port: 'N/A'
+app_email_use_tls: false
 
 # Wordpress
 app_admin_password: '1234'

@@ -5,6 +5,13 @@ app_version: 'master'
 # Database
 app_db_password: '{{ vault_app_db_password }}'
 
+# Services
+app_email_username: 'apikey'
+app_email_password: '{{ vault_app_email_password }}'  # API key
+app_email_host: 'smtp.sendgrid.net'
+app_email_port: '587'
+app_email_use_tls: true
+
 # Wordpress
 app_admin_password: '{{ vault_app_admin_password }}'
 app_env: 'staging'
