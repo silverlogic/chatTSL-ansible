@@ -4,14 +4,14 @@
   executionEnabled: true
   loglevel: INFO
   options:
-  - name: ansible-vault-password
-    secure: true
-    storagePath: keys/clients/<TODO:project_full_name>/ansible-vault-production
-    valueExposed: true
   - description: Branch, Commit SHA, or tag
     name: version
     required: true
     value: production
+  - name: ansible-vault-password
+    secure: true
+    storagePath: keys/clients/<TODO:project_full_name>/ansible-vault-production
+    valueExposed: true
   scheduleEnabled: false
   sequence:
     commands:
