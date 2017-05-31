@@ -15,6 +15,7 @@ All commands are in the context of the new app directory.
       amqp_ip: '192.168.12.12',
       web_ip: '192.168.12.13'
       ```
+3. Add the IP addresses set in step 2. to the development hosts file: `environments/development/hosts`
 
 ## Going Live!
 
