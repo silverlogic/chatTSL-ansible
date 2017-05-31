@@ -24,7 +24,7 @@ vagrant ssh web
 Activate the development environment
 
 ```
-./dev
+source dev
 ```
 
 Refer to the Django README for common operations you can perform.
