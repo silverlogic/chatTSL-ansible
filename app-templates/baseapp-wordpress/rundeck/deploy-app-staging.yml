@@ -28,7 +28,7 @@
         virtualenv -p /usr/bin/python venv
         source venv/bin/activate
         pip install -U setuptools
-        pip install -r requirements.txt
+        pip install --use-wheel --find-links=/root/wheelhouse -r requirements.txt
       scriptInterpreter: bash
     - description: Install playbook requirements.yml
       interpreterArgsQuoted: false
