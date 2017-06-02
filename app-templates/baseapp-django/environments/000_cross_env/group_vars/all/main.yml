@@ -37,6 +37,7 @@ app_django_conf_env:
   AWS_SECRET_ACCESS_KEY: '{{ app_aws_secret_access_key }}'
   AWS_STORAGE_BUCKET_NAME: '{{ app_aws_storage_bucket_name }}'
   SENTRY_DSN: '{{ app_sentry_dsn }}'
+  SENTRY_ENVIRONMENT: '{{ env }}'
   BRANCHIO_KEY: '{{ app_branchio_key }}'
   URL: '{{ app_url }}'
   FRONT_URL: 'TODO'
