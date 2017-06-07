@@ -32,6 +32,8 @@ django_sock: '/run/{{ django_user }}/{{ django_user }}.sock'
 # gunicorn config
 django_gunicorn_dev_reload: false
 django_gunicorn_workers: '{{ ansible_processor_cores * 2 }}'
+django_gunicorn_worker_class: 'sync'
+django_gunicorn_worker_connections: 1000  # Only affects eventlet/gevent workers
 
 # hooks (files that get run if specified)
 django_pre_clone_hook: ''

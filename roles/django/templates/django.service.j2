@@ -15,7 +15,9 @@ ExecStart={{ django_virtualenv }}/bin/gunicorn apps.wsgi:application \
       --reload \
       {% endif %}
       --bind=unix:{{ django_sock }} \
-      --workers {{ django_gunicorn_workers }}
+      --workers {{ django_gunicorn_workers }} \
+      --worker-class {{ django_gunicorn_worker_class }} \
+      --worker-connections {{ django_gunicorn_worker_connections }}
 
 [Install]
 WantedBy=multi-user.target
