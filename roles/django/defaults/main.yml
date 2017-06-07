@@ -30,6 +30,7 @@ django_service_env_file: '/etc/opt/{{ django_user }}/{{ django_user }}.env'
 django_sock: '/run/{{ django_user }}/{{ django_user }}.sock'
 
 # gunicorn config
+django_gunicorn_dev_reload: false
 django_gunicorn_workers: '{{ ansible_processor_cores * 2 }}'
 
 # hooks (files that get run if specified)

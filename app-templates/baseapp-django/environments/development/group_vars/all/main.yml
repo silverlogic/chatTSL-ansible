@@ -25,3 +25,7 @@ app_django_requirements_txt: 'requirements/dev.txt'
 app_django_superuser_password: '1234'
 app_django_settings_module: 'settings.dev'
 app_django_secret_key: '1234'
+
+## Django Gunicorn
+django_gunicorn_dev_reload: true
+django_gunicorn_workers: 1
