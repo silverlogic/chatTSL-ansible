@@ -11,7 +11,6 @@ ExecStart={{ django_virtualenv }}/bin/gunicorn apps.wsgi:application \
       --name {{ django_user }} \
       --user {{ django_user }} \
       --group {{ django_group }} \
-      --preload \
       --bind=unix:{{ django_sock }} \
       --workers {{ django_gunicorn_workers }}
 
