@@ -4,7 +4,7 @@ All commands are in the context of this repo.
 
 ## First Things First / Development Setup
 
-1. Fix all the places that have `TODO` inside of `apps/000_shared`
+1. Fix all the places that have `TODO` inside of `apps/000_shared`.  An example of finding all the TODO using `grep`: `grep -R TODO apps/000_shared`
 
 ## Going Live!
 
