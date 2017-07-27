@@ -3,3 +3,4 @@ app_version: 'NA'
 
 # conf env
 app_facebook_app_id: ''
+app_sentry_dsn: ''
