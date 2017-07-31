@@ -15,9 +15,12 @@ app_conf_env:
   apiDateFormat: 'YYYY-MM-DD'
   apiPageSize: 30
   fbAppId: '{{ app_facebook_app_id }}'
-  sentryDSN: '{{ app_sentry_dsn }}'
-  sentryEnvironment: '{{ env }}'
-  release: '{{ nodeapp_git_revision.after }}'
+  sentry:
+    DSN: '{{ app_sentry_dsn }}'
+    publicDSN: '{{ app_sentry_public_dsn }}'
+    environment: '{{ env }}'
+    autoBreadcrumbs: true
+    release: '{{ nodeapp_git_revision.after }}'
   website:
     title: '{{ project_verbose_name }}'
     automaticAccountAgreement: true
