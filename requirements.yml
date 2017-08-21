@@ -55,8 +55,8 @@
   version: v2.9
 
 - name: postgresql
-  src: https://github.com/ANXS/postgresql
-  version: 50dcf769cc5c7ada6e8c3a97fdf4e5dbd11ff02e
+  src: ANXS.postgresql
+  version: v1.9.0
 
 # Misc
 - name: composer
