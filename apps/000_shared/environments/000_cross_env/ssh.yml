@@ -1,3 +1,3 @@
 sshd_ChallengeResponseAuthentication: 'no'
 sshd_PasswordAuthentication: 'no'
-sshd_UsePAM: 'no'
+sshd_UsePAM: 'yes'
