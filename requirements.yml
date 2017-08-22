@@ -9,7 +9,7 @@
 
 - name: sshd
   src: willshersystems.sshd
-  version: v0.4.9
+  version: 0.5.1
 
 - name: swapfile
   src: https://github.com/Oefenweb/ansible-swapfile
