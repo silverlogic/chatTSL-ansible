@@ -47,8 +47,8 @@
   version: 1.2.2
 
 - name: rabbitmq
-  src: https://github.com/amothic/ansible-playbook-rabbitmq
-  version: 260276d34482acb3ec88e4b0ca6e9447b4e882b8
+  src: silverlogic.playbook-rabbitmq
+  version: 1.4.1
 
 - name: nginx
   src: jdauphant.nginx
