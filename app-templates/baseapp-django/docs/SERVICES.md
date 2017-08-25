@@ -108,10 +108,10 @@ Each project has it's own sendgrid account for sending emails.
 ## Sentry
 
 Each project has it's own team on the [TSL sentry instance](https://tsl.io).  Each app gets one project in that
-team for each live environment (staging, production).
+team.
 
 1. Create a new team named `<project_verbose_name>`
-2. Create a new project in that team named `<app_name> (<environment>)`
+2. Create a new project in that team named `<app_name>`
 
 ## Code Cov
 

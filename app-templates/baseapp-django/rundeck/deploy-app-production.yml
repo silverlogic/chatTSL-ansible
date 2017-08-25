@@ -56,3 +56,14 @@
       script: rm -rf "/root/@job.project@-@job.id@-playbooks"
     keepgoing: true
     strategy: node-first
+  # notification:
+  #   onfailure:
+  #     plugin:
+  #       configuration:
+  #         webhook_url: <TODO:slack_webhook_url>
+  #       type: SlackNotification
+  #   onsuccess:
+  #     plugin:
+  #       configuration:
+  #         webhook_url: <TODO:slack_webhook_url>
+  #       type: SlackNotification
