@@ -25,5 +25,5 @@
 
     - { role: git, tags: [ app ] }
     - { role: letsencrypt, tags: [ app ], when: is_live_env and app_use_ssl }
-    - { role: nginx, tags: [ app ] }
+    - { role: nginx, tags: [ app,nginx ] }
     - { role: middleman, tags: [ app,deploy ] }

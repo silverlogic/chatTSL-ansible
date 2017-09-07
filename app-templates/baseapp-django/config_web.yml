@@ -35,6 +35,6 @@
 
     - { role: git, tags: [ app ] }
     - { role: letsencrypt, tags: [ app ], when: is_live_env and app_web_use_ssl }
-    - { role: nginx, tags: [ app ] }
+    - { role: nginx, tags: [ app,nginx ] }
     - { role: python, tags: [ app,deploy ] }
     - { role: django, tags: [ app,deploy ] }

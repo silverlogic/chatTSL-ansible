@@ -71,7 +71,7 @@
     - { role: git, tags: [ app ] }
     - { role: letsencrypt, tags: [ app ], when: is_live_env and app_use_ssl }
     - { role: ssmtp, tags: [ app ] }
-    - { role: nginx, tags: [ app ] }
+    - { role: nginx, tags: [ app,nginx ] }
     - { role: php, tags: [ app ] }
     - { role: composer, tags: [ app ] }
     - { role: wp-cli, tags: [ app ] }

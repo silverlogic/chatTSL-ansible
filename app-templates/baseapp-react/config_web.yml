@@ -28,6 +28,6 @@
 
     - { role: git, tags: [ app ] }
     - { role: letsencrypt, tags: [ app ], when: is_live_env and app_use_ssl }
-    - { role: nginx, tags: [ app ] }
+    - { role: nginx, tags: [ app,nginx ] }
     - { role: nodejs, tags: [ app ] }
     - { role: nodeapp, tags: [ app,deploy ] }
