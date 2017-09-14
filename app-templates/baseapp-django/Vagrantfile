@@ -38,8 +38,8 @@ Vagrant.configure("2") do |config|
     machine.vm.provision "ansible" do |ansible|
       ansible.playbook = File.join(ANSIBLE_PATH, 'config_db.yml')
       ansible.inventory_path = './environments/development'
-      ansible.sudo = true
-      ansible.sudo_user = 'root'
+      ansible.become = true
+      ansible.become_user = 'root'
     end
   end
 
@@ -55,8 +55,8 @@ Vagrant.configure("2") do |config|
     machine.vm.provision "ansible" do |ansible|
       ansible.playbook = File.join(ANSIBLE_PATH, 'config_amqp.yml')
       ansible.inventory_path = './environments/development'
-      ansible.sudo = true
-      ansible.sudo_user = 'root'
+      ansible.become = true
+      ansible.become_user = 'root'
     end
   end
 
@@ -77,8 +77,8 @@ Vagrant.configure("2") do |config|
           'app_db_host': CONFIG[:db_ip],
           'app_amqp_host': CONFIG[:amqp_ip],
       }
-      ansible.sudo = true
-      ansible.sudo_user = 'root'
+      ansible.become = true
+      ansible.become_user = 'root'
     end
 
     machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv*/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
