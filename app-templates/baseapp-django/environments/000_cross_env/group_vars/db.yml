@@ -10,3 +10,4 @@ postgresql_log_disconnections: yes
 postgresql_log_duration: no
 postgresql_log_statement:  'mod'
 postgresql_log_min_duration_statement: 250
+postgresql_syslog_split_messages: no
