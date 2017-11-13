@@ -66,6 +66,9 @@ app_worker_conf_env: '{{ app_django_conf_env | combine(app_worker_base_conf_env)
 
 # Worker Monitor
 app_worker_monitor_username: 'admin'
+app_worker_monitor_nginx_sites:
+  app:
+    template: 'nginx/worker-monitor.conf.j2'
 app_worker_monitor_base_conf_env: {}
 app_worker_monitor_conf_env: '{{ app_django_conf_env | combine(app_worker_monitor_base_conf_env) }}'
 
