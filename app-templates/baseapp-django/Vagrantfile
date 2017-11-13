@@ -8,6 +8,8 @@ project_config_file = File.join(ANSIBLE_PATH, 'environments', 'development', 'gr
 project_config = YAML.load_file(project_config_file)
 app_config_file = File.join(ANSIBLE_PATH, 'environments', '000_cross_env', 'group_vars', 'all', 'main.yml')
 app_config = YAML.load_file(app_config_file)
+python_config_file = File.join(ANSIBLE_PATH, 'environments', '000_cross_env', 'group_vars', 'all', 'python.yml')
+python_config = YAML.load_file(python_config_file)
 
 CONFIG = {
   code_path: "../../../TODO",
@@ -17,7 +19,8 @@ CONFIG = {
   worker_ip: 'TODO',
   scheduler_ip: 'TODO',
   project_full_name: project_config['project_full_name'],
-  app_name: app_config['app_name']
+  app_name: app_config['app_name'],
+  python_version: python_config['python_version'],
 }
 
 Vagrant.configure("2") do |config|
@@ -83,7 +86,7 @@ Vagrant.configure("2") do |config|
       ansible.become_user = 'root'
     end
 
-    machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv*/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
+    machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv-#{CONFIG[:python_version]}/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
   end
 
   config.vm.define "worker" do |machine|
@@ -107,7 +110,7 @@ Vagrant.configure("2") do |config|
       ansible.become_user = 'root'
     end
 
-    machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv*/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
+    machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv-#{CONFIG[:python_version]}/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
   end
 
   config.vm.define "scheduler" do |machine|
@@ -131,7 +134,7 @@ Vagrant.configure("2") do |config|
       ansible.become_user = 'root'
     end
 
-    machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv*/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
+    machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv-#{CONFIG[:python_version]}/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
   end
 end
 
