@@ -3,7 +3,7 @@
   hosts: amqp
   vars:
     rabbitmq_ssl: no
-    rabbitmq_conf_tcp_listeners_address: '{{ ansible_eth1.ipv4.address }}'
+    rabbitmq_conf_tcp_listeners_address: '{{ private_interface.ipv4.address }}'
     rabbitmq_vhost_definitions:
       - name: '{{ app_amqp_vhost }}'
     rabbitmq_users_definitions:

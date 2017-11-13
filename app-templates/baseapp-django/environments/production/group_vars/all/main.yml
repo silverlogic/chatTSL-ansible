@@ -2,6 +2,10 @@
 # App
 app_version: 'production'
 
+# Networking
+private_interface: '{{ ansible_eth1 }}'
+private_interface_name: 'eth1'
+
 # Services
 app_aws_access_key_id: '{{ vault_app_aws_access_key_id }}'
 app_aws_secret_access_key: '{{ vault_app_aws_secret_access_key }}'

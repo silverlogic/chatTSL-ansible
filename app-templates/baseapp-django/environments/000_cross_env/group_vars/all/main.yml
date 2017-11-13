@@ -7,16 +7,19 @@ app_domain: 'TODO' # eg. {{ api_domain }}
 app_use_ssl: true
 app_url: '{{ app_use_ssl | ternary("https", "http") }}://{{ app_domain }}'
 
+# Networking
+private_interface_ansible_name: 'ansible_{{ private_interface_name }}'
+
 # Services
 app_aws_storage_bucket_name: '{{ project_full_name }}-{{ app_name }}-{{ env }}'
 
 # Database
-app_db_host: "{{ hostvars[groups['db'][0]].ansible_eth1.ipv4.address }}"
+app_db_host: "{{ hostvars[groups['db'][0]][private_interface_ansible_name].ipv4.address }}"
 app_db_name: '{{ app_name }}'
 app_db_user: '{{ app_name }}'
 
 # AMQP
-app_amqp_host: "{{ hostvars[groups['amqp'][0]].ansible_eth1.ipv4.address }}"
+app_amqp_host: "{{ hostvars[groups['amqp'][0]][private_interface_ansible_name].ipv4.address }}"
 app_amqp_vhost: '{{ app_name }}'
 app_amqp_user: '{{ app_name }}'
 

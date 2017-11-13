@@ -1,7 +1,7 @@
 upstream app {
     {% for host_name in groups['web'] %}
     {% set host = hostvars[host_name] %}
-    server {{ host.ansible_eth1.ipv4.address }}:80;
+    server {{ host[private_interface_ansible_name].ipv4.address }}:80;
     {% endfor %}
 }
 

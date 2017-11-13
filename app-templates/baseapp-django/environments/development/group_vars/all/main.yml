@@ -3,6 +3,10 @@
 app_version: 'N/A'
 app_use_ssl: false
 
+# Networking
+private_interface: '{{ ansible_eth1 }}'
+private_interface_name: 'eth1'
+
 # Services
 app_aws_access_key_id: 'N/A'
 app_aws_secret_access_key: 'N/A'
