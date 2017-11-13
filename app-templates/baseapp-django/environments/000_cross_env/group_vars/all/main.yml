@@ -4,6 +4,7 @@ app_name: 'TODO' # eg. api
 app_user: '{{ app_name }}'
 app_repo: 'TODO' # the bitbucket repo
 app_domain: 'TODO' # eg. {{ api_domain }}
+app_worker_monitor_domain: 'worker-monitor.{{ project_domain }}'
 app_use_ssl: true
 app_url: '{{ app_use_ssl | ternary("https", "http") }}://{{ app_domain }}'
 
@@ -62,6 +63,11 @@ app_web_conf_env: '{{ app_django_conf_env | combine(app_web_base_conf_env) }}'
 # Worker
 app_worker_base_conf_env: {}
 app_worker_conf_env: '{{ app_django_conf_env | combine(app_worker_base_conf_env) }}'
+
+# Worker Monitor
+app_worker_monitor_username: 'admin'
+app_worker_monitor_base_conf_env: {}
+app_worker_monitor_conf_env: '{{ app_django_conf_env | combine(app_worker_monitor_base_conf_env) }}'
 
 # Scheduler
 app_scheduler_base_conf_env: {}

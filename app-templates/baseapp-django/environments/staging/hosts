@@ -8,4 +8,6 @@
 
 [worker]
 
+[worker-monitor]
+
 [scheduler]

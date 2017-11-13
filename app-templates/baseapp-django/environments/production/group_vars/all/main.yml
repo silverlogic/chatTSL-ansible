@@ -28,3 +28,6 @@ app_django_requirements_txt: 'requirements/live.txt'
 app_django_superuser_password: '{{ vault_app_django_superuser_password }}'
 app_django_settings_module: 'settings.live'
 app_django_secret_key: '{{ vault_app_django_secret_key }}'
+
+# Worker Monitor
+app_worker_monitor_password: '{{ vault_app_worker_monitor_password }}'

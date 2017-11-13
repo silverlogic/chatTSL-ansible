@@ -33,3 +33,6 @@ app_django_secret_key: '1234'
 ## Django Gunicorn
 django_gunicorn_dev_reload: true
 django_gunicorn_workers: 1
+
+# Worker Monitor
+app_worker_monitor_password: '1234'

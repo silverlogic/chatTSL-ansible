@@ -4,4 +4,5 @@
 - include: 'config_load_balancer.yml'
 - include: 'config_web.yml'
 - include: 'config_worker.yml'
+- include: 'config_worker_monitor.yml'
 - include: 'config_scheduler.yml'
