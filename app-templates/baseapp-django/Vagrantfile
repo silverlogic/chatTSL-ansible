@@ -14,6 +14,8 @@ CONFIG = {
   db_ip: 'TODO',
   amqp_ip: 'TODO',
   web_ip: 'TODO',
+  worker_ip: 'TODO',
+  scheduler_ip: 'TODO',
   project_full_name: project_config['project_full_name'],
   app_name: app_config['app_name']
 }
@@ -72,6 +74,54 @@ Vagrant.configure("2") do |config|
 
     machine.vm.provision "ansible" do |ansible|
       ansible.playbook = File.join(ANSIBLE_PATH, 'config_web.yml')
+      ansible.inventory_path = './environments/development'
+      ansible.extra_vars = {
+          'app_db_host': CONFIG[:db_ip],
+          'app_amqp_host': CONFIG[:amqp_ip],
+      }
+      ansible.become = true
+      ansible.become_user = 'root'
+    end
+
+    machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv*/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
+  end
+
+  config.vm.define "worker" do |machine|
+    machine.vm.hostname = "#{CONFIG[:app_name]}-worker"
+    machine.vm.network "private_network", ip: CONFIG[:worker_ip]
+    machine.vm.synced_folder CONFIG[:code_path], "/opt/#{CONFIG[:app_name]}/site"
+
+    machine.vm.provider "virtualbox" do |v|
+      v.name = "#{CONFIG[:project_full_name]}-#{machine.vm.hostname}"
+      v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
+    end
+
+    machine.vm.provision "ansible" do |ansible|
+      ansible.playbook = File.join(ANSIBLE_PATH, 'config_worker.yml')
+      ansible.inventory_path = './environments/development'
+      ansible.extra_vars = {
+          'app_db_host': CONFIG[:db_ip],
+          'app_amqp_host': CONFIG[:amqp_ip],
+      }
+      ansible.become = true
+      ansible.become_user = 'root'
+    end
+
+    machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv*/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
+  end
+
+  config.vm.define "scheduler" do |machine|
+    machine.vm.hostname = "#{CONFIG[:app_name]}-scheduler"
+    machine.vm.network "private_network", ip: CONFIG[:scheduler_ip]
+    machine.vm.synced_folder CONFIG[:code_path], "/opt/#{CONFIG[:app_name]}/site"
+
+    machine.vm.provider "virtualbox" do |v|
+      v.name = "#{CONFIG[:project_full_name]}-#{machine.vm.hostname}"
+      v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
+    end
+
+    machine.vm.provision "ansible" do |ansible|
+      ansible.playbook = File.join(ANSIBLE_PATH, 'config_scheduler.yml')
       ansible.inventory_path = './environments/development'
       ansible.extra_vars = {
           'app_db_host': CONFIG[:db_ip],
