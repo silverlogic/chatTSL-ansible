@@ -1,0 +1,15 @@
+[Unit]
+Description=Flower - Celery Monitoring
+After=network.target
+
+[Service]
+EnvironmentFile={{ flower_service_env_file }}
+WorkingDirectory={{ flower_dest }}
+ExecStart={{ flower_virtualenv }}/bin/celery flower \
+    --app {{ flower_app }} \
+    --basic_auth="{{ flower_username }}:{{ flower_password }}"
+Restart=always
+RestartSec=500ms
+
+[Install]
+WantedBy=multi-user.target

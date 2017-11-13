@@ -1,0 +1,29 @@
+---
+flower_user: 'flower'
+flower_group: 'flower'
+flower_home: '/opt/{{ flower_user }}'
+# flower_repo: ''
+# flower_branch: ''
+# flower_use_git_clone: yes
+flower_ssh_key: '{{ flower_home }}/id_rsa'
+flower_ssh_key_src: 'files/ssh/id_rsa'
+flower_dest: '{{ flower_home }}/site'
+
+# python / virtualenv
+flower_python: '{{ python_exec }}'
+flower_virtualenv: '{{ flower_home }}/venv-{{ python_version }}'
+flower_virtualenv_command: '{{ python_venv_exec }}'
+flower_requirements_txt: 'requirements/flower.txt'
+
+# environment variable configs
+flower_conf_env: {}
+
+# service
+flower_service: '{{ flower_user }}'
+flower_service_file: '/etc/systemd/system/{{ flower_service }}.service'
+flower_service_env_file: '/etc/opt/{{ flower_user }}/{{ flower_user }}.env'
+
+# flower configs
+flower_app: 'apps'
+# flower_username: ''
+# flower_password: ''

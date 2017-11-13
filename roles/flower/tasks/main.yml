@@ -1,0 +1,85 @@
+---
+- name: install packages
+  apt: name={{ item }} state=present update_cache=yes cache_valid_time={{ 60*60*24 }}
+  with_items:
+    - 'libjpeg-dev'
+    - 'libpq-dev'
+    - 'gdal-bin'
+
+- name: create flower group
+  group:
+    name: '{{ flower_group }}'
+    state: 'present'
+
+- name: create flower user
+  user:
+    name: '{{ flower_user }}'
+    group: '{{ flower_group }}'
+    home: '{{ flower_home }}'
+    state: 'present'
+
+- name: ensure home directory permissions
+  file:
+    path: '{{ flower_home }}'
+    owner: '{{ flower_user }}'
+    group: '{{ flower_group }}'
+    state: 'directory'
+
+- block:
+  - name: get ssh key
+    copy:
+      src: '{{ flower_ssh_key_src }}'
+      dest: '{{ flower_ssh_key }}'
+      mode: 0600
+    when: flower_use_git_clone
+
+  - name: clone flower repo
+    git:
+      repo: '{{ flower_repo }}'
+      version: '{{ flower_branch }}'
+      dest: '{{ flower_dest }}'
+      key_file: '{{ flower_ssh_key }}'
+      accept_hostkey: yes
+      force: yes
+    notify:
+      - restart flower
+    when: flower_use_git_clone
+
+  - name: create virtualenv
+    pip:
+      virtualenv: '{{ flower_virtualenv }}'
+      virtualenv_command: '{{ flower_virtualenv_command }}'
+      virtualenv_python: '{{ flower_python }}'
+      requirements: '{{ flower_dest }}/{{ flower_requirements_txt }}'
+    notify:
+      - restart flower
+
+  become: yes
+  become_user: '{{ flower_user }}'
+
+- name: create flower service file
+  template:
+    src: 'flower.service.j2'
+    dest: '{{ flower_service_file }}'
+    mode: 0644
+  notify:
+    - restart flower
+
+- name: create config directory
+  file:
+    path: '{{ flower_service_env_file|dirname }}'
+    state: 'directory'
+
+- name: create flower service environment file
+  template:
+    src: 'flower.service.env.j2'
+    dest: '{{ flower_service_env_file }}'
+    mode: 0644
+  notify:
+    - restart flower
+
+- name: ensure service files are up to date
+  shell: systemctl daemon-reload
+
+- name: ensure flower service is started & enabled
+  service: name={{ flower_service }} state=started enabled=yes
