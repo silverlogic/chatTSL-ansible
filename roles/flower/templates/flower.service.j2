@@ -6,7 +6,9 @@ After=network.target
 EnvironmentFile={{ flower_service_env_file }}
 WorkingDirectory={{ flower_dest }}
 ExecStart={{ flower_virtualenv }}/bin/celery flower \
-    --app {{ flower_app }} \
+    --app={{ flower_app }} \
+    --persistent=True \
+    --db={{ flower_home }}/flowerdb \
     --basic_auth="{{ flower_username }}:{{ flower_password }}"
 Restart=always
 RestartSec=500ms
