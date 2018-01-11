@@ -1,0 +1,11 @@
+- name: remove old bower_components
+  file:
+    path: '{{ nodeapp_dest }}/bower_components'
+    state: absent
+
+- name: yarn install
+  shell: yarn install
+  args:
+    chdir: '{{ nodeapp_dest }}'
+  notify:
+    - restart nodeapp

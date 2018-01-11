@@ -6,11 +6,7 @@
     - libjpeg-dev
     - libgif-dev
 
-- name: install global npm packages
-  npm: name={{ item }} global=yes
-  with_items:
-    - bower
-    - gulp
+- include: 'install-{{ nodeapp_package_manager }}.yml'
 
 - name: create user
   user:
@@ -41,25 +37,8 @@
     notify:
       - restart nodeapp
 
-  - name: npm install
-    npm: path={{ nodeapp_dest }}
-    notify:
-      - restart nodeapp
-
-  - name: npm update
-    npm: path={{ nodeapp_dest }} state=latest
-    notify:
-      - restart nodeapp
-
-  - name: bower install
-    bower: path={{ nodeapp_dest }}
-    notify:
-      - restart nodeapp
-
-  - name: bower update
-    bower: path={{ nodeapp_dest }} state=latest
-    notify:
-      - restart nodeapp
+  - name: install dependencies
+    include: 'install-deps-{{ nodeapp_package_manager }}.yml'
 
   - name: create settings.js
     template:

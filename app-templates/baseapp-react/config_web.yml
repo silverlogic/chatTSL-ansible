@@ -15,6 +15,7 @@
     nodeapp_use_git_clone: '{{ is_live_env }}'
     nodeapp_repo: '{{ app_repo }}'
     nodeapp_branch: '{{ app_version }}'
+    nodeapp_package_manager: 'yarn'
     nodeapp_conf_env: '{{ app_conf_env }}'
   roles:
     - { role: sudo, tags: [ server ] }

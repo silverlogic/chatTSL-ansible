@@ -1,0 +1,20 @@
+- name: npm install
+  npm: path={{ nodeapp_dest }}
+  notify:
+    - restart nodeapp
+
+- name: npm update
+  npm: path={{ nodeapp_dest }} state=latest
+  notify:
+    - restart nodeapp
+
+- name: bower install
+  bower: path={{ nodeapp_dest }}
+  notify:
+    - restart nodeapp
+
+- name: bower update
+  bower: path={{ nodeapp_dest }} state=latest
+  notify:
+    - restart nodeapp
+
