@@ -8,8 +8,8 @@
   version: 1.4.0
 
 - name: sshd
-  src: willshersystems.sshd
-  version: 0.5.1
+  src: silverlogic.sshd
+  version: 0.6
 
 - name: swapfile
   src: https://github.com/Oefenweb/ansible-swapfile

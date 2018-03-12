@@ -50,6 +50,7 @@
         source venv/bin/activate
         cd "apps/<TODO:app_name>"
         export ANSIBLE_HOST_KEY_CHECKING=False
+        eval $(ssh-agent)
         ansible-playbook config_all.yml -i environments/staging -t deploy -e "app_version=@option.version@" --vault-password-file="../../vault-password"
       scriptInterpreter: bash
     - description: Clean up playbooks
