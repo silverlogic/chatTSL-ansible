@@ -79,8 +79,6 @@
       virtualenv: '{{ django_virtualenv }}'
     when: inventory_hostname == ansible_play_hosts[0]
     environment: '{{ django_conf_env }}'
-    register: result
-    changed_when: "'0 static files' not in result.out"
 
   - name: migrate database (manage.py migrate)
     django_manage:
