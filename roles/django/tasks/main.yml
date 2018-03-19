@@ -40,7 +40,7 @@
     when: django_use_git_clone
 
   - name: run pre-clone hook
-    include: '{{ django_pre_clone_hook }}'
+    include_tasks: '{{ django_pre_clone_hook }}'
     when: django_pre_clone_hook != ''
 
   - name: clone django repo
@@ -56,7 +56,7 @@
     when: django_use_git_clone
 
   - name: run post-clone hook
-    include: '{{ django_post_clone_hook }}'
+    include_tasks: '{{ django_post_clone_hook }}'
     when: django_post_clone_hook != ''
 
   - name: create virtualenv
@@ -69,7 +69,7 @@
       - restart django
 
   - name: run post-virtualenv hook
-    include: '{{ django_post_virtualenv_hook }}'
+    include_tasks: '{{ django_post_virtualenv_hook }}'
     when: django_post_virtualenv_hook != ''
 
   - name: collect static files (manage.py collectstatic)
@@ -91,7 +91,7 @@
       - restart django
 
   - name: run post-migrate hook
-    include: '{{ django_post_migrate_hook }}'
+    include_tasks: '{{ django_post_migrate_hook }}'
     when: django_post_migrate_hook != ''
 
   - name: create superuser

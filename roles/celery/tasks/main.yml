@@ -34,7 +34,7 @@
     when: celery_use_git_clone
 
   - name: run pre-clone hook
-    include: '{{ celery_pre_clone_hook }}'
+    include_tasks: '{{ celery_pre_clone_hook }}'
     when: celery_pre_clone_hook != ''
 
   - name: clone celery repo
@@ -50,7 +50,7 @@
     when: celery_use_git_clone
 
   - name: run post-clone hook
-    include: '{{ celery_post_clone_hook }}'
+    include_tasks: '{{ celery_post_clone_hook }}'
     when: celery_post_clone_hook != ''
 
   - name: create virtualenv
@@ -63,7 +63,7 @@
       - restart celery
 
   - name: run post-virtualenv hook
-    include: '{{ celery_post_virtualenv_hook }}'
+    include_tasks: '{{ celery_post_virtualenv_hook }}'
     when: celery_post_virtualenv_hook != ''
 
   become: yes

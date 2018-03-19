@@ -6,7 +6,7 @@
     - libjpeg-dev
     - libgif-dev
 
-- include: 'install-{{ nodeapp_package_manager }}.yml'
+- include_tasks: 'install-{{ nodeapp_package_manager }}.yml'
 
 - name: create user
   user:
@@ -38,7 +38,7 @@
       - restart nodeapp
 
   - name: install dependencies
-    include: 'install-deps-{{ nodeapp_package_manager }}.yml'
+    include_tasks: 'install-deps-{{ nodeapp_package_manager }}.yml'
 
   - name: create settings.js
     template:

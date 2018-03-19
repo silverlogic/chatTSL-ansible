@@ -5,7 +5,7 @@
   register: p
 
 - name: install wp-cli if needed
-  include: install.yml
+  include_tasks: install.yml
   when: not p.stat.exists
 
 - name: get current wp-cli version
@@ -13,5 +13,5 @@
   register: out
 
 - name: upgrade wp-cli if needed
-  include: upgrade.yml
+  include_tasks: upgrade.yml
   when: (out.stdout | regex_replace('^WP-CLI ', '')) != wp_cli_version

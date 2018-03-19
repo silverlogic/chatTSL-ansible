@@ -1,5 +1,5 @@
 ---
-- include: 'install-{{ ansible_os_family }}.yml'
+- include_tasks: 'install-{{ ansible_os_family }}.yml'
 
 - name: start fail2ban and enable on boot
   service: name=fail2ban state=started enabled=yes

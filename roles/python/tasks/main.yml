@@ -5,7 +5,7 @@
   register: p
 
 - name: install python
-  include: install.yml
+  include_tasks: install.yml
   when: not p.stat.exists
 
 - name: check if pip is installed
@@ -13,7 +13,7 @@
   register: p
 
 - name: install pip
-  include: install_pip.yml
+  include_tasks: install_pip.yml
   when: not p.stat.exists
 
 - name: check if virtualenv is installed

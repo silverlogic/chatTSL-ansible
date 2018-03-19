@@ -3,4 +3,4 @@
 - name: remove old wp cli executable
   file: path={{ wp_cli_bin_path }} state=absent
 
-- include: install.yml
+- include_tasks: install.yml

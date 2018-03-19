@@ -1,2 +1,2 @@
 ---
-- include: 'config_web.yml'
+- import_playbook: 'config_web.yml'
