@@ -7,6 +7,7 @@
     # For live servers
     letsencrypt_cert_domains:
       - '{{ app_domain }}'
+      - 'www.{{ app_domain }}'
 
     nginx_sites: '{{ app_nginx_sites }}'
 

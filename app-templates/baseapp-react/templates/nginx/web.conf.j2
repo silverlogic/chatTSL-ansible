@@ -41,7 +41,7 @@ server {
 
 {% if app_use_ssl %}
 server {
-    server_name {{ app_domain }};
+    server_name {{ app_domain }} www.{{ app_domain }};
     listen 80;
 
     location / {
@@ -55,5 +55,19 @@ server {
     location = /.well-known/acme-challenge/ {
         return 404;
     }
+}
+
+server {
+    server_name www.{{ app_domain }};
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
+    return 301 https://{{ app_domain }}$request_uri;
+}
+{% else %}
+server {
+    server_name www.{{ app_domain }};
+    listen 80
+    return 301 http://{{ app_domain }}$request_uri;
 }
 {% endif %}
