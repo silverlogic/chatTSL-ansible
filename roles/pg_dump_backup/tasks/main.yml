@@ -1,0 +1,16 @@
+---
+- name: install python / pip
+  apt: name=python-pip update_cache=yes cache_valid_time={{ 60 * 60 * 24 }}
+
+- name: install aws cli
+  pip: name=awscli
+
+- name: create backup script directory
+  file:
+    path: '/opt/pg_dump_backup'
+    state: 'directory'
+    mode: '0700'
+
+- include_tasks: profile.yml
+  loop: '{{ pg_dump_backup_profiles }}'
+

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+export PATH=/usr/local/bin:/usr/bin:/bin
+export AWS_ACCESS_KEY_ID='{{ pg_dump_backup_aws_access_key_id }}'
+export AWS_SECRET_ACCESS_KEY='{{ pg_dump_backup_aws_secret_access_key }}'
+BUCKET='{{ pg_dump_backup_aws_s3_bucket }}'
+BUCKET_PREFIX='{{ item.s3_bucket_prefix }}'
+DATABASE='{{ pg_dump_backup_database_name }}'
+DATETIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+PROFILE_NAME='{{ item.name }}'
+DIR="/tmp/pg-dump-backup/$PROFILE_NAME"
+FILE="$DIR/${DATABASE}_$DATETIME.tar.gz"
+
+mkdir -p "$DIR"
+sudo -u postgres pg_dump --format=t "$DATABASE" | gzip > "$FILE"
+aws s3 cp "$FILE" "s3://${BUCKET}/${BUCKET_PREFIX}${DATETIME}.tar.gz" --sse --storage-class "STANDARD_IA"
+rm "$FILE"

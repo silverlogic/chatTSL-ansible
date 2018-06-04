@@ -1,0 +1,6 @@
+---
+pg_dump_backup_aws_access_key_id: ''
+pg_dump_backup_aws_secret_access_key: ''
+pg_dump_backup_aws_s3_bucket: ''
+pg_dump_backup_database_name: ''
+pg_dump_backup_profiles: []

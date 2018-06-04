@@ -1,0 +1,15 @@
+- name: create backup script for profile {{ item.name }}
+  template:
+    src: 'backup.sh.j2'
+    dest: '/opt/pg_dump_backup/{{ item.name }}-backup.sh'
+    mode: '0700'
+
+- name: create backup cron job for profile {{ item.name }}
+  cron:
+    name: 'pg-dump-backup-{{ item.name }}'
+    minute: '{{ item.schedule_minute }}'
+    hour: '{{ item.schedule_hour }}'
+    day: '{{ item.schedule_day }}'
+    month: '{{ item.schedule_month }}'
+    weekday: '{{ item.schedule_weekday }}'
+    job: '/opt/pg_dump_backup/{{ item.name }}-backup.sh'
