@@ -4,4 +4,5 @@ pg_dump_backup_aws_secret_access_key: ''
 pg_dump_backup_aws_s3_bucket: ''
 pg_dump_backup_database_name: ''
 pg_dump_backup_tmp_dir: '/tmp'
+pg_dump_backup_extra_args: ''
 pg_dump_backup_profiles: []

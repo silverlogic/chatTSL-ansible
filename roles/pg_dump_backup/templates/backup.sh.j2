@@ -12,6 +12,6 @@ DIR="{{ pg_dump_backup_tmp_dir }}/pg-dump-backup/$PROFILE_NAME"
 FILE="$DIR/${DATABASE}_$DATETIME.tar.gz"
 
 mkdir -p "$DIR"
-sudo -u postgres pg_dump --format=t "$DATABASE" | gzip > "$FILE"
+sudo -u postgres pg_dump --format=t {{ pg_dump_backup_extra_args }} "$DATABASE" | gzip > "$FILE"
 aws s3 cp "$FILE" "s3://${BUCKET}/${BUCKET_PREFIX}${DATETIME}.tar.gz" --sse --storage-class "STANDARD_IA"
 rm "$FILE"
