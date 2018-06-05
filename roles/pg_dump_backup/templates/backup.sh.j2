@@ -8,7 +8,7 @@ BUCKET_PREFIX='{{ item.s3_bucket_prefix }}'
 DATABASE='{{ pg_dump_backup_database_name }}'
 DATETIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 PROFILE_NAME='{{ item.name }}'
-DIR="/tmp/pg-dump-backup/$PROFILE_NAME"
+DIR="{{ pg_dump_backup_tmp_dir }}/pg-dump-backup/$PROFILE_NAME"
 FILE="$DIR/${DATABASE}_$DATETIME.tar.gz"
 
 mkdir -p "$DIR"
