@@ -31,7 +31,7 @@
 
 - name: php
   src: geerlingguy.php
-  version: 3.4.5
+  version: 3.6.0
 
 # Services
 - name: mysql
