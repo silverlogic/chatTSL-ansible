@@ -17,8 +17,8 @@
 
 # Monitoring
 - name: newrelic-infrastructure
-  src: https://github.com/silverlogic/infrastructure-agent-ansible.git
-  version: 0319bf594347367861c068ec18b0433c22a3fe6f
+  src: newrelic.newrelic-infra
+  version: 0.4.0
 
 # Languages
 - name: java
