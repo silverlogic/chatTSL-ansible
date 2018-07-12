@@ -28,15 +28,14 @@
         reqtxt_checksum="$(sha256sum requirements.txt | awk '{print $1}')"
         if [ -d "../venv-cache/$reqtxt_checksum" ]; then
           echo "found virtual environment cache"
-          cp -r ../venv-cache/$reqtxt_checksum/ venv
         else
-          virtualenv -p /usr/bin/python venv
-          source venv/bin/activate
+          echo "creating virtual environment cache"
+          virtualenv -p /usr/bin/python ../venv-cache/$reqtxt_checksum
+          source ../venv-cache/$reqtxt_checksum/bin/activate
           pip install -U pip setuptools
           pip install -r requirements.txt
-          echo "creating virtual environment cache"
-          cp -r venv ../venv-cache/$reqtxt_checksum/
         fi
+        ln -s ../venv-cache/$reqtxt_checksum venv
       scriptInterpreter: bash
     - description: Install playbook requirements.yml
       interpreterArgsQuoted: false
