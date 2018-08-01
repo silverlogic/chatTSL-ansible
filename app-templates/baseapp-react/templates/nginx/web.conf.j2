@@ -67,7 +67,7 @@ server {
 {% else %}
 server {
     server_name www.{{ app_domain }};
-    listen 80
+    listen 80;
     return 301 http://{{ app_domain }}$request_uri;
 }
 {% endif %}
