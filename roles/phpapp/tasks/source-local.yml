@@ -1,0 +1,8 @@
+- block:
+  - name: install php dependencies
+    composer:
+      command: 'install'
+      working_dir: '{{ phpapp_dest }}'
+
+  become: yes
+  become_user: '{{ phpapp_user }}'

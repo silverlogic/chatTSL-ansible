@@ -1,0 +1,23 @@
+- block:
+  - name: get ssh key
+    copy:
+      src: '{{ phpapp_git_ssh_key_src }}'
+      dest: '{{ phpapp_git_ssh_key }}'
+      mode: 0600
+
+  - name: clone git repo
+    git:
+      repo: '{{ phpapp_git_repo }}'
+      version: '{{ phpapp_version }}'
+      dest: '{{ phpapp_dest }}'
+      key_file: '{{ phpapp_git_ssh_key }}'
+      accept_hostkey: yes
+      force: yes
+
+  - name: install php dependencies
+    composer:
+      command: 'install'
+      working_dir: '{{ phpapp_dest }}'
+
+  become: yes
+  become_user: '{{ phpapp_user }}'

@@ -1,0 +1,17 @@
+---
+phpapp_project_name: 'phpapp'
+phpapp_app_name: 'phpapp'
+phpapp_user: '{{ phpapp_app_name }}'
+phpapp_group: 'www-data'
+phpapp_home: '/opt/{{ phpapp_project_name }}/{{ phpapp_app_name }}'
+phpapp_dest: '{{ phpapp_home }}/site'
+phpapp_wwwroot: '{{ phpapp_home }}/site/public'
+
+phpapp_source: 'local' # local, git
+phpapp_version: ''
+phpapp_git_repo: ''
+phpapp_git_ssh_key: '{{ phpapp_home }}/id_rsa'
+phpapp_git_ssh_key_src: 'files/ssh/id_rsa'
+
+# environment variable configs
+phpapp_conf_env: {}

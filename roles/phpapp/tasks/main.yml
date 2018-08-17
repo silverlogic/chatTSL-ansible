@@ -1,0 +1,39 @@
+---
+- name: install system packages
+  apt: name=curl state=present update_cache=yes cache_valid_time={{ 60*60*24 }}
+
+- name: create project directory
+  file:
+    path: '/opt/{{ phpapp_project_name }}'
+    state: 'directory'
+
+- name: create phpapp group
+  group:
+    name: '{{ phpapp_group }}'
+    state: 'present'
+
+- name: create phpapp user
+  user:
+    name: '{{ phpapp_user }}'
+    group: '{{ phpapp_group }}'
+    home: '{{ phpapp_home }}'
+    state: 'present'
+
+- name: ensure home directory permissions
+  file:
+    path: '{{ phpapp_home }}'
+    owner: '{{ phpapp_user }}'
+    group: '{{ phpapp_group }}'
+    state: 'directory'
+
+- include: 'source-{{ phpapp_source }}.yml'
+
+- block:
+  - name: create .env
+    template:
+      src: 'env.j2'
+      dest: '{{ phpapp_dest }}/.env'
+
+
+  become: yes
+  become_user: '{{ phpapp_user }}'
