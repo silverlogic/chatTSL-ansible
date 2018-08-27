@@ -1,0 +1,12 @@
+# App
+app_source: 'local'
+app_version: 'N/A'
+app_use_ssl: false
+
+# Networking
+private_interface: '{{ ansible_eth1 }}'
+private_interface_name: 'eth1'
+
+# Conf env
+app_environment: 'development'
+app_db_password: '1234'
