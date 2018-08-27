@@ -1,0 +1,34 @@
+app_name: 'TODO'
+app_user: '{{ app_name }}'
+app_git_repo: 'TODO'
+app_domain: 'TODO'
+app_use_ssl: true
+app_url: '{{ app_use_ssl | ternary("https", "http") }}://{{ app_domain }}'
+
+# Networking
+private_interface_ansible_name: 'ansible_{{ private_interface_name }}'
+
+# Database
+app_db_host: "{{ hostvars[groups['db'][0]]['ansible_' + private_interface_name].ipv4.address }}"
+app_db_user: '{{ app_name }}'
+app_db_name: '{{ app_name }}'
+
+# PHP App
+app_conf_env:
+  BASE_URL: '{{ app_url }}'
+  DATABASE_HOST: '{{ app_db_host }}'
+  DATABASE_NAME: '{{ app_db_name }}'
+  DATABASE_USERNAME: '{{ app_db_user }}'
+  DATABASE_PASSWORD: '{{ app_db_password }}'
+
+# Load balancer
+app_is_load_balanced: "{{ groups['load-balancer'] | default([]) | length | bool }}"
+app_load_balancer_nginx_sites:
+  load_balancer:
+    template: 'nginx/load-balancer.conf.j2'
+
+# Web
+app_web_use_ssl: '{{ app_use_ssl and not app_is_load_balanced }}'
+app_web_nginx_sites:
+  app:
+    template: 'nginx/web.conf.j2'
