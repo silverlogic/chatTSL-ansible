@@ -34,6 +34,8 @@ server {
     }
 
     location /static {
+        expires 14d;
+        add_header Cache-Control "public";
         alias {{ nodeapp_home }}/www/static;
     }
 
