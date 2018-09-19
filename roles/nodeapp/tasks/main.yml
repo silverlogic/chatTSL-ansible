@@ -40,10 +40,15 @@
   - name: install dependencies
     include_tasks: 'install-deps-{{ nodeapp_package_manager }}.yml'
 
-  - name: create settings.js
+  - name: remove deprecated settings.js
+    file:
+      path: '{{ nodeapp_dest }}/config/settings.js'
+      state: absent
+
+  - name: create settings.json
     template:
-      src: settings.js.j2
-      dest: '{{ nodeapp_dest }}/config/settings.js'
+      src: settings.json.j2
+      dest: '{{ nodeapp_dest }}/config/settings.json'
       mode: 0644
     notify:
       - restart nodeapp

@@ -11,7 +11,7 @@ nodeapp_dest: '{{ nodeapp_home }}/site'
 # package management
 nodeapp_package_manager: 'npm'  # or yarn
 
-# settings.js configs
+# settings.json configs
 nodeapp_conf_env: {}
 
 # service
