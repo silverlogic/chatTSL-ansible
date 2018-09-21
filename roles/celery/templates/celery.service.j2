@@ -9,6 +9,7 @@ ExecStart={{ celery_virtualenv }}/bin/celery worker \
     --app {{ celery_app }} \
     --uid {{ celery_user }} \
     --gid {{ celery_group }} \
+    {% if celery_queues %}--queues {{ celery_queues }} {% endif %} \
     --concurrency {{ celery_concurrency }} \
     --loglevel {{ celery_log_level }}
 Restart=always

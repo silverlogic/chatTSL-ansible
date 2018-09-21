@@ -25,6 +25,7 @@ celery_service_env_file: '/etc/opt/{{ celery_user }}/{{ celery_user }}.env'
 
 # worker configs
 celery_app: 'apps'
+celery_queues: ''
 celery_concurrency: '{{ ansible_processor_cores }}'
 celery_log_level: info
 
