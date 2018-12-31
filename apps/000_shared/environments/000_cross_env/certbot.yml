@@ -1,0 +1,4 @@
+certbot_create_if_missing: true
+certbot_admin_email: 'ops+{{ project_code_name }}@tsl.io'
+certbot_create_standalone_stop_services: []
+certbot_auto_renew_options: '--quiet --no-self-upgrade --renew-hook "systemctl reload nginx" --http-01-port=8888'
