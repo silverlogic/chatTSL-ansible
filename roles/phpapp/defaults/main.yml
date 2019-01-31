@@ -13,5 +13,8 @@ phpapp_git_repo: ''
 phpapp_git_ssh_key: '{{ phpapp_home }}/id_rsa'
 phpapp_git_ssh_key_src: 'files/ssh/id_rsa'
 
+# Composer
+phpapp_composer_install: true
+
 # environment variable configs
 phpapp_conf_env: {}

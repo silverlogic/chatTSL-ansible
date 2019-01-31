@@ -18,6 +18,7 @@
     composer:
       command: 'install'
       working_dir: '{{ phpapp_dest }}'
+    when: phpapp_composer_install
 
   become: yes
   become_user: '{{ phpapp_user }}'
