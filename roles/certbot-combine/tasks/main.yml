@@ -1,0 +1,10 @@
+- name: create certbot-combine directory
+  file: path={{ certbot_combine_dir }} state=directory
+
+- name: create certbot-combine script
+  template:
+    src: '{{ certbot_combine_script_template }}'
+    dest: '{{ certbot_combine_script }}'
+    mode: 0755
+  notify:
+    - run certbot-combine

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Concatenate files
+{% for certbot_cert in certbot_certs %}
+{% with domain = certbot_cert.domains.0 %}
+bash -c "cat /etc/letsencrypt/live/{{ domain }}/fullchain.pem /etc/letsencrypt/live/{{ domain }}/privkey.pem > /etc/letsencrypt/live/{{ domain }}/fullchain-privkey.pem"
+{% endwith %}
+{% endfor %}

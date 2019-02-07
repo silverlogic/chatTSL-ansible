@@ -1,0 +1,3 @@
+certbot_combine_dir: '/opt/certbot-combine/'
+certbot_combine_script: '/opt/certbot-combine/certbot-combine.sh'
+certbot_combine_script_template: 'certbot-combine.sh.j2'
