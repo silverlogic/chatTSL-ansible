@@ -1,0 +1,6 @@
+- name: Update PS1
+  lineinfile:
+    path: '/etc/bash.bashrc'
+    line: 'PS1=''${debian_chroot:+($debian_chroot)}\u@$(hostname -f):\w\$ '''
+    regexp: 'PS1='
+    state: present
