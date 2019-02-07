@@ -1,0 +1,16 @@
+haproxy_package: 'haproxy'
+haproxy_service: 'haproxy'
+haproxy_user: 'haproxy'
+haproxy_group: 'haproxy'
+
+# Config
+haproxy_config_dir: '/etc/haproxy'
+haproxy_errorfile_dir: '/etc/haproxy/errors'
+haproxy_config_base_template: 'haproxy.cfg.j2'
+haproxy_config_global_template: 'haproxy-global.cfg.j2'
+haproxy_config_defaults_template: 'haproxy-defaults.cfg.j2'
+haproxy_config_app_template: 'templates/haproxy-app.cfg.j2'
+
+## Config global
+haproxy_stats_socket: '/run/haproxy/admin.sock'
+haproxy_stats_timeout: '30s'

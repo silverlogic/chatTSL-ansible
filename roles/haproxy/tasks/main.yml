@@ -1,0 +1,9 @@
+- name: install haproxy
+  package: name=haproxy state=present
+
+- name: create haproxy configuration
+  template:
+    src: '{{ haproxy_config_base_template }}'
+    dest: '{{ haproxy_config_dir }}/haproxy.cfg'
+  notify:
+    - restart haproxy
