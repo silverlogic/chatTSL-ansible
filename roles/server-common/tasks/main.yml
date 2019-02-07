@@ -1,0 +1,34 @@
+- import_role:
+    name: sudo
+  tags:
+    - sudo
+
+- import_role:
+    name: rsyslog
+  tags:
+    - rsyslog
+
+- import_role:
+    name: locales
+  tags:
+    - locales
+
+- import_role:
+    name: sshd
+  tags:
+    - sshd
+
+- import_role:
+    name: fail2ban
+  tags:
+    - fail2ban
+
+- import_role:
+    name: ntp
+  tags:
+    - ntp
+
+- import_role:
+    name: bashrc
+  tags:
+    - bashrc
