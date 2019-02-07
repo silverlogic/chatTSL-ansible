@@ -15,13 +15,7 @@
         tags:
           - 'monitoring'
   roles:
-    - { role: sudo, tags: [ server ] }
-    - { role: locales, tags: [ server ] }
-    - { role: sshd, tags: [ server ] }
-    - { role: fail2ban, tags: [ server ] }
-    - { role: ntp, tags: [ server ] }
-
-    - { role: newrelic-infrastructure, tags: [ monitoring ], when: is_live_env }
-    - { role: loggly, tags: [ monitoring ], when: is_live_env }
+    - { role: server-common, tags: [ server ] }
+    - { role: monitoring-common, tags: [ monitoring ] }
 
     - { role: rabbitmq, tags: [ app ] }

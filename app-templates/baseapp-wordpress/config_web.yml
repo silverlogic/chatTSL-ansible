@@ -60,13 +60,8 @@
     wordpress_logged_in_salt: '{{ app_logged_in_salt }}'
     wordpress_nonce_salt: '{{ app_nonce_salt }}'
   roles:
-    - { role: sudo, tags: [ server ] }
-    - { role: sshd, tags: [ server ] }
-    - { role: fail2ban, tags: [ server ] }
-    - { role: ntp, tags: [ server ] }
-
-    - { role: newrelic-infrastructure, tags: [ monitoring ], when: is_live_env }
-    - { role: loggly, tags: [ monitoring ], when: is_live_env }
+    - { role: server-common, tags: [ server ] }
+    - { role: monitoring-common, tags: [ monitoring ] }
 
     - { role: git, tags: [ app ] }
     - { role: letsencrypt, tags: [ app ], when: is_live_env and app_use_ssl }

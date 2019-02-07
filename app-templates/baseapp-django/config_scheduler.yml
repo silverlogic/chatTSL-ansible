@@ -13,15 +13,10 @@
     celery_beat_requirements_txt: '{{ app_django_requirements_txt }}'
     celery_beat_conf_env: '{{ app_scheduler_conf_env }}'
   roles:
-    - { role: sudo, tags: [ server ] }
-    - { role: locales, tags: [ server ] }
-    - { role: sshd, tags: [ server ] }
-    - { role: fail2ban, tags: [ server ] }
-    - { role: ntp, tags: [ server ] }
-    - { role: swapfile, swapfile_size: 1G, tags: [server] }
+    - { role: server-common, tags: [ server ] }
+    - { role: monitoring-common, tags: [ monitoring ] }
 
-    - { role: newrelic-infrastructure, tags: [ monitoring ], when: is_live_env }
-    - { role: loggly, tags: [ monitoring ], when: is_live_env }
+    - { role: swapfile, swapfile_size: 1G, tags: [server] }
 
     - { role: git, tags: [ app ] }
     - { role: python, tags: [ app,deploy ] }
