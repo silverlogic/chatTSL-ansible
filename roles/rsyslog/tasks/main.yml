@@ -1,0 +1,7 @@
+- name: Add PreserveFQDN to rsyslog.conf
+  lineinfile:
+    path: '/etc/rsyslog.conf'
+    line: $PreserveFQDN on
+    regexp: \$PreserveFQDN
+    insertbefore: BOF
+    state: present
