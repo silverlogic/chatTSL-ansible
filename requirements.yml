@@ -43,7 +43,7 @@
 
 - name: rvm_ruby
   src: rvm.ruby
-  version: v2.0.1
+  version: v2.1.2
 
 # Services
 - name: mysql
