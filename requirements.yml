@@ -80,7 +80,7 @@
   version: cfc0b938dc2c9a8985be30a2f9ece8f4df0dd6fe
 
 - name: certbot
-  src: silverlogic.ansible_role_certbot
+  src: silverlogic.certbot
   version: 3.1.0
 
 - src: geerlingguy.daemonize
