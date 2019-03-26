@@ -19,6 +19,7 @@ django_virtualenv_command: '{{ python_venv_exec }}'
 django_conf_env: {}
 
 # superuser
+django_create_superuser: yes
 django_superuser_create_cmd: "User.objects.create_superuser('{{ django_superuser_email }}', '{{ django_superuser_password }}')"
 # django_superuser_email: ''
 # django_superuser_password: ''

@@ -96,7 +96,7 @@
 
   - name: create superuser
     script: 'create-superuser.sh "{{ django_virtualenv }}" "{{ django_dest }}" "{{ django_superuser_create_cmd }}"'
-    when: inventory_hostname == ansible_play_hosts[0]
+    when: django_create_superuser and inventory_hostname == ansible_play_hosts[0]
     environment: '{{ django_conf_env }}'
     register: result
     changed_when: "'already exists' not in result.stdout"
