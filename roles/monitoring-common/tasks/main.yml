@@ -1,4 +1,5 @@
 - import_role:
     name: loggly
+  when: is_live_env
   tags:
     - loggly
