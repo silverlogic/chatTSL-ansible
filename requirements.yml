@@ -67,8 +67,8 @@
   version: v2.18.1
 
 - name: postgresql
-  src: ANXS.postgresql
-  version: v1.10.1
+  src: silverlogic.postgresql
+  version: v1.11.1
 
 # Misc
 - name: composer
