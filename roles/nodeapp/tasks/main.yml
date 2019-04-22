@@ -61,7 +61,7 @@
       - restart nodeapp
 
   - name: sync build files to www
-    shell: 'rsync --archive --delete --delay-updates {{ nodeapp_dest }}/{compiled,config,node_modules,static,package.json} {{ nodeapp_home }}/www/'
+    shell: 'rsync --archive --delete --delay-updates {{ nodeapp_build_sync_src }} {{ nodeapp_build_sync_dest }}'
     args:
       executable: '/bin/bash'
     notify:

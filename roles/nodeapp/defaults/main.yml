@@ -11,6 +11,11 @@ nodeapp_dest: '{{ nodeapp_home }}/site'
 # package management
 nodeapp_package_manager: 'npm'  # or yarn
 
+# build
+# build
+nodeapp_build_sync_src: '{{ nodeapp_dest }}/{compiled,config,node_modules,static,package.json}'
+nodeapp_build_sync_dest: '{{ nodeapp_home }}/www/'
+
 # settings.json configs
 nodeapp_conf_env: {}
 
