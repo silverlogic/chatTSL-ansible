@@ -59,6 +59,7 @@
       virtualenv_command: '{{ celery_virtualenv_command }}'
       virtualenv_python: '{{ celery_python }}'
       requirements: '{{ celery_dest }}/{{ celery_requirements_txt }}'
+      chdir: '{{ celery_dest }}'
     notify:
       - restart celery
 
