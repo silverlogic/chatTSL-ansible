@@ -51,6 +51,7 @@
       virtualenv_command: '{{ celery_beat_virtualenv_command }}'
       virtualenv_python: '{{ celery_beat_python }}'
       requirements: '{{ celery_beat_dest }}/{{ celery_beat_requirements_txt }}'
+      chdir: '{{ celery_beat_dest }}'
     notify:
       - restart celery beat
 
