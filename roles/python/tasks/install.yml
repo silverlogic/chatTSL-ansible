@@ -12,7 +12,7 @@
   args:
     chdir: '{{ python_source_dir }}'
   with_items:
-    - './configure --prefix={{ python_prefix }}'
+    - './configure --enable-shared --prefix={{ python_prefix }}'
     - 'make'
     - 'make install'
 
@@ -28,3 +28,11 @@
   shell: 'mv pip? pip || true'
   args:
     chdir: '{{ python_prefix }}/bin'
+
+- name: add python to ld configs
+  template:
+    src: 'ld.conf.j2'
+    dest: '/etc/ld.so.conf.d/python.conf'
+
+- name: update ldconfig cache
+  shell: 'ldconfig'
