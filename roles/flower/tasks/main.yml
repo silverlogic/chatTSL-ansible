@@ -51,6 +51,7 @@
       virtualenv_command: '{{ flower_virtualenv_command }}'
       virtualenv_python: '{{ flower_python }}'
       requirements: '{{ flower_dest }}/{{ flower_requirements_txt }}'
+      chdir: '{{ flower_dest }}'
     notify:
       - restart flower
 
