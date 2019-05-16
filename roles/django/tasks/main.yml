@@ -65,6 +65,7 @@
       virtualenv_command: '{{ django_virtualenv_command }}'
       virtualenv_python: '{{ django_python }}'
       requirements: '{{ django_dest }}/{{ django_requirements_txt }}'
+      chdir: '{{ django_dest }}'
     notify:
       - restart django
 
