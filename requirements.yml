@@ -35,7 +35,7 @@
 
 - name: php
   src: geerlingguy.php
-  version: 3.6.0
+  version: 3.7.0
 
 - name: php-versions
   src: geerlingguy.php-versions
