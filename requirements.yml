@@ -73,7 +73,7 @@
 # Misc
 - name: composer
   src: geerlingguy.composer
-  version: 1.6.1
+  version: 1.7.3
 
 - name: letsencrypt
   src: https://github.com/thefinn93/ansible-letsencrypt
