@@ -1,6 +1,7 @@
 ---
 nrinfragent_config:
   license_key: '{{ newrelic_license_key }}'
+  display_name: '{{ ansible_fqdn }}'
   custom_attributes:
     environmentName: '{{ env }}'
     projectName: '{{ project_full_name }}'
