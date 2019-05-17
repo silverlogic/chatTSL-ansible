@@ -51,8 +51,8 @@
   version: 2.9.4
 
 - name: elasticsearch
-  src: https://github.com/elastic/ansible-elasticsearch
-  version: 362156147300a7e8ada558f30b04df81ee440709
+  src: elastic.elasticsearch
+  version: 6.6.0
 
 - name: redis
   src: DavidWittman.redis
