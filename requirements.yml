@@ -27,7 +27,7 @@
 
 - name: java-openjdk
   src: geerlingguy.java
-  version: 1.8.1
+  version: 1.9.5
 
 - name: nodejs
   src: geerlingguy.nodejs
