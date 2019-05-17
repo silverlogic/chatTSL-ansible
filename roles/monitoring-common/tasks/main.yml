@@ -3,3 +3,10 @@
   when: is_live_env
   tags:
     - loggly
+
+- import_role:
+    name: newrelic-infrastructure
+  when: is_live_env
+  tags:
+    - newrelic
+    - newrelic-infra
