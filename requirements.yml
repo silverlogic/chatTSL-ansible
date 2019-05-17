@@ -12,8 +12,8 @@
   version: 0.6
 
 - name: swapfile
-  src: https://github.com/Oefenweb/ansible-swapfile
-  version: 175ddb02972977d0341851c4f93170d00374998a
+  src: oefenweb.swapfile
+  version: v2.0.20
 
 # Monitoring
 - name: newrelic-infrastructure
