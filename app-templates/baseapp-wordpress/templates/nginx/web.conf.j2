@@ -48,16 +48,12 @@ server {
     server_name {{ app_domain }};
     listen 80;
 
+    location /.well-known/acme-challenge/ {
+        proxy_pass http://localhost:8888;
+    }
+
     location / {
         return 301 https://{{ app_domain }}$request_uri;
-    }
-
-    location /.well-known/acme-challenge/ {
-        root /var/www/letsencrypt;
-    }
-
-    location = /.well-known/acme-challenge/ {
-        return 404;
     }
 }
 {% endif %}
