@@ -48,11 +48,7 @@ server {
     }
 
     location /.well-known/acme-challenge/ {
-        root /var/www/letsencrypt;
-    }
-
-    location = /.well-known/acme-challenge/ {
-        return 404;
+        proxy_pass http://localhost:8888;
     }
 }
 
