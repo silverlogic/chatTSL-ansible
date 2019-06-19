@@ -4,4 +4,4 @@ certbot_create_standalone_stop_services: []
 certbot_auto_renew_options: '--quiet --no-self-upgrade --renew-hook "systemctl reload nginx" --http-01-port=8888'
 certbot_install_from_source: true
 certbot_install_from_source_method: 'url'
-certbot_version: 'v0.31.0'
+certbot_version: 'v0.35.1'
