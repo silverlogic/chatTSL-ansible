@@ -7,12 +7,13 @@
   hosts: load-balancer
   vars:
     loggly_for_nginx: yes
-    letsencrypt_cert_domains:
-      - '{{ app_domain }}'
+    certbot_certs:
+      - domains:
+        - '{{ app_domain }}'
     nginx_sites: '{{ app_load_balancer_nginx_sites }}'
   roles:
     - { role: server-common, tags: [ server ] }
     - { role: monitoring-common, tags: [ monitoring ] }
 
-    - { role: letsencrypt, tags: [ app ], when: is_live_env }
+    - { role: certbot, tags: [ app,certbot ], when: is_live_env }
     - { role: nginx, tags: [ app,nginx ] }

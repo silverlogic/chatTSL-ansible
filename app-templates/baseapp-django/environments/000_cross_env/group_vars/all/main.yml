@@ -53,7 +53,6 @@ app_load_balancer_nginx_sites:
     template: 'nginx/load-balancer.conf.j2'
 
 # Web
-app_web_use_ssl: '{{ app_use_ssl and not app_is_load_balanced }}'
 app_web_nginx_sites:
   app:
     template: 'nginx/web.conf.j2'

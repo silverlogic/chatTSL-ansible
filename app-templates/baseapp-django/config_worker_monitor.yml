@@ -9,8 +9,9 @@
     loggly_for_nginx: yes
 
     # For live servers
-    letsencrypt_cert_domains:
-      - '{{ app_worker_monitor_domain }}'
+    certbot_certs:
+      - domains:
+        - '{{ app_worker_monitor_domain }}'
 
     nginx_sites: '{{ app_worker_monitor_nginx_sites }}'
 
@@ -28,7 +29,7 @@
     - { role: swapfile, swapfile_size: 1G, tags: [server] }
 
     - { role: git, tags: [ app ] }
-    - { role: letsencrypt, tags: [ app ], when: is_live_env and app_use_ssl }
+    - { role: certbot, tags: [ app,certbot ], when: is_live_env and app_use_ssl }
     - { role: nginx, tags: [ app,nginx ] }
     - { role: python, tags: [ app,deploy ] }
     - { role: flower, tags: [ app,deploy ] }
