@@ -4,8 +4,9 @@
   vars:
     loggly_for_nginx: yes
 
-    letsencrypt_cert_domains:
-      - '{{ app_domain }}'
+    certbot_certs:
+      - domains:
+        - '{{ app_domain }}'
 
     nginx_sites: '{{ app_nginx_sites }}'
 
@@ -19,6 +20,6 @@
     - { role: monitoring-common, tags: [ monitoring ] }
 
     - { role: git, tags: [ app ] }
-    - { role: letsencrypt, tags: [ app ], when: is_live_env and app_use_ssl }
+    - { role: certbot, tags: [ app,certbot ], when: is_live_env and app_use_ssl }
     - { role: nginx, tags: [ app,nginx ] }
     - { role: middleman, tags: [ app,deploy ] }
