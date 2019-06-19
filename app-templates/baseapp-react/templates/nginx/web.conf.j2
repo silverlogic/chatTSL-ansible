@@ -29,6 +29,10 @@ server {
         proxy_pass http://localhost:3000;
     }
 
+    location /.well-known/acme-challenge/ {
+        proxy_pass http://localhost:8888;
+    }
+
     location /static {
         alias {{ nodeapp_home }}/www/static;
     }
@@ -44,16 +48,12 @@ server {
     server_name {{ app_domain }} www.{{ app_domain }};
     listen 80;
 
+    location /.well-known/acme-challenge/ {
+        proxy_pass http://localhost:8888;
+    }
+
     location / {
         return 301 https://{{ app_domain }}$request_uri;
-    }
-
-    location /.well-known/acme-challenge/ {
-        root /var/www/letsencrypt;
-    }
-
-    location = /.well-known/acme-challenge/ {
-        return 404;
     }
 }
 
@@ -62,7 +62,15 @@ server {
     listen 443 ssl;
     ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
-    return 301 https://{{ app_domain }}$request_uri;
+
+    location /.well-known/acme-challenge/ {
+        proxy_pass http://localhost:8888;
+    }
+
+    location / {
+        return 301 https://{{ app_domain }}$request_uri;
+    }
+
 }
 {% else %}
 server {
