@@ -1,0 +1,27 @@
+- name: download wordpress core
+  shell: wp core download
+  args:
+    chdir: '{{ wordpress_install_app_dest }}'
+
+- name: create wordpress config
+  shell: |
+    wp config create \
+      --dbname="{{ wordpress_install_db_name }}" \
+      --dbuser="{{ wordpress_install_db_user }}" \
+      --dbpass="{{ wordpress_install_db_password }}" \
+      --dbhost="{{ wordpress_install_db_host }}" \
+      --skip-check
+  args:
+    chdir: '{{ wordpress_install_app_dest }}'
+
+- name: install wordpress
+  shell: |
+    wp core install \
+      --url="{{ wordpress_install_url }}" \
+      --title="{{ wordpress_install_site_title }}" \
+      --admin_user="{{ wordpress_install_admin_user }}" \
+      --admin_password="{{ wordpress_install_admin_password }}" \
+      --admin_email="{{ wordpress_install_admin_email }}" \
+      --skip-email
+  args:
+    chdir: '{{ wordpress_install_app_dest }}'

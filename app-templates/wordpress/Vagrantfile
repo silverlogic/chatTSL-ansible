@@ -1,0 +1,71 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'yaml'
+
+ANSIBLE_PATH = __dir__
+project_config_file = File.join(ANSIBLE_PATH, 'environments', 'development', 'group_vars', 'all', '000_shared', '000_cross_env', 'project.yml')
+project_config = YAML.load_file(project_config_file)
+app_config_file = File.join(ANSIBLE_PATH, 'environments', '000_cross_env', 'group_vars', 'all', 'main.yml')
+app_config = YAML.load_file(app_config_file)
+
+CONFIG = {
+  db_ip: 'TODO',
+  web_ip: 'TODO',
+  project_full_name: project_config['project_full_name'],
+  app_name: app_config['app_name'],
+}
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/debian9"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  if not Vagrant.has_plugin? 'vagrant-vbguest'
+    fail_with_message "vagrant-vbguest plugin missing.  Please install it with this command:\nvagrant plugin install vagrant-vbguest"
+  end
+
+  config.vm.define "db" do |machine|
+    machine.vm.hostname = "#{CONFIG[:app_name]}-db"
+    machine.vm.network "private_network", ip: CONFIG[:db_ip]
+
+    machine.vm.provider "virtualbox" do |v|
+      v.name = "#{CONFIG[:project_full_name]}-#{machine.vm.hostname}"
+      v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
+    end
+
+    machine.vm.provision "shell", inline: "sudo apt-get install acl"
+    machine.vm.provision "ansible" do |ansible|
+      ansible.playbook = File.join(ANSIBLE_PATH, 'config_db.yml')
+      ansible.inventory_path = './environments/development'
+      ansible.become = true
+      ansible.become_user = 'root'
+    end
+  end
+
+  config.vm.define "web" do |machine|
+    machine.vm.hostname = "#{CONFIG[:app_name]}-web"
+    machine.vm.network "private_network", ip: CONFIG[:web_ip]
+
+    machine.vm.provider "virtualbox" do |v|
+      v.name = "#{CONFIG[:project_full_name]}-#{machine.vm.hostname}"
+      v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
+    end
+
+    machine.vm.provision "shell", inline: "sudo apt-get install acl"
+    machine.vm.provision "ansible" do |ansible|
+      ansible.playbook = File.join(ANSIBLE_PATH, 'config_web.yml')
+      ansible.inventory_path = './environments/development'
+      ansible.extra_vars = {
+          'app_db_host': CONFIG[:db_ip],
+          'app_amqp_host': CONFIG[:amqp_ip],
+      }
+      ansible.become = true
+      ansible.become_user = 'root'
+    end
+  end
+end
+
+
+def fail_with_message(msg)
+  fail Vagrant::Errors::VagrantError.new, msg
+end

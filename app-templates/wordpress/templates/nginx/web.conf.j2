@@ -1,0 +1,95 @@
+upstream php {
+    server unix:{{ php_fpm_listen }};
+}
+
+server {
+    server_name _ default;
+
+    listen 80;
+    {% if app_web_use_ssl %}
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
+    {% endif %}
+
+    return 444;
+}
+
+server {
+    server_name {{ app_domain }};
+
+    {% if app_web_use_ssl %}
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
+    {% else %}
+    listen 80;
+    {% endif %}
+
+    root /opt/{{ app_name }}/site;
+    index index.php;
+
+    client_max_body_size 500M;
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+    # Deny all attempts to access hidden files such as .htaccess, .htpasswd, .DS_Store (Mac).
+    location ~ /\. {
+        deny all;
+    }
+
+    # Deny access to any files with a .php extension in the uploads directory
+    location ~* /(?:uploads|files)/.*\.php$ {
+        deny all;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass    php;
+        fastcgi_index   index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+}
+
+{% if app_web_use_ssl %}
+server {
+    server_name {{ app_domain }} www.{{ app_domain }};
+    listen 80;
+
+    location / {
+        return 301 https://{{ app_domain }}$request_uri;
+    }
+
+    location /.well-known/acme-challenge/ {
+        proxy_pass http://localhost:8888;
+    }
+}
+
+server {
+    server_name www.{{ app_domain }};
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
+    return 301 https://{{ app_domain }}$request_uri;
+}
+{% else %}
+server {
+    server_name www.{{ app_domain }};
+    listen 80;
+    return 301 http://{{ app_domain }}$request_uri;
+}
+{% endif %}

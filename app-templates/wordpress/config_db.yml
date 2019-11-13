@@ -1,0 +1,22 @@
+---
+- name: configure database
+  hosts: db
+  vars:
+    mysql_packages:
+      - mariadb-server-10.1
+      - mariadb-client
+      - python-mysqldb
+    mysql_databases:
+      - name: '{{ app_db_name }}'
+        state: present
+    mysql_users:
+      - name: '{{ app_db_user }}'
+        password: '{{ app_db_password }}'
+        host: '%'
+        priv: '{{ app_db_name }}.*:ALL'
+        append_privs: yes
+  roles:
+    - { role: server-common, tags: [ server ] }
+    - { role: monitoring-common, tags: [ monitoring ] }
+
+    - { role: mysql, tags: [ app ] }

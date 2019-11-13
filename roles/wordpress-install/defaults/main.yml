@@ -1,0 +1,16 @@
+wordpress_install_app_name: 'wordpress'
+wordpress_install_home: '/opt/{{ wordpress_install_app_name }}'
+wordpress_install_app_dest: '{{ wordpress_install_home }}/site'
+wordpress_install_user: 'www-data'
+wordpress_install_group: 'www-data'
+
+# user variables
+wordpress_install_db_name: ''
+wordpress_install_db_user: ''
+wordpress_install_db_password: ''
+wordpress_install_db_host: ''
+wordpress_install_site_title: ''
+wordpress_install_url: ''
+wordpress_install_admin_user: ''
+wordpress_install_admin_password: ''
+wordpress_install_admin_email: ''

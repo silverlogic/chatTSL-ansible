@@ -1,0 +1,48 @@
+---
+- name: collect related component facts
+  hosts: db
+  tasks: []
+
+- name: configure web
+  hosts: web
+  vars:
+    loggly_for_nginx: yes
+
+    # For live servers
+    certbot_certs:
+      - domains:
+        - '{{ app_domain }}'
+        - 'www.{{ app_domain }}'
+
+    nginx_sites: '{{ app_web_nginx_sites }}'
+
+    php_version: '7.2'
+    php_packages_extra:
+      - 'php{{ php_version }}-mysql'
+    php_upload_max_filesize: '500M'
+    php_post_max_size: '500M'
+    php_enable_webserver: no
+    php_enable_php_fpm: yes
+    php_fpm_listen: '/var/run/php/php{{ php_version }}-fpm.sock'
+
+    wordpress_install_app_name: '{{ app_name }}'
+    wordpress_install_db_name: '{{ app_db_name }}'
+    wordpress_install_db_user: '{{ app_db_user }}'
+    wordpress_install_db_password: '{{ app_db_password }}'
+    wordpress_install_db_host: '{{ app_db_host }}'
+    wordpress_install_site_title: '{{ app_site_title }}'
+    wordpress_install_url: '{{ app_url }}'
+    wordpress_install_admin_user: '{{ app_admin_user }}'
+    wordpress_install_admin_password: '{{ app_admin_password }}'
+    wordpress_install_admin_email: '{{ app_admin_email }}'
+
+  roles:
+    - { role: server-common, tags: [ server ] }
+    - { role: monitoring-common, tags: [ monitoring ] }
+
+    - { role: certbot, tags: [ app,certbot ], when: is_live_env and app_web_use_ssl }
+    - { role: nginx, tags: [ app,nginx ] }
+    - { role: php-versions, tags: [ app,php ] }
+    - { role: php, tags: [ app,php ] }
+    - { role: wp-cli, tags: [ app,wp-cli ] }
+    - { role: wordpress-install, tags: [ app,wordpress,wordpress-install ] }

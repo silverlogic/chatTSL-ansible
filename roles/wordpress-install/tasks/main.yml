@@ -1,0 +1,20 @@
+- name: create wordpress directory
+  file:
+    path: '{{ wordpress_install_app_dest }}'
+    owner: '{{ wordpress_install_user }}'
+    group: '{{ wordpress_install_group }}'
+    state: 'directory'
+
+- block:
+  - name: check if wordpress is already installed
+    shell: wp core is-installed
+    args:
+      chdir: '{{ wordpress_install_app_dest }}'
+    register: installed_result
+    failed_when: installed_result.rc > 1
+
+  - name: install wordpress if not already installed
+    include_tasks: install-and-config.yml
+    when: installed_result.rc == 1
+  become: yes
+  become_user: '{{ wordpress_install_user }}'

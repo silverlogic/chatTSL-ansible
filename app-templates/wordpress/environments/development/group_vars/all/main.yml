@@ -1,0 +1,8 @@
+# Networking
+private_interface: '{{ ansible_eth1 }}'
+private_interface_name: 'eth1'
+
+# Conf env
+app_environment: 'development'
+app_db_password: '1234'
+app_admin_password: '1234'

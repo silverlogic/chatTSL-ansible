@@ -1,0 +1,23 @@
+app_name: 'TODO'
+app_domain: 'TODO'
+app_use_ssl: true
+app_url: '{{ app_use_ssl | ternary("https", "http") }}://{{ app_domain }}'
+
+# Networking
+private_interface_ansible_name: 'ansible_{{ private_interface_name }}'
+
+# Database
+app_db_host: "{{ hostvars[groups['db'][0]]['ansible_' + private_interface_name].ipv4.address }}"
+app_db_user: '{{ app_name }}'
+app_db_name: '{{ app_name }}'
+
+# Config
+app_site_title: '{{ project_verbose_name }}'
+app_admin_user: 'admin'
+app_admin_email: 'dev+{{ project_code_name }}@tsl.io'
+
+# Web
+app_web_use_ssl: '{{ app_use_ssl }}'
+app_web_nginx_sites:
+  app:
+    template: 'nginx/web.conf.j2'
