@@ -1,1 +1,3 @@
 ---
+- import_playbook: 'config_db.yml'
+- import_playbook: 'config_web.yml'
