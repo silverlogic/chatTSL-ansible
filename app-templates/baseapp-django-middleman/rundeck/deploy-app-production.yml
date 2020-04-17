@@ -4,6 +4,10 @@
   executionEnabled: true
   loglevel: INFO
   options:
+  - description: Ansible tags
+    name: ansible-tags
+    required: true
+    value: deploy
   - description: Branch, Commit SHA, or tag
     name: version
     required: true
@@ -67,7 +71,7 @@
         cd "apps/<TODO:app_name>"
         export ANSIBLE_HOST_KEY_CHECKING=False
         eval $(ssh-agent)
-        ansible-playbook config_all.yml -i environments/production -t deploy -e "app_version=@option.version@" --vault-id="../../vault-password"
+        ansible-playbook config_all.yml -i environments/production -t "@option.ansible-tags@" -e "app_version=@option.version@" --vault-id="../../vault-password"
       scriptInterpreter: bash
     - description: Clean up playbooks
       script: rm -rf "@job.project@-@job.id@-playbooks"
