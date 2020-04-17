@@ -1,0 +1,18 @@
+filebeat_version: 7.6.2
+filebeat_logstash_hosts: []
+filebeat_inputs: []
+filebeat_fields: {}
+
+filebeat_nginx_inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/nginx/access.log
+    fields:
+      beat_dataset: nginx.access
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/nginx/error.log
+    fields:
+      beat_dataset: nginx.error

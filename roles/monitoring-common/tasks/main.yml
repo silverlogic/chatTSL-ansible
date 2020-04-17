@@ -1,8 +1,8 @@
 - import_role:
-    name: loggly
+    name: filebeat
   when: is_live_env
   tags:
-    - loggly
+    - filebeat
 
 - import_role:
     name: newrelic-infrastructure
