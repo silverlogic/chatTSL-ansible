@@ -1,0 +1,7 @@
+filebeat_logstash_hosts: ["64.227.3.182:5044"]
+filebeat_inputs: '{{ filebeat_nginx_inputs }}'
+filebeat_fields:
+  project: '{{ project_code_name }}'
+  app: '{{ app_name }}'
+  component: '{{ component_name }}'
+  env: '{{ env }}'
