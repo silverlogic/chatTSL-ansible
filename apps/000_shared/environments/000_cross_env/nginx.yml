@@ -19,7 +19,7 @@ nginx_http_params:
     '"http_user_agent" : "$http_user_agent", '
     '"request_method" : "$request_method", '
     '"request_time" : $request_time, '
-    '"upstream_response_time" : $upstream_response_time, '
+    '"upstream_response_time" : "$upstream_response_time", '
     '"pipe" : "$pipe" }'
   - access_log "{{nginx_log_dir}}/access.log" combined_timed
   - "error_log {{nginx_log_dir}}/error.log {{nginx_error_log_level}}"
