@@ -1,5 +1,5 @@
 #=========================== Filebeat inputs =============================
-{{ {"filebeat.inputs": filebeat_inputs}|to_nice_yaml }}
+{{ {"filebeat.inputs": filebeat_inputs}|to_nice_yaml(indent=2) }}
 
 #============================= Filebeat modules ===============================
 filebeat.config.modules:
@@ -19,7 +19,7 @@ setup.template.settings:
   #_source.enabled: false
 
 #================================ General =====================================
-{{ {"fields": filebeat_fields}|to_nice_yaml }}
+{{ {"fields": filebeat_fields}|to_nice_yaml(indent=2) }}
 
 #================================ Outputs =====================================
 
