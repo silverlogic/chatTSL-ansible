@@ -6,6 +6,10 @@
     - 'libpq-dev'
     - 'gdal-bin'
 
+- name: run post-install-packages hook
+  include_tasks: '{{ celery_beat_post_install_packages_hook }}'
+  when: celery_beat_post_install_packages_hook != ''
+
 - name: create celery beat group
   group:
     name: '{{ celery_beat_group }}'

@@ -39,6 +39,7 @@ django_gunicorn_timeout: 30
 django_gunicorn_graceful_timeout: 30
 
 # hooks (files that get run if specified)
+django_post_install_packages_hook: ''
 django_pre_clone_hook: ''
 django_post_clone_hook: ''
 django_post_virtualenv_hook: ''

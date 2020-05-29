@@ -30,6 +30,7 @@ celery_concurrency: '{{ ansible_processor_cores }}'
 celery_log_level: info
 
 # hooks (files that get run if specified)
+celery_post_install_packages_hook: ''
 celery_pre_clone_hook: ''
 celery_post_clone_hook: ''
 celery_post_virtualenv_hook: ''

@@ -6,6 +6,10 @@
     - 'libpq-dev'
     - 'gdal-bin'
 
+- name: run post-install-packages hook
+  include_tasks: '{{ django_post_install_packages_hook }}'
+  when: django_post_install_packages_hook != ''
+
 - name: create django group
   group:
     name: '{{ django_group }}'
