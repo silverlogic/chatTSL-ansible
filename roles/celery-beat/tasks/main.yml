@@ -33,6 +33,10 @@
       mode: 0600
     when: celery_beat_use_git_clone
 
+  - name: run pre-clone hook
+    include_tasks: '{{ celery_beat_pre_clone_hook }}'
+    when: celery_beat_pre_clone_hook != ''
+
   - name: clone celery_beat repo
     git:
       repo: '{{ celery_beat_repo }}'
@@ -45,6 +49,10 @@
       - restart celery beat
     when: celery_beat_use_git_clone
 
+  - name: run post-clone hook
+    include_tasks: '{{ celery_beat_post_clone_hook }}'
+    when: celery_beat_post_clone_hook != ''
+
   - name: create virtualenv
     pip:
       virtualenv: '{{ celery_beat_virtualenv }}'
@@ -54,6 +62,10 @@
       chdir: '{{ celery_beat_dest }}'
     notify:
       - restart celery beat
+
+  - name: run post-virtualenv hook
+    include_tasks: '{{ celery_beat_post_virtualenv_hook }}'
+    when: celery_beat_post_virtualenv_hook != ''
 
   become: yes
   become_user: '{{ celery_beat_user }}'
