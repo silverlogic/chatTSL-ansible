@@ -8,3 +8,13 @@
     dest: '/etc/filebeat/filebeat.yml'
   notify:
     - restart filebeat
+
+- name: start filebeat
+  service:
+    name: filebeat
+    state: started
+
+- name: enable filebeat
+  service:
+    name: filebeat
+    enabled: yes
