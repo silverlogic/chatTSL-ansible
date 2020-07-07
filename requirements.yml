@@ -68,7 +68,7 @@
 
 - name: postgresql
   src: silverlogic.postgresql
-  version: v1.11.1
+  version: v1.12.0
 
 # Misc
 - name: composer
