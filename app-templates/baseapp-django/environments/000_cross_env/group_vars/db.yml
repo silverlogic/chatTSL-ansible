@@ -1,8 +1,8 @@
 ---
 component_name: 'db'
 
-postgresql_version: '9.6'
-postgresql_ext_postgis_version: '2.3'
+postgresql_version: '12'
+postgresql_ext_postgis_version: '3.0'
 
 # Logging
 postgresql_log_destination: 'syslog'
