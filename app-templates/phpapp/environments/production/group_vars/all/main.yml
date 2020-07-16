@@ -1,2 +1,12 @@
 ---
+# App
+app_source: 'git'
+app_version: 'production'
+
+# Networking
+private_interface: '{{ ansible_eth1 }}'
+private_interface_name: 'eth1'
+
+# Conf env
 app_environment: 'production'
+app_db_password: '{{ vault_app_db_password }}'
