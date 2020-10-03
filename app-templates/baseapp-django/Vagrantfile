@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
     end
 
-    machine.vm.provision "shell", inline: "sudo apt-get install acl"
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
     machine.vm.provision "ansible" do |ansible|
       ansible.playbook = File.join(ANSIBLE_PATH, 'config_db.yml')
       ansible.inventory_path = './environments/development'
@@ -59,7 +59,7 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
     end
 
-    machine.vm.provision "shell", inline: "sudo apt-get install acl"
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
     machine.vm.provision "ansible" do |ansible|
       ansible.playbook = File.join(ANSIBLE_PATH, 'config_amqp.yml')
       ansible.inventory_path = './environments/development'
@@ -78,7 +78,10 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
     end
 
-    machine.vm.provision "shell", inline: "sudo apt-get install acl"
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
+	# UML Generator requirements
+    machine.vm.provision "shell",
+		inline: "sudo apt-get update; sudo apt-get install -y python-pydot python-pydot-ng graphviz graphviz-dev libgraphviz-dev"
     machine.vm.provision "ansible" do |ansible|
       ansible.playbook = File.join(ANSIBLE_PATH, 'config_web.yml')
       ansible.inventory_path = './environments/development'
@@ -103,7 +106,7 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
     end
 
-    machine.vm.provision "shell", inline: "sudo apt-get install acl"
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
     machine.vm.provision "ansible" do |ansible|
       ansible.playbook = File.join(ANSIBLE_PATH, 'config_worker.yml')
       ansible.inventory_path = './environments/development'
@@ -128,7 +131,7 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
     end
 
-    machine.vm.provision "shell", inline: "sudo apt-get install acl"
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
     machine.vm.provision "ansible" do |ansible|
       ansible.playbook = File.join(ANSIBLE_PATH, 'config_worker_monitor.yml')
       ansible.inventory_path = './environments/development'
@@ -153,7 +156,7 @@ Vagrant.configure("2") do |config|
       v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
     end
 
-    machine.vm.provision "shell", inline: "sudo apt-get install acl"
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
     machine.vm.provision "ansible" do |ansible|
       ansible.playbook = File.join(ANSIBLE_PATH, 'config_scheduler.yml')
       ansible.inventory_path = './environments/development'
