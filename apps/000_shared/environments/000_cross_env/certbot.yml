@@ -2,11 +2,11 @@ certbot_create_if_missing: true
 certbot_admin_email: 'ops+{{ project_code_name }}@tsl.io'
 certbot_create_port: 80
 certbot_create_command: >-
-  {{ certbot_script }} certonly --standalone --noninteractive --agree-tos --http-01-port={{ certbot_create_port }}
+  {{ certbot_script }} --no-self-upgrade certonly --standalone --noninteractive --agree-tos --http-01-port={{ certbot_create_port }}
   --email {{ cert_item.email | default(certbot_admin_email) }}
   -d {{ cert_item.domains | join(',') }}
 certbot_create_standalone_stop_services: []
 certbot_auto_renew_options: '--quiet --no-self-upgrade --renew-hook "systemctl reload nginx" --http-01-port=8888'
 certbot_install_from_source: true
 certbot_install_from_source_method: 'url'
-certbot_version: 'v0.35.1'
+certbot_version: '1.9.x'
