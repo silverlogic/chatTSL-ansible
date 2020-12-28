@@ -27,3 +27,5 @@
     - { role: nginx, tags: [ app,nginx ] }
     - { role: python, tags: [ app,deploy ] }
     - { role: django, tags: [ app,deploy ] }
+    
+    - { role: google-chrome, tags: [ app ] }

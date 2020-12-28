@@ -21,4 +21,5 @@
     - { role: git, tags: [ app ] }
     - { role: python, tags: [ app,deploy ] }
     - { role: celery, tags: [ app,deploy ] }
-
+    
+    - { role: google-chrome, tags: [ app ] }

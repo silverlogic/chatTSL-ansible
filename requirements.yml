@@ -89,3 +89,7 @@
 - name: mailhog
   src: geerlingguy.mailhog
   version: 2.1.1
+
+- name: google-chrome
+  src: mlangry.google-chrome
+  version: 43198de46ef8fe4fde5d5a66a137e8fd421a9db2
