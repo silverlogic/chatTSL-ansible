@@ -8,7 +8,7 @@ app_use_ssl: true
 app_url: '{{ app_use_ssl | ternary("https", "http") }}://{{ app_domain }}'
 
 # Nodeapp
-app_nodejs_version: '8.x'
+app_nodejs_version: '12.x'
 app_conf_env:
   appBaseURL: '{{ app_url }}'
   apiBaseURL: 'TODO'
