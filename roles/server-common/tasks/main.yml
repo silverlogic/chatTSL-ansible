@@ -32,3 +32,8 @@
     name: bashrc
   tags:
     - bashrc
+
+- name: maybe install esl-erlang
+  apt:
+    deb: '{{ erlang_nox_deb }}'
+  when: component_name == 'amqp'
