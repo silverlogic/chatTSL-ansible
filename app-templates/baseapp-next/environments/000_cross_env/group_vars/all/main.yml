@@ -1,0 +1,32 @@
+---
+# App
+app_name: 'TODO' # e.g. web
+app_user: '{{ app_name }}'
+app_repo: 'TODO' # the bitbucket repo
+app_domain: 'TODO' # eg. {{ web_domain }}
+app_use_ssl: true
+app_url: '{{ app_use_ssl | ternary("https", "http") }}://{{ app_domain }}'
+
+# Nodeapp
+app_nodejs_version: '12.x'
+app_conf_env:
+  appBaseURL: '{{ app_url }}'
+  apiBaseURL: 'TODO'
+  apiDateFormat: 'YYYY-MM-DD'
+  apiPageSize: 30
+  fbAppId: '{{ app_facebook_app_id }}'
+  sentry:
+    DSN: '{{ app_sentry_dsn }}'
+    publicDSN: '{{ app_sentry_public_dsn }}'
+    environment: '{{ env }}'
+    autoBreadcrumbs: true
+    release: '{{ nodeapp_git_revision.after | default(nextjs_git_revision.after) }}'
+  website:
+    title: '{{ project_verbose_name }}'
+    automaticAccountAgreement: true
+    socialLogins: true
+
+# Nginx
+app_nginx_sites:
+  app:
+    template: 'nginx/web.conf.j2'

@@ -1,0 +1,6 @@
+- name: yarn install
+  shell: yarn install
+  args:
+    chdir: '{{ nextjs_dest }}'
+  notify:
+    - restart nextjs
