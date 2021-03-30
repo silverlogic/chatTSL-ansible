@@ -1,0 +1,16 @@
+nextjs_user: 'nextjs'
+nextjs_group: 'www-data'
+nextjs_home: '/opt/{{ nextjs_user }}'
+nextjs_ssh_key: '{{ nextjs_home }}/id_rsa'
+nextjs_ssh_key_src: 'files/ssh/id_rsa'
+nextjs_dest: '{{ nextjs_home }}/site'
+
+# build
+nextjs_build_sync_src: '{{ nextjs_dest }}/{compiled,config,node_modules,static,package.json}'
+nextjs_build_sync_dest: '{{ nextjs_home }}/www/'
+
+# settings.json configs
+nextjs_conf_env: {}
+
+# service
+nextjs_service: '{{ nextjs_user }}'

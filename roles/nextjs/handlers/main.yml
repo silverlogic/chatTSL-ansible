@@ -1,0 +1,6 @@
+---
+- name: systemctl daemon-reload
+  shell: systemctl daemon-reload
+
+- name: restart nextjs
+  service: name={{ nextjs_service }} state=restarted

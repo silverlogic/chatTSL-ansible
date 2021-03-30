@@ -1,0 +1,71 @@
+---
+- name: install packages
+  apt: name={{ item }}
+  with_items:
+    - libcairo2-dev
+    - libjpeg-dev
+    - libgif-dev
+
+- include_tasks: 'install-{{ nextjs_package_manager }}.yml'
+
+- name: create user
+  user:
+    name: '{{ nextjs_user }}'
+    group: '{{ nextjs_group }}'
+    home: '{{ nextjs_home }}'
+    state: 'present'
+  when: nextjs_user != 'vagrant'
+
+- block:
+  - name: get ssh key
+    copy:
+      src: '{{ nextjs_ssh_key_src }}'
+      dest: '{{ nextjs_ssh_key }}'
+      mode: 0600
+    when: nextjs_use_git_clone
+
+  - name: clone nextjs repo
+    git:
+      repo: '{{ nextjs_repo }}'
+      version: '{{ nextjs_branch }}'
+      dest: '{{ nextjs_dest }}'
+      key_file: '{{ nextjs_ssh_key }}'
+      accept_hostkey: yes
+      force: yes
+    register: nextjs_git_revision
+    when: nextjs_use_git_clone
+    notify:
+      - restart nextjs
+
+  - name: install dependencies
+    include_tasks: 'install-deps-yarn.yml'
+
+  - name: create settings.json
+    template:
+      src: settings.json.j2
+      dest: '{{ nextjs_dest }}/config/settings.json'
+      mode: 0644
+    notify:
+      - restart nextjs
+
+  - name: build release
+    shell: yarn build
+    args:
+      chdir: '{{ nextjs_dest }}'
+    notify:
+      - restart nextjs
+
+  become: yes
+  become_user: '{{ nextjs_user }}'
+
+- name: create nextjs service
+  template:
+    src: 'nextjs.service.j2'
+    dest: '/etc/systemd/system/{{ nextjs_service }}.service'
+    mode: 0644
+  notify:
+    - systemctl daemon-reload
+    - restart nextjs
+
+- name: ensure nextjs is running
+  service: name={{ nextjs_service }} state=started enabled=yes

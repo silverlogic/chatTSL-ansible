@@ -1,0 +1,10 @@
+[Unit]
+Description=nextjs server
+After=network.target
+
+[Service]
+WorkingDirectory={{ nextjs_dest }}
+ExecStart=/usr/bin/yarn start
+
+[Install]
+WantedBy=multi-user.target

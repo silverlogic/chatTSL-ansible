@@ -1,0 +1,32 @@
+---
+- name: configure web
+  hosts: web
+  vars:
+    loggly_for_nginx: yes
+
+    # For live servers
+    certbot_certs:
+      - domains:
+        - '{{ app_domain }}'
+        - 'www.{{ app_domain }}'
+
+    nginx_sites: '{{ app_nginx_sites }}'
+
+    nodejs_version: '{{ app_nodejs_version }}'
+    nextjs_user: '{{ app_user }}'
+    nextjs_use_git_clone: '{{ is_live_env }}'
+    nextjs_repo: '{{ app_repo }}'
+    nextjs_branch: '{{ app_version }}'
+    nextjs_package_manager: 'yarn'
+    nextjs_conf_env: '{{ app_conf_env }}'
+  roles:
+    - { role: server-common, tags: [ server ] }
+    - { role: monitoring-common, tags: [ monitoring ] }
+
+    - { role: swapfile, swapfile_size: 1G, tags: [ server ] }
+
+    - { role: git, tags: [ app ] }
+    - { role: certbot, tags: [ app,certbot ], when: is_live_env and app_use_ssl }
+    - { role: nginx, tags: [ app,nginx ] }
+    - { role: nodejs, tags: [ app ] }
+    - { role: nextjs, tags: [ app,deploy ] }
