@@ -22,7 +22,7 @@ server {
     listen 80;
     {% endif %}
 
-    root {{ nextjs_home }}/www/static;
+    root {{ nodeapp_home }}/www/static;
 
     location @proxy {
         add_header 'Access-Control-Allow-Origin' '*';
@@ -34,7 +34,7 @@ server {
     }
 
     location /static {
-        alias {{ nextjs_home }}/www/static;
+        alias {{ nodeapp_home }}/www/static;
     }
 
     location / {
