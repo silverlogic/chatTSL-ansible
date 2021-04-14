@@ -29,6 +29,13 @@
     group: '{{ django_group }}'
     state: 'directory'
 
+- name: create django logs directory
+  file:
+    path: '{{ django_logs }}'
+    owner: '{{ django_user }}'
+    group: '{{ django_group }}'
+    state: 'directory'
+
 - block:
   - name: create environment helper
     template:

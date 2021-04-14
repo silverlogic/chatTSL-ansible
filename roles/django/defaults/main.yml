@@ -8,6 +8,7 @@ django_home: '/opt/{{ django_user }}'
 django_ssh_key: '{{ django_home }}/id_rsa'
 django_ssh_key_src: 'files/ssh/id_rsa'
 django_dest: '{{ django_home }}/site'
+django_logs: '{{ django_home }}/logs'
 
 # python / virtualenv
 django_python: '{{ python_exec }}'
