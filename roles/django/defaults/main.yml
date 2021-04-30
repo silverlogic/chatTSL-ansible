@@ -38,6 +38,7 @@ django_gunicorn_worker_class: 'sync'
 django_gunicorn_worker_connections: 1000  # Only affects eventlet/gevent workers
 django_gunicorn_timeout: 30
 django_gunicorn_graceful_timeout: 30
+django_gunicorn_limit_request_line: 8190
 
 # hooks (files that get run if specified)
 django_post_install_packages_hook: ''
