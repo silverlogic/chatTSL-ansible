@@ -37,3 +37,4 @@
   apt:
     deb: '{{ erlang_nox_deb }}'
   when: component_name == 'amqp'
+  ignore_errors: yes  # Can fail for projects already using erlang-base-hipe
