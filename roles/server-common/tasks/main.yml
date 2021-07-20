@@ -4,6 +4,11 @@
     - sudo
 
 - import_role:
+    name: rsync
+  tags:
+    - rsync
+
+- import_role:
     name: rsyslog
   tags:
     - rsyslog
