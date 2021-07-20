@@ -4,6 +4,7 @@
   vars:
     rabbitmq_ssl: no
     rabbitmq_conf_tcp_listeners_address: '{{ private_interface.ipv4.address }}'
+    rabbitmq_os_package: true
     rabbitmq_plugins:
       - 'rabbitmq_management'
     rabbitmq_vhost_definitions:
