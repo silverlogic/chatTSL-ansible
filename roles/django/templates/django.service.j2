@@ -20,7 +20,7 @@ ExecStart={{ django_virtualenv }}/bin/gunicorn apps.wsgi:application \
       --worker-connections {{ django_gunicorn_worker_connections }} \
       --timeout {{ django_gunicorn_timeout }} \
       --graceful-timeout {{ django_gunicorn_graceful_timeout }} \
-      --limit-request-line {{ django_gunicorn_limit_request_line }} \
+      --limit-request-line {{ django_gunicorn_limit_request_line }}
 
 [Install]
 WantedBy=multi-user.target
