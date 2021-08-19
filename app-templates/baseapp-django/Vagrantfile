@@ -32,6 +32,10 @@ Vagrant.configure("2") do |config|
     fail_with_message "vagrant-vbguest plugin missing.  Please install it with this command:\nvagrant plugin install vagrant-vbguest"
   end
 
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.default_prefix = "#{CONFIG[:project_full_name]}-"
+  end
+
   config.vm.define "db" do |machine|
     machine.vm.hostname = "#{CONFIG[:app_name]}-db"
     machine.vm.network "private_network", ip: CONFIG[:db_ip]
