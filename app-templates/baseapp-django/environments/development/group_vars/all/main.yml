@@ -24,6 +24,9 @@ app_db_password: '1234'
 # AMQP
 app_amqp_password: '1234'
 
+# Redis
+app_redis_password: '1234'
+
 # Django
 app_django_requirements_txt: 'requirements/dev.txt'
 app_django_superuser_password: '1234'

@@ -11,3 +11,5 @@
 [worker-monitor]
 
 [scheduler]
+
+[redis]

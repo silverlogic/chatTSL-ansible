@@ -23,6 +23,9 @@ app_db_password: '{{ vault_app_db_password }}'
 # AMQP
 app_amqp_password: '{{ vault_app_amqp_password }}'
 
+# Redis
+app_redis_password: '{{ vault_app_redis_password }}'
+
 # Django
 app_django_requirements_txt: 'requirements/live.txt'
 app_django_superuser_password: '{{ vault_app_django_superuser_password }}'
