@@ -1,0 +1,12 @@
+---
+- name: configure redis
+  hosts: redis
+  vars:
+    redis_bind: '{{ private_interface.ipv4.address }}'
+    redis_password: '{{ app_redis_password }}'
+  roles:
+    - { role: server-common, tags: [ server ] }
+    - { role: monitoring-common, tags: [ monitoring ] }
+
+    - { role: redis, tags: [ app ] }
+

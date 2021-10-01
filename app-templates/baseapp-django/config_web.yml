@@ -1,6 +1,6 @@
 ---
 - name: collect related component facts
-  hosts: db:amqp
+  hosts: db:amqp:redis
   tasks: []
 
 - name: configure web
