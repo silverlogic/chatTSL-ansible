@@ -1,11 +1,11 @@
 # Server
 - name: locales
   src: oefenweb.locales
-  version: v1.0.33
+  version: v1.0.49
 
 - name: ntp
   src: geerlingguy.ntp
-  version: 1.6.2
+  version: 2.3.0
 
 - name: sshd
   src: silverlogic.sshd
@@ -13,12 +13,12 @@
 
 - name: swapfile
   src: oefenweb.swapfile
-  version: v2.0.20
+  version: v2.0.34
 
 # Monitoring
 - name: newrelic-infrastructure
   src: newrelic.newrelic-infra
-  version: 0.7.0
+  version: 0.10.3
 
 # Languages
 - name: java
@@ -27,19 +27,19 @@
 
 - name: java-openjdk
   src: geerlingguy.java
-  version: 1.9.5
+  version: 1.10.0
 
 - name: nodejs
   src: geerlingguy.nodejs
-  version: 5.0.0
+  version: 6.0.0
 
 - name: php
   src: geerlingguy.php
-  version: 3.7.0
+  version: 4.7.0
 
 - name: php-versions
   src: geerlingguy.php-versions
-  version: 3.1.0
+  version: 5.0.0
 
 - name: rvm_ruby
   src: silverlogic.rvm
@@ -48,11 +48,11 @@
 # Services
 - name: mysql
   src: geerlingguy.mysql
-  version: 2.9.4
+  version: 3.3.2
 
 - name: elasticsearch
   src: elastic.elasticsearch
-  version: 6.6.0
+  version: v7.15.1
 
 - name: redis
   src: DavidWittman.redis
@@ -73,7 +73,7 @@
 # Misc
 - name: composer
   src: geerlingguy.composer
-  version: 1.7.3
+  version: 1.9.0
 
 - name: letsencrypt
   src: https://github.com/thefinn93/ansible-letsencrypt
@@ -84,11 +84,11 @@
   version: 3.1.0
 
 - src: geerlingguy.daemonize
-  version: 1.1.1
+  version: 1.2.2
 
 - name: mailhog
   src: geerlingguy.mailhog
-  version: 2.1.1
+  version: 2.2.0
 
 - name: google-chrome
   src: mlangry.google-chrome

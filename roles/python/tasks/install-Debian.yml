@@ -13,5 +13,6 @@
       - libreadline6-dev
       - libsqlite3-dev
       - libssl-dev
+      - libffi-dev
       - python-setuptools
       - zlib1g-dev
