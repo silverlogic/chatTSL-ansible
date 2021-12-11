@@ -1,6 +1,6 @@
 ---
 - name: install system packages
-  apt: pkg={{ item }} state=installed update_cache=yes cache_valid_time={{ 60*60*24 }}
+  apt: pkg={{ item }} state=present update_cache=yes cache_valid_time={{ 60*60*24 }}
   with_items:
     - libxml2-dev
     - libxslt1-dev
