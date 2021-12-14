@@ -3,7 +3,7 @@
   hosts: db
   vars:
     mysql_packages:
-      - mariadb-server-10.1
+      - mariadb-server-10.3
       - mariadb-client
       - python-mysqldb
     mysql_databases:
