@@ -1,5 +1,5 @@
 - name: install epel-release
-  yum: name=epel-release state=installed
+  yum: name=epel-release state=present
 
 - name: install fail2ban
-  yum: name=fail2ban state=installed
+  yum: name=fail2ban state=present
