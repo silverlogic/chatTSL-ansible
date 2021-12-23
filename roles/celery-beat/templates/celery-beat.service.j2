@@ -5,8 +5,9 @@ After=network.target
 [Service]
 EnvironmentFile={{ celery_beat_service_env_file }}
 WorkingDirectory={{ celery_beat_dest }}
-ExecStart={{ celery_beat_virtualenv }}/bin/celery beat \
+ExecStart={{ celery_beat_virtualenv }}/bin/celery \
     --app {{ celery_beat_app }} \
+    beat \
     --schedule {{ celery_beat_schedule_file }} \
     --uid {{ celery_beat_user }} \
     --gid {{ celery_beat_group }} \
