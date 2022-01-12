@@ -60,7 +60,7 @@
 
 - name: rabbitmq
   src: silverlogic.rabbitmq
-  version: 1.4.4
+  version: 1.4.5
 
 - name: nginx
   src: jdauphant.nginx
