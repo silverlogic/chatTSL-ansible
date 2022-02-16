@@ -6,16 +6,21 @@ All commands are in the context of the new app directory.
 
 1. Generate an ssh key. `ssh-keygen -C ansible -f files/ssh/id_rsa`
 2. Fix all the places that have `TODO`.
-    - For the Vagrantfile IP addresses choose a [Private Network](https://en.wikipedia.org/wiki/Private_network).
+    - For the Vagrantfile or docker-compose IP addresses choose a [Private Network](https://en.wikipedia.org/wiki/Private_network).
       Try to ensure the entire project (not just this app) uses the same subnet and that no other projects are already
-      using the same subnet.  For example if I chose `192.168.12.0/24` the vagrant IPs might look like
+      using the same subnet. You can check the [List of used IPs](https://app.tettra.co/teams/TSL/pages/list-of-used-ips).
+      For example if I chose `192.168.12.0/24` the vagrant IPs might look like
 
       ```
       db_ip: '192.168.12.11',
       amqp_ip: '192.168.12.12',
       web_ip: '192.168.12.13'
       ```
-3. Add the IP addresses set in step 2. to the development hosts file: `environments/development/hosts`
+3. Add the IP addresses set in step 2. to the development hosts file: `environments/development/hosts` and `environments/docker/hosts`
+
+## Docker commands
+
+Check [Tettra tsl-docker](https://app.tettra.co/teams/TSL/pages/tsl-docker)
 
 ## Going Live!
 

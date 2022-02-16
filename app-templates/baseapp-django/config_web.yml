@@ -21,10 +21,10 @@
     - { role: server-common, tags: [ server ] }
     - { role: monitoring-common, tags: [ monitoring ] }
 
-    - { role: swapfile, swapfile_size: 1G, tags: [server] }
+    - { role: swapfile, swapfile_size: 1G, tags: [server], when: not is_docker }
 
     - { role: git, tags: [ app ] }
-    - { role: nginx, tags: [ app,nginx ] }
+    - { role: nginx, tags: [ app,nginx ], when: not is_docker }
     - { role: python, tags: [ app,deploy ] }
     - { role: django, tags: [ app,deploy ] }
     

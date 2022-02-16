@@ -5,3 +5,4 @@
     regexp: \$PreserveFQDN
     insertbefore: BOF
     state: present
+  when: not is_docker

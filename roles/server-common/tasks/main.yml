@@ -20,6 +20,7 @@
 
 - import_role:
     name: sshd
+  when: not is_docker
   tags:
     - sshd
 
@@ -30,6 +31,7 @@
 
 - import_role:
     name: ntp
+  when: not is_docker
   tags:
     - ntp
 
@@ -41,5 +43,7 @@
 - name: maybe install esl-erlang
   apt:
     deb: '{{ erlang_nox_deb }}'
-  when: component_name == 'amqp'
+  when:
+    - component_name == 'amqp'
+    - not is_docker
   ignore_errors: yes  # Can fail for projects already using erlang-base-hipe

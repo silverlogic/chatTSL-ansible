@@ -1,0 +1,4 @@
+env: 'development'
+is_live_env: false
+is_docker: true  # TODO: check if works here (maybe remove)
+redis_travis_ci: true  # Workaround for redis do not run sysctl command

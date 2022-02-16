@@ -135,6 +135,8 @@
 
 - name: ensure service files are up to date
   shell: systemctl daemon-reload
+  when: not is_docker
 
 - name: ensure django service is started & enabled
   service: name={{ django_service }} state=started enabled=yes
+  when: not is_docker

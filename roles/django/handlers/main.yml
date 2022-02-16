@@ -1,3 +1,4 @@
 ---
 - name: restart django
   service: name={{ django_service }} state=restarted
+  when: not is_docker

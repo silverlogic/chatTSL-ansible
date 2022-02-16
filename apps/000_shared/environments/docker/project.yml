@@ -1,0 +1,2 @@
+---
+project_domain: '{{ project_full_name }}.local'
