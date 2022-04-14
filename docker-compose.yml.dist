@@ -3,48 +3,28 @@ version: "3.9"
 # Copy this file to docker-compose.yml
 # Replace TODO by project short name
 # Replace TODO_PROJECT_FOLDER by ips to the containers (e.g. apps/api)
-# Replace TODO_NETWORK by ips to the containers (e.g. 172.30.1.13)
-# Replace TODO_NETWORK_SUBNET by a subnet for the ips (e.g. 172.30.1.0/24)
-# And then, update https://app.tettra.co/teams/TSL/pages/list-of-used-ips
+# Replace TODO_BACKEND_FOLDER_NAME by the path to the django project (e.g. ../spp-backend-django)
 
 services:
 
   amqp:
     build: TODO_PROJECT_FOLDER
     container_name: TODO_amqp
-    networks:
-      TODO:
-        ipv4_address: TODO_NETWORK
 
   db:
     build: TODO_PROJECT_FOLDER
     container_name: TODO_db
     entrypoint: bash /entrypoints/always.sh /entrypoints/db.sh
-    networks:
-      TODO:
-        ipv4_address: TODO_NETWORK
 
   redis:
     build: TODO_PROJECT_FOLDER
     container_name: TODO_redis
-    networks:
-      TODO:
-        ipv4_address: TODO_NETWORK
 
   web:
     build: TODO_PROJECT_FOLDER
     container_name: TODO_web
     entrypoint: bash /entrypoints/always.sh /entrypoints/web.sh
+    ports:
+      - "8000:8000"
     volumes:
       - ../TODO_BACKEND_FOLDER_NAME:/src
-    networks:
-      TODO:
-        ipv4_address: TODO_NETWORK
-
-networks:
-  TODO:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: TODO_NETWORK_SUBNET
