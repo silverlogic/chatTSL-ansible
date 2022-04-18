@@ -13,6 +13,7 @@
       key_file: '{{ phpapp_git_ssh_key }}'
       accept_hostkey: yes
       force: yes
+      ssh_opts: '-o ServerAliveInterval=600 -o TCPKeepAlive=yes -o IPQoS=cs0'
 
   - name: install php dependencies
     composer:

@@ -58,6 +58,7 @@
       key_file: '{{ django_ssh_key }}'
       accept_hostkey: yes
       force: yes
+      ssh_opts: '-o ServerAliveInterval=600 -o TCPKeepAlive=yes -o IPQoS=cs0'
     notify:
       - restart django
     when: django_use_git_clone

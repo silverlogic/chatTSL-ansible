@@ -35,6 +35,7 @@
       key_file: '{{ wordpress_ssh_key }}'
       accept_hostkey: yes
       force: yes
+      ssh_opts: '-o ServerAliveInterval=600 -o TCPKeepAlive=yes -o IPQoS=cs0'
     when: wordpress_use_git_clone
 
   - name: ensure uploads is writable by group

@@ -37,6 +37,7 @@
       key_file: '{{ flower_ssh_key }}'
       accept_hostkey: yes
       force: yes
+      ssh_opts: '-o ServerAliveInterval=600 -o TCPKeepAlive=yes -o IPQoS=cs0'
     notify:
       - restart flower
     when: flower_use_git_clone

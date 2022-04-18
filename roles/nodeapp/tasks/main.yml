@@ -32,6 +32,7 @@
       key_file: '{{ nodeapp_ssh_key }}'
       accept_hostkey: yes
       force: yes
+      ssh_opts: '-o ServerAliveInterval=600 -o TCPKeepAlive=yes -o IPQoS=cs0'
     register: nodeapp_git_revision
     when: nodeapp_use_git_clone
     notify:
