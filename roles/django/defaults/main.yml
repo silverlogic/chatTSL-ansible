@@ -34,7 +34,7 @@ django_sock: '/run/{{ django_user }}/{{ django_user }}.sock'
 # gunicorn config
 django_gunicorn_dev_reload: false
 django_gunicorn_workers: '{{ ansible_processor_cores * 2 + 1 }}'
-django_gunicorn_worker_class: 'sync'
+django_gunicorn_worker_class: '{% if django_websocket is not defined %}sync{% elif django_websocket %}uvicorn.workers.UvicornWorker{% else %}sync{% endif %}'
 django_gunicorn_worker_connections: 1000  # Only affects eventlet/gevent workers
 django_gunicorn_timeout: 30
 django_gunicorn_graceful_timeout: 30

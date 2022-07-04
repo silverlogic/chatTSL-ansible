@@ -17,6 +17,7 @@
     django_superuser_email: '{{ app_django_superuser_email }}'
     django_superuser_password: '{{ app_django_superuser_password }}'
     django_conf_env: '{{ app_web_conf_env }}'
+    django_websocket: '{{ app_django_websocket }}'
   roles:
     - { role: server-common, tags: [ server ] }
     - { role: monitoring-common, tags: [ monitoring ] }

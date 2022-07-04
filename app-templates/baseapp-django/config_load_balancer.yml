@@ -11,6 +11,7 @@
       - domains:
         - '{{ app_domain }}'
     nginx_sites: '{{ app_load_balancer_nginx_sites }}'
+    django_websocket: '{{ app_django_websocket }}'
   roles:
     - { role: server-common, tags: [ server ] }
     - { role: monitoring-common, tags: [ monitoring ] }

@@ -7,7 +7,7 @@ EnvironmentFile={{ django_service_env_file }}
 WorkingDirectory={{ django_dest }}
 ExecStartPre=/bin/mkdir -p {{ django_sock|dirname }}
 ExecStartPre=/bin/chown {{ django_user }}:{{ django_group }} {{ django_sock|dirname }}
-ExecStart={{ django_virtualenv }}/bin/gunicorn apps.wsgi:application \
+ExecStart={{ django_virtualenv }}/bin/gunicorn apps.{% if django_websocket is not defined %}wsgi{% elif django_websocket %}asgi{% else %}wsgi{% endif %}:application \
       --name {{ django_user }} \
       --user {{ django_user }} \
       --group {{ django_group }} \

@@ -15,6 +15,10 @@ server {
     client_max_body_size 150M;
 
     location / {
+        {% if django_websocket %}
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        {% endif %}
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Protocol $scheme;
         proxy_set_header Host $http_host;
