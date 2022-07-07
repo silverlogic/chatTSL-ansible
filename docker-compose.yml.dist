@@ -15,10 +15,13 @@ services:
     build: TODO_PROJECT_FOLDER
     container_name: TODO_db
     entrypoint: bash /entrypoints/always.sh /entrypoints/db.sh
+    ports:
+      - "5432:5432"
 
   redis:
     build: TODO_PROJECT_FOLDER
     container_name: TODO_redis
+    entrypoint: bash /entrypoints/always.sh /entrypoints/redis.sh
 
   web:
     build: TODO_PROJECT_FOLDER
