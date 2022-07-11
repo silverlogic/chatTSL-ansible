@@ -14,3 +14,9 @@
 - include_tasks: profile.yml
   loop: '{{ pg_dump_backup_profiles }}'
 
+- name: create restore script
+  template:
+    src: 'restore.sh.j2'
+    dest: '/opt/pg_dump_backup/restore.sh'
+    mode: '0700'
+  
