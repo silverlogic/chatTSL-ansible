@@ -3,8 +3,8 @@ sshd_skip_defaults: yes
 sshd_authorized_principals:
   root:
     - root-everywhere
-    - team-TODO
-    - team-TODO-{{ env }}
+    - team-mars
+    - team-mars{{ env }}
     - proj-{{ project_code_name }}
     - proj-{{ project_code_name }}-{{ env }}
 sshd_trusted_user_ca_keys:

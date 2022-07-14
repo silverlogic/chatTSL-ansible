@@ -41,10 +41,10 @@
   - name: install dependencies
     include_tasks: 'install-deps-yarn.yml'
 
-  - name: create settings.json
+  - name: create .env
     template:
-      src: settings.json.j2
-      dest: '{{ nextjs_dest }}/config/settings.json'
+      src: env.j2
+      dest: '{{ nextjs_dest }}/.env'
       mode: 0644
     notify:
       - restart nextjs
