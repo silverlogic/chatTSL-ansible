@@ -1,0 +1,2 @@
+[web]
+webapp001-webapp.littlebirds.me ansible_ssh_host=134.122.7.108

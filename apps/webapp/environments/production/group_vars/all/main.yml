@@ -1,0 +1,7 @@
+---
+app_version: 'master'
+
+# conf env
+app_facebook_app_id: ''
+app_sentry_dsn: ''
+app_sentry_public_dsn: ''
