@@ -1,0 +1,16 @@
+[db]
+172.20.6.10
+[amqp]
+172.20.6.11
+[load-balancer]
+
+[web]
+172.20.6.13
+[worker]
+172.20.6.14
+[worker-monitor]
+172.20.6.15
+[scheduler]
+172.20.6.16
+[redis]
+172.20.6.12

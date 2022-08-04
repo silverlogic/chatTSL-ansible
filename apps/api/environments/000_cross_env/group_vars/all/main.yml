@@ -1,0 +1,83 @@
+---
+# App
+app_name: 'api' # eg. api
+app_user: '{{ app_name }}'
+app_repo: 'git@bitbucket.org:silverlogic/baseapp-django-v2.git' # the bitbucket repo
+app_domain: '{{ api_domain }}' # eg. {{ api_domain }}
+app_worker_monitor_domain: 'worker-monitor.{{ app_domain }}'
+app_use_ssl: true
+app_url: '{{ app_use_ssl | ternary("https", "http") }}://{{ app_domain }}'
+
+# Networking
+private_interface_ansible_name: 'ansible_{{ private_interface_name }}'
+
+# Services
+app_aws_storage_bucket_name: '{{ project_full_name }}-{{ app_name }}-{{ env }}'
+
+# Database
+app_db_host: "{{ hostvars[groups['db'][0]][private_interface_ansible_name].ipv4.address }}"
+app_db_name: '{{ app_name }}'
+app_db_user: '{{ app_name }}'
+
+# AMQP
+app_amqp_host: "{{ hostvars[groups['amqp'][0]][private_interface_ansible_name].ipv4.address }}"
+app_amqp_vhost: '{{ app_name }}'
+app_amqp_user: '{{ app_name }}'
+
+# Redis
+app_is_redis_present: "{{ groups['redis'] | default([]) | length | bool }}"
+app_redis_host: "{% if app_is_redis_present %}{{ hostvars[groups['redis'][0]][private_interface_ansible_name].ipv4.address }}{% endif %}"
+app_redis_port: 6379
+
+# Django
+app_django_websocket: false
+app_django_superuser_email: 'admin@tsl.io'
+app_django_conf_env:
+  DJANGO_SETTINGS_MODULE: '{{ app_django_settings_module }}'
+  SECRET_KEY: '{{ app_django_secret_key }}'
+  DATABASE_URL: 'postgres://{{ app_db_user }}:{{ app_db_password }}@{{ app_db_host }}/{{ app_db_name }}'
+  REDIS_URL: '{% if app_is_redis_present %}redis://:{{ app_redis_password }}@{{ app_redis_host }}:{{ app_redis_port }}{% endif %}'
+  CELERY_BROKER_URL: 'amqp://{{ app_amqp_user }}:{{ app_amqp_password }}@{{ app_amqp_host }}/{{ app_amqp_vhost }}'
+  DEFAULT_FROM_EMAIL: '{{ project_verbose_name }}<noreply@{{ project_domain }}>'
+  EMAIL_HOST: '{{ app_email_host }}'
+  EMAIL_HOST_USER: '{{ app_email_username }}'
+  EMAIL_HOST_PASSWORD: '{{ app_email_password }}'
+  EMAIL_PORT: '{{ app_email_port }}'
+  EMAIL_USE_TLS: '{{ app_email_use_tls }}'
+  AWS_ACCESS_KEY_ID: '{{ app_aws_access_key_id }}'
+  AWS_SECRET_ACCESS_KEY: '{{ app_aws_secret_access_key }}'
+  AWS_STORAGE_BUCKET_NAME: '{{ app_aws_storage_bucket_name }}'
+  SENTRY_DSN: '{{ app_sentry_dsn }}'
+  SENTRY_ENVIRONMENT: '{{ env }}'
+  BRANCHIO_KEY: '{{ app_branchio_key }}'
+  URL: '{{ app_url }}'
+  FRONT_URL: '{{ webapp_url }}'
+
+# Load balancer
+app_is_load_balanced: "{{ groups['load-balancer'] | default([]) | length | bool }}"
+app_load_balancer_nginx_sites:
+  load_balancer:
+    template: 'nginx/load-balancer.conf.j2'
+
+# Web
+app_web_nginx_sites:
+  app:
+    template: 'nginx/web.conf.j2'
+app_web_base_conf_env: {}
+app_web_conf_env: '{{ app_django_conf_env | combine(app_web_base_conf_env) }}'
+
+# Worker
+app_worker_base_conf_env: {}
+app_worker_conf_env: '{{ app_django_conf_env | combine(app_worker_base_conf_env) }}'
+
+# Worker Monitor
+app_worker_monitor_username: 'admin'
+app_worker_monitor_nginx_sites:
+  app:
+    template: 'nginx/worker-monitor.conf.j2'
+app_worker_monitor_base_conf_env: {}
+app_worker_monitor_conf_env: '{{ app_django_conf_env | combine(app_worker_monitor_base_conf_env) }}'
+
+# Scheduler
+app_scheduler_base_conf_env: {}
+app_scheduler_conf_env: '{{ app_django_conf_env | combine(app_scheduler_base_conf_env) }}'

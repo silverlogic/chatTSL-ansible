@@ -1,0 +1,10 @@
+---
+- import_playbook: 'config_db.yml'
+# TODO: uncomment if you want to use redis or websockets
+# - import_playbook: 'config_redis.yml'
+- import_playbook: 'config_amqp.yml'
+- import_playbook: 'config_load_balancer.yml'
+- import_playbook: 'config_web.yml'
+- import_playbook: 'config_worker.yml'
+- import_playbook: 'config_worker_monitor.yml'
+- import_playbook: 'config_scheduler.yml'

@@ -1,0 +1,36 @@
+---
+# App
+app_version: 'master'
+
+# Networking
+private_interface: '{{ ansible_eth1 }}'
+private_interface_name: 'eth1'
+
+# Services
+app_aws_access_key_id: '{{ vault_app_aws_access_key_id }}'
+app_aws_secret_access_key: '{{ vault_app_aws_secret_access_key }}'
+app_email_username: 'apikey'
+app_email_password: '{{ vault_app_email_password }}'  # API key
+app_email_host: 'smtp.sendgrid.net'
+app_email_port: '587'
+app_email_use_tls: true
+app_sentry_dsn: 'TODO'
+app_branchio_key: '{{ vault_app_branchio_key }}'
+
+# Database
+app_db_password: '{{ vault_app_db_password }}'
+
+# AMQP
+app_amqp_password: '{{ vault_app_amqp_password }}'
+
+# Redis
+app_redis_password: '{{ vault_app_redis_password }}'
+
+# Django
+app_django_requirements_txt: 'requirements/live.txt'
+app_django_superuser_password: '{{ vault_app_django_superuser_password }}'
+app_django_settings_module: 'settings.live'
+app_django_secret_key: '{{ vault_app_django_secret_key }}'
+
+# Worker Monitor
+app_worker_monitor_password: '{{ vault_app_worker_monitor_password }}'

@@ -1,0 +1,19 @@
+---
+component_name: 'db'
+
+postgresql_version: '12'
+postgresql_ext_postgis_version: '3'
+
+# Logging
+postgresql_log_destination: 'syslog'
+postgresql_log_checkpoints: yes
+postgresql_log_connections: yes
+postgresql_log_disconnections: yes
+postgresql_log_duration: no
+postgresql_log_statement:  'mod'
+postgresql_log_min_duration_statement: 250
+postgresql_syslog_split_messages: no
+
+# Planner Cost Constants
+postgresql_seq_page_cost: 1.0  # measured on an arbitrary scale
+postgresql_random_page_cost: 1.0 # same scale as above, for SSD they are both the same.

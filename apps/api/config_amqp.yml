@@ -1,0 +1,22 @@
+---
+- name: configure amqp
+  hosts: amqp
+  vars:
+    rabbitmq_ssl: no
+    rabbitmq_conf_tcp_listeners_address: '{{ private_interface.ipv4.address }}'
+    rabbitmq_os_package: true
+    rabbitmq_plugins:
+      - 'rabbitmq_management'
+    rabbitmq_vhost_definitions:
+      - name: '{{ app_amqp_vhost }}'
+    rabbitmq_users_definitions:
+      - vhost: '{{ app_amqp_vhost }}'
+        user: '{{ app_amqp_user }}'
+        password: '{{ app_amqp_password }}'
+        tags:
+          - 'monitoring'
+  roles:
+    - { role: server-common, tags: [ server ] }
+    - { role: monitoring-common, tags: [ monitoring ] }
+
+    - { role: rabbitmq, tags: [ app ] }

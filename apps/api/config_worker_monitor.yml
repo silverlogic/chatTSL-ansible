@@ -1,0 +1,35 @@
+---
+- name: collect related component facts
+  hosts: db:amqp
+  tasks: []
+
+- name: configure worker monitor
+  hosts: worker-monitor
+  vars:
+    loggly_for_nginx: yes
+
+    # For live servers
+    certbot_certs:
+      - domains:
+        - '{{ app_worker_monitor_domain }}'
+
+    nginx_sites: '{{ app_worker_monitor_nginx_sites }}'
+
+    flower_user: '{{ app_user }}'
+    flower_repo: '{{ app_repo }}'
+    flower_branch: '{{ app_version }}'
+    flower_use_git_clone: '{{ is_live_env }}'
+    flower_username: '{{ app_worker_monitor_username }}'
+    flower_password: '{{ app_worker_monitor_password }}'
+    flower_conf_env: '{{ app_worker_monitor_conf_env }}'
+  roles:
+    - { role: server-common, tags: [ server ] }
+    - { role: monitoring-common, tags: [ monitoring ] }
+
+    - { role: swapfile, swapfile_size: 1G, tags: [server] }
+
+    - { role: git, tags: [ app ] }
+    - { role: certbot, tags: [ app,certbot ], when: is_live_env and app_use_ssl }
+    - { role: nginx, tags: [ app,nginx ] }
+    - { role: python, tags: [ app,deploy ] }
+    - { role: flower, tags: [ app,deploy ] }
