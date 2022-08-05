@@ -1,0 +1,213 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'yaml'
+
+ANSIBLE_PATH = __dir__
+project_config_file = File.join(ANSIBLE_PATH, 'environments', 'development', 'group_vars', 'all', '000_shared', '000_cross_env', 'project.yml')
+project_config = YAML.load_file(project_config_file)
+app_config_file = File.join(ANSIBLE_PATH, 'environments', '000_cross_env', 'group_vars', 'all', 'main.yml')
+app_config = YAML.load_file(app_config_file)
+python_config_file = File.join(ANSIBLE_PATH, 'environments', '000_cross_env', 'group_vars', 'all', 'python.yml')
+python_config = YAML.load_file(python_config_file)
+
+CONFIG = {
+  code_path: "../../../baseapp-django-v2",
+  db_ip: '172.20.6.10',
+  amqp_ip: '172.20.6.11',
+  redis_ip: '172.20.6.12',
+  web_ip: '172.20.6.13',
+  worker_ip: '172.20.6.14',
+  worker_monitor_ip: '172.20.6.15',
+  scheduler_ip: '172.20.6.16',
+  project_full_name: project_config['project_full_name'],
+  app_name: app_config['app_name'],
+  python_version: python_config['python_version'],
+}
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/debian10"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  if not Vagrant.has_plugin? 'vagrant-vbguest'
+    fail_with_message "vagrant-vbguest plugin missing.  Please install it with this command:\nvagrant plugin install vagrant-vbguest"
+  end
+
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.default_prefix = "#{CONFIG[:project_full_name]}-"
+  end
+
+  config.vm.define "db" do |machine|
+    machine.vm.hostname = "#{CONFIG[:app_name]}-db"
+    machine.vm.network "private_network", ip: CONFIG[:db_ip]
+
+    machine.vm.provider "virtualbox" do |v|
+      v.name = "#{CONFIG[:project_full_name]}-#{machine.vm.hostname}"
+      v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
+    end
+
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
+    machine.vm.provision "ansible" do |ansible|
+      ansible.playbook = File.join(ANSIBLE_PATH, 'config_db.yml')
+      ansible.inventory_path = './environments/development'
+      ansible.become = true
+      ansible.become_user = 'root'
+    end
+  end
+
+  config.vm.define "amqp" do |machine|
+    machine.vm.hostname = "#{CONFIG[:app_name]}-amqp"
+    machine.vm.network "private_network", ip: CONFIG[:amqp_ip]
+
+    machine.vm.provider "virtualbox" do |v|
+      v.name = "#{CONFIG[:project_full_name]}-#{machine.vm.hostname}"
+      v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
+    end
+
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
+    machine.vm.provision "ansible" do |ansible|
+      ansible.playbook = File.join(ANSIBLE_PATH, 'config_amqp.yml')
+      ansible.inventory_path = './environments/development'
+      ansible.become = true
+      ansible.become_user = 'root'
+    end
+  end
+
+  config.vm.define "redis" do |machine|
+    machine.vm.hostname = "#{CONFIG[:app_name]}-redis"
+    machine.vm.network "private_network", ip: CONFIG[:redis_ip]
+
+    machine.vm.provider "virtualbox" do |v|
+      v.name = "#{CONFIG[:project_full_name]}-#{machine.vm.hostname}"
+      v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
+    end
+
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
+    machine.vm.provision "ansible" do |ansible|
+      ansible.playbook = File.join(ANSIBLE_PATH, 'config_redis.yml')
+      ansible.inventory_path = './environments/development'
+      ansible.become = true
+      ansible.become_user = 'root'
+    end
+  end
+
+  config.vm.define "web" do |machine|
+    machine.vm.hostname = "#{CONFIG[:app_name]}-web"
+    machine.vm.network "private_network", ip: CONFIG[:web_ip]
+    machine.vm.synced_folder CONFIG[:code_path], "/opt/#{CONFIG[:app_name]}/site"
+
+    machine.vm.provider "virtualbox" do |v|
+      v.name = "#{CONFIG[:project_full_name]}-#{machine.vm.hostname}"
+      v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
+    end
+
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
+    # UML Generator requirements
+    machine.vm.provision "shell",
+		inline: "sudo apt-get update; sudo apt-get install -y python-pydot python-pydot-ng graphviz graphviz-dev libgraphviz-dev"
+    machine.vm.provision "ansible" do |ansible|
+      ansible.playbook = File.join(ANSIBLE_PATH, 'config_web.yml')
+      ansible.inventory_path = './environments/development'
+      ansible.extra_vars = {
+          'app_db_host': CONFIG[:db_ip],
+          'app_amqp_host': CONFIG[:amqp_ip],
+          'app_redis_host': CONFIG[:redis_ip],
+      }
+      ansible.become = true
+      ansible.become_user = 'root'
+    end
+
+    machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv-#{CONFIG[:python_version]}/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
+    machine.vm.provision "shell", inline: "sudo chmod -R 777 /opt/api/logs"
+  end
+
+  config.vm.define "worker" do |machine|
+    machine.vm.hostname = "#{CONFIG[:app_name]}-worker"
+    machine.vm.network "private_network", ip: CONFIG[:worker_ip]
+    machine.vm.synced_folder CONFIG[:code_path], "/opt/#{CONFIG[:app_name]}/site"
+
+    machine.vm.provider "virtualbox" do |v|
+      v.name = "#{CONFIG[:project_full_name]}-#{machine.vm.hostname}"
+      v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
+    end
+
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
+    # UML Generator requirements
+    machine.vm.provision "shell",
+		inline: "sudo apt-get update; sudo apt-get install -y python-pydot python-pydot-ng graphviz graphviz-dev libgraphviz-dev"
+    machine.vm.provision "ansible" do |ansible|
+      ansible.playbook = File.join(ANSIBLE_PATH, 'config_worker.yml')
+      ansible.inventory_path = './environments/development'
+      ansible.extra_vars = {
+          'app_db_host': CONFIG[:db_ip],
+          'app_amqp_host': CONFIG[:amqp_ip],
+          'app_redis_host': CONFIG[:redis_ip],
+      }
+      ansible.become = true
+      ansible.become_user = 'root'
+    end
+
+    machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv-#{CONFIG[:python_version]}/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
+  end
+
+  config.vm.define "worker-monitor" do |machine|
+    machine.vm.hostname = "#{CONFIG[:app_name]}-worker-monitor"
+    machine.vm.network "private_network", ip: CONFIG[:worker_monitor_ip]
+    machine.vm.synced_folder CONFIG[:code_path], "/opt/#{CONFIG[:app_name]}/site"
+
+    machine.vm.provider "virtualbox" do |v|
+      v.name = "#{CONFIG[:project_full_name]}-#{machine.vm.hostname}"
+      v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
+    end
+
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
+    machine.vm.provision "ansible" do |ansible|
+      ansible.playbook = File.join(ANSIBLE_PATH, 'config_worker_monitor.yml')
+      ansible.inventory_path = './environments/development'
+      ansible.extra_vars = {
+          'app_db_host': CONFIG[:db_ip],
+          'app_amqp_host': CONFIG[:amqp_ip],
+          'app_redis_host': CONFIG[:redis_ip],
+      }
+      ansible.become = true
+      ansible.become_user = 'root'
+    end
+
+    machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv-#{CONFIG[:python_version]}/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
+  end
+
+  config.vm.define "scheduler" do |machine|
+    machine.vm.hostname = "#{CONFIG[:app_name]}-scheduler"
+    machine.vm.network "private_network", ip: CONFIG[:scheduler_ip]
+    machine.vm.synced_folder CONFIG[:code_path], "/opt/#{CONFIG[:app_name]}/site"
+
+    machine.vm.provider "virtualbox" do |v|
+      v.name = "#{CONFIG[:project_full_name]}-#{machine.vm.hostname}"
+      v.customize ["modifyvm", :id, "--groups", "/#{CONFIG[:project_full_name]}"]
+    end
+
+    machine.vm.provision "shell", inline: "sudo apt-get install -y acl"
+    # UML Generator requirements
+    machine.vm.provision "shell",
+		inline: "sudo apt-get update; sudo apt-get install -y python-pydot python-pydot-ng graphviz graphviz-dev libgraphviz-dev"
+    machine.vm.provision "ansible" do |ansible|
+      ansible.playbook = File.join(ANSIBLE_PATH, 'config_scheduler.yml')
+      ansible.inventory_path = './environments/development'
+      ansible.extra_vars = {
+          'app_db_host': CONFIG[:db_ip],
+          'app_amqp_host': CONFIG[:amqp_ip],
+          'app_redis_host': CONFIG[:redis_ip],
+      }
+      ansible.become = true
+      ansible.become_user = 'root'
+    end
+
+    machine.vm.provision "shell", inline: "echo 'cd /opt/#{CONFIG[:app_name]}; source env.sh; source venv-#{CONFIG[:python_version]}/bin/activate; cd site' > /home/vagrant/dev; chmod +x /home/vagrant/dev"
+  end
+
+end
+
+
+def fail_with_message(msg)
+  fail Vagrant::Errors::VagrantError.new, msg
+end

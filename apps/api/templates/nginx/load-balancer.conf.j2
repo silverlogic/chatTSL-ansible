@@ -1,0 +1,62 @@
+upstream app {
+    {% for host_name in groups['web'] %}
+    {% set host = hostvars[host_name] %}
+    server {{ host[private_interface_ansible_name].ipv4.address }}:80;
+    {% endfor %}
+}
+
+server {
+    server_name _ default;
+
+    listen 80;
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384";
+
+    return 444;
+}
+
+server {
+    server_name {{ app_domain }};
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/{{ app_domain }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ app_domain }}/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384";
+
+    client_max_body_size 150M;
+
+    location /.well-known/acme-challenge/ {
+        proxy_pass http://localhost:8888;
+    }
+
+    location / {
+        {% if django_websocket %}
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        {% endif %}
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Protocol $scheme;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_pass http://app;
+        break;
+    }
+}
+
+server {
+    server_name {{ app_domain }};
+    listen 80;
+
+    location /.well-known/acme-challenge/ {
+        proxy_pass http://localhost:8888;
+    }
+
+    location / {
+        return 301 https://{{ app_domain }}$request_uri;
+    }
+}

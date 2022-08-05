@@ -1,0 +1,25 @@
+---
+- name: collect related component facts
+  hosts: db:amqp
+  tasks: []
+
+- name: configure worker
+  hosts: worker
+  vars:
+    celery_user: '{{ app_user }}'
+    celery_repo: '{{ app_repo }}'
+    celery_branch: '{{ app_version }}'
+    celery_use_git_clone: '{{ is_live_env }}'
+    celery_requirements_txt: '{{ app_django_requirements_txt }}'
+    celery_conf_env: '{{ app_worker_conf_env }}'
+  roles:
+    - { role: server-common, tags: [ server ] }
+    - { role: monitoring-common, tags: [ monitoring ] }
+
+    - { role: swapfile, swapfile_size: 1G, tags: [server] }
+
+    - { role: git, tags: [ app ] }
+    - { role: python, tags: [ app,deploy ] }
+    - { role: celery, tags: [ app,deploy ] }
+    
+    - { role: google-chrome, tags: [ app ] }

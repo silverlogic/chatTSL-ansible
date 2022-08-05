@@ -1,0 +1,33 @@
+version: "3.9"
+
+# Copy this file to docker-compose.yml
+# Replace TODO by project short name
+# Replace TODO_PROJECT_FOLDER by ips to the containers (e.g. apps/api)
+# Replace TODO_BACKEND_FOLDER_NAME by the path to the django project (e.g. ../spp-backend-django)
+
+services:
+
+  amqp:
+    build: apps/api
+    container_name: lb_amqp
+
+  db:
+    build: apps/api
+    container_name: lb_db
+    entrypoint: bash /entrypoints/always.sh /entrypoints/db.sh
+    ports:
+      - "5432:5432"
+
+  redis:
+    build: apps/api
+    container_name: lb_redis
+    entrypoint: bash /entrypoints/always.sh /entrypoints/redis.sh
+
+  web:
+    build: apps/api
+    container_name: lb_web
+    entrypoint: bash /entrypoints/always.sh /entrypoints/web.sh
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../baseapp-django-v2:/src

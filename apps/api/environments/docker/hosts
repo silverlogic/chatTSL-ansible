@@ -1,0 +1,25 @@
+# Replace TODO by the short name of the project (same as in the docker-compose.yml)
+
+[db]
+lb_db
+
+[amqp]
+lb_amqp
+
+[load-balancer]
+lb_load_balancer
+
+[web]
+lb_web
+
+[worker]
+lb_worker
+
+[worker-monitor]
+lb_worker_monitor
+
+[scheduler]
+lb_scheduler
+
+[redis]
+lb_redis

@@ -1,0 +1,32 @@
+---
+- name: collect related component facts
+  hosts: db:amqp:redis
+  tasks: []
+
+- name: configure web
+  hosts: web
+  vars:
+    loggly_for_nginx: yes
+    nginx_sites: '{{ app_web_nginx_sites }}'
+
+    django_user: '{{ app_user }}'
+    django_repo: '{{ app_repo }}'
+    django_branch: '{{ app_version }}'
+    django_use_git_clone: '{{ is_live_env }}'
+    django_requirements_txt: '{{ app_django_requirements_txt }}'
+    django_superuser_email: '{{ app_django_superuser_email }}'
+    django_superuser_password: '{{ app_django_superuser_password }}'
+    django_conf_env: '{{ app_web_conf_env }}'
+    django_websocket: '{{ app_django_websocket }}'
+  roles:
+    - { role: server-common, tags: [ server ] }
+    - { role: monitoring-common, tags: [ monitoring ] }
+
+    - { role: swapfile, swapfile_size: 1G, tags: [server], when: not is_docker }
+
+    - { role: git, tags: [ app ] }
+    - { role: nginx, tags: [ app,nginx ], when: not is_docker }
+    - { role: python, tags: [ app,deploy ] }
+    - { role: django, tags: [ app,deploy ] }
+    
+    - { role: google-chrome, tags: [ app ] }

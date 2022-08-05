@@ -1,0 +1,90 @@
+- name: deploy <TODO:app_name>
+  description: ''
+  group: staging
+  executionEnabled: true
+  loglevel: INFO
+  options:
+  - description: Ansible tags
+    name: ansible-tags
+    required: true
+    value: deploy
+  - description: Branch, Commit SHA, or tag
+    name: version
+    required: true
+    value: master
+  - name: ansible-vault-password
+    secure: true
+    storagePath: keys/clients/<TODO:project_full_name>/ansible-vault-staging
+    valueExposed: true
+  scheduleEnabled: false
+  sequence:
+    commands:
+    - description: Clone playbooks
+      interpreterArgsQuoted: false
+      script: |-
+        rm -rf "@job.project@-@job.id@-playbooks"
+        git clone git@bitbucket.org:silverlogic/<TODO:project_code_name>-ansible.git "@job.project@-@job.id@-playbooks"
+      scriptInterpreter: bash
+    - description: Install ansible
+      interpreterArgsQuoted: false
+      script: |-
+        cd "@job.project@-@job.id@-playbooks"
+        reqtxt_checksum="$(sha256sum requirements.txt | awk '{print $1}')"
+        if [ -d "../venv-cache/$reqtxt_checksum" ]; then
+          echo "found virtual environment cache"
+        else
+          echo "creating virtual environment cache"
+          virtualenv -p /usr/bin/python ../venv-cache/$reqtxt_checksum
+          source ../venv-cache/$reqtxt_checksum/bin/activate
+          pip install -U pip setuptools
+          pip install -r requirements.txt
+        fi
+        ln -s ../venv-cache/$reqtxt_checksum venv
+      scriptInterpreter: bash
+    - description: Install playbook requirements.yml
+      interpreterArgsQuoted: false
+      script: |-
+        cd "@job.project@-@job.id@-playbooks"
+        reqyml_checksum="$(sha256sum requirements.yml | awk '{print $1}')"
+        if [ -d "../ansible-galaxy-cache/$reqyml_checksum" ]; then
+          echo "found role cache"
+          mkdir -p vendor
+          cp -r ../ansible-galaxy-cache/$reqyml_checksum vendor/roles
+        else
+          source venv/bin/activate
+          ansible-galaxy install -r requirements.yml
+          echo "creating role cache"
+          cp -r vendor/roles ../ansible-galaxy-cache/$reqyml_checksum
+        fi
+      scriptInterpreter: bash
+    - description: create vault password file
+      interpreterArgsQuoted: false
+      script: |-
+        cd "@job.project@-@job.id@-playbooks"
+        echo "$RD_OPTION_ANSIBLE_VAULT_PASSWORD" > vault-password
+      scriptInterpreter: bash
+    - description: Run the playbook
+      interpreterArgsQuoted: false
+      script: |-
+        cd "@job.project@-@job.id@-playbooks"
+        source venv/bin/activate
+        cd "apps/<TODO:app_name>"
+        export ANSIBLE_HOST_KEY_CHECKING=False
+        eval $(ssh-agent)
+        ansible-playbook config_all.yml -i environments/staging -t "@option.ansible-tags@" -e "app_version=@option.version@" --vault-id="../../vault-password"
+      scriptInterpreter: bash
+    - description: Clean up playbooks
+      script: rm -rf "@job.project@-@job.id@-playbooks"
+    keepgoing: true
+    strategy: node-first
+  # notification:
+  #   onfailure:
+  #     plugin:
+  #       configuration:
+  #         webhook_url: <TODO:slack_webhook_url>
+  #       type: SlackNotification
+  #   onsuccess:
+  #     plugin:
+  #       configuration:
+  #         webhook_url: <TODO:slack_webhook_url>
+  #       type: SlackNotification

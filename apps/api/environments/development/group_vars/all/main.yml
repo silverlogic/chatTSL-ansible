@@ -1,0 +1,41 @@
+---
+# App
+app_version: 'N/A'
+app_use_ssl: false
+
+# Networking
+private_interface: '{{ ansible_eth1 }}'
+private_interface_name: 'eth1'
+
+# Services
+app_aws_access_key_id: 'N/A'
+app_aws_secret_access_key: 'N/A'
+app_email_username: 'N/A'
+app_email_password: 'N/A'
+app_email_host: 'N/A'
+app_email_port: 'N/A'
+app_email_use_tls: false
+app_sentry_dsn: 'N/A'
+app_branchio_key: 'N/A'
+
+# Database
+app_db_password: '1234'
+
+# AMQP
+app_amqp_password: '1234'
+
+# Redis
+app_redis_password: '1234'
+
+# Django
+app_django_requirements_txt: 'requirements/dev.txt'
+app_django_superuser_password: '1234'
+app_django_settings_module: 'settings.dev'
+app_django_secret_key: '1234'
+
+## Django Gunicorn
+django_gunicorn_dev_reload: true
+django_gunicorn_workers: 1
+
+# Worker Monitor
+app_worker_monitor_password: '1234'
