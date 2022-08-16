@@ -1,5 +1,3 @@
-# Replace TODO by the short name of the project (same as in the docker-compose.yml)
-
 [db]
 lb_db
 

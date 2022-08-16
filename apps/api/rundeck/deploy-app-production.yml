@@ -1,4 +1,4 @@
-- name: deploy <TODO:app_name>
+- name: deploy api
   description: ''
   group: production
   executionEnabled: true
@@ -14,7 +14,7 @@
     value: production
   - name: ansible-vault-password
     secure: true
-    storagePath: keys/clients/<TODO:project_full_name>/ansible-vault-production
+    storagePath: keys/clients/lbirds/ansible-vault-production
     valueExposed: true
   scheduleEnabled: false
   sequence:
@@ -23,7 +23,7 @@
       interpreterArgsQuoted: false
       script: |-
         rm -rf "@job.project@-@job.id@-playbooks"
-        git clone git@bitbucket.org:silverlogic/<TODO:project_code_name>-ansible.git "@job.project@-@job.id@-playbooks"
+        git clone git@bitbucket.org:silverlogic/lb-ansible.git "@job.project@-@job.id@-playbooks"
       scriptInterpreter: bash
     - description: Install ansible
       interpreterArgsQuoted: false
@@ -68,7 +68,7 @@
       script: |-
         cd "@job.project@-@job.id@-playbooks"
         source venv/bin/activate
-        cd "apps/<TODO:app_name>"
+        cd "apps/api"
         export ANSIBLE_HOST_KEY_CHECKING=False
         eval $(ssh-agent)
         ansible-playbook config_all.yml -i environments/production -t "@option.ansible-tags@" -e "app_version=@option.version@" --vault-id="../../vault-password"
@@ -77,14 +77,14 @@
       script: rm -rf "@job.project@-@job.id@-playbooks"
     keepgoing: true
     strategy: node-first
-  # notification:
-  #   onfailure:
-  #     plugin:
-  #       configuration:
-  #         webhook_url: <TODO:slack_webhook_url>
-  #       type: SlackNotification
-  #   onsuccess:
-  #     plugin:
-  #       configuration:
-  #         webhook_url: <TODO:slack_webhook_url>
-  #       type: SlackNotification
+  notification:
+    onfailure:
+      plugin:
+        configuration:
+          webhook_url: https://hooks.slack.com/services/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
+        type: SlackNotification
+    onsuccess:
+      plugin:
+        configuration:
+          webhook_url: https://hooks.slack.com/services/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
+        type: SlackNotification

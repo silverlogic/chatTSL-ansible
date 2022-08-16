@@ -12,14 +12,14 @@ python_config_file = File.join(ANSIBLE_PATH, 'environments', '000_cross_env', 'g
 python_config = YAML.load_file(python_config_file)
 
 CONFIG = {
-  code_path: "../../../baseapp-django-v2",
-  db_ip: '172.20.6.10',
-  amqp_ip: '172.20.6.11',
-  redis_ip: '172.20.6.12',
-  web_ip: '172.20.6.13',
-  worker_ip: '172.20.6.14',
-  worker_monitor_ip: '172.20.6.15',
-  scheduler_ip: '172.20.6.16',
+  code_path: "../../../lb-django",
+  db_ip: '172.20.4.10',
+  amqp_ip: '172.20.4.11',
+  redis_ip: '172.20.4.12',
+  web_ip: '172.20.4.13',
+  worker_ip: '172.20.4.14',
+  worker_monitor_ip: '172.20.4.15',
+  scheduler_ip: '172.20.4.16',
   project_full_name: project_config['project_full_name'],
   app_name: app_config['app_name'],
   python_version: python_config['python_version'],

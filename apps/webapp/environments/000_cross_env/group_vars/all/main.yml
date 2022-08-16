@@ -11,8 +11,8 @@ app_url: '{{ app_use_ssl | ternary("https", "http") }}://{{ app_domain }}'
 app_nodejs_version: '12.x'
 app_conf_env:
   appBaseURL: '{{ app_url }}'
-  apiBaseURL: 'https://api.baseapp.tsl.io/v1'
-  NEXT_PUBLIC_API_BASE_URL: 'https://api.baseapp.tsl.io/v1'
+  apiBaseURL: 'https://api.littlebirds.me/v1'
+  NEXT_PUBLIC_API_BASE_URL: 'https://api.littlebirds.me/v1'
   apiDateFormat: 'YYYY-MM-DD'
   apiPageSize: 30
   fbAppId: '{{ app_facebook_app_id }}'

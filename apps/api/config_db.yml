@@ -25,9 +25,17 @@
       - '{{ private_interface.ipv4.address }}'
     postgresql_pg_hba_passwd_hosts:
       - '0.0.0.0/0'
+
+    pg_dump_backup_aws_access_key_id: '{{ app_db_backup_aws_access_key_id }}'
+    pg_dump_backup_aws_secret_access_key: '{{ app_db_backup_aws_secret_access_key }}'
+    pg_dump_backup_aws_s3_bucket: '{{ app_db_backup_s3_bucket }}'
+    pg_dump_backup_database_name: '{{ app_db_name }}'
+    pg_dump_backup_profiles: '{{ app_db_backup_profiles }}'
+
   roles:
     - { role: server-common, tags: [ server ] }
     - { role: monitoring-common, tags: [ monitoring ] }
 
     - { role: postgresql, tags: [ app ] }
 
+    - { role: pg_dump_backup, tags: [ app,pg_dump_backup ], when: is_live_env }
