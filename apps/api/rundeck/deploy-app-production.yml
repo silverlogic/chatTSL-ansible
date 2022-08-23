@@ -11,7 +11,7 @@
   - description: Branch, Commit SHA, or tag
     name: version
     required: true
-    value: production
+    value: master
   - name: ansible-vault-password
     secure: true
     storagePath: keys/clients/lbirds/ansible-vault-production

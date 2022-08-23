@@ -11,7 +11,7 @@
   - description: Branch, Commit SHA, or tag
     name: version
     required: true
-    value: production
+    value: master
   # No password is required for FE
   # - name: ansible-vault-password
   #   secure: true
@@ -58,12 +58,13 @@
           cp -r vendor/roles ../ansible-galaxy-cache/$reqyml_checksum
         fi
       scriptInterpreter: bash
-    - description: create vault password file
-      interpreterArgsQuoted: false
-      script: |-
-        cd "@job.project@-@job.id@-playbooks"
-        echo "$RD_OPTION_ANSIBLE_VAULT_PASSWORD" > vault-password
-      scriptInterpreter: bash
+    # No password is required for FE
+    # - description: create vault password file
+    #   interpreterArgsQuoted: false
+    #   script: |-
+    #     cd "@job.project@-@job.id@-playbooks"
+    #     echo "$RD_OPTION_ANSIBLE_VAULT_PASSWORD" > vault-password
+    #   scriptInterpreter: bash
     - description: Run the playbook
       interpreterArgsQuoted: false
       script: |-
@@ -72,7 +73,7 @@
         cd "apps/webapp"
         export ANSIBLE_HOST_KEY_CHECKING=False
         eval $(ssh-agent)
-        ansible-playbook config_all.yml -i environments/production -t "@option.ansible-tags@" -e "app_version=@option.version@" --vault-id="../../vault-password"
+        ansible-playbook config_all.yml -i environments/production -t "@option.ansible-tags@" -e "app_version=@option.version@"
       scriptInterpreter: bash
     - description: Clean up playbooks
       script: rm -rf "@job.project@-@job.id@-playbooks"
