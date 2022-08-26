@@ -1,21 +1,21 @@
 [db]
-db.api.production.lumentender.com ansible_ssh_host=167.172.228.5
+db.api.production.littlebirds.me ansible_ssh_host=167.172.228.5
 
 [amqp]
-amqp.api.production.lumentender.com ansible_ssh_host=167.172.23.161
+amqp.api.production.littlebirds.me ansible_ssh_host=167.172.23.161
 
 [load-balancer]
-load-balancer.api.production.lumentender.com ansible_ssh_host=45.55.126.99
+load-balancer.api.production.littlebirds.me ansible_ssh_host=45.55.126.99
 
 [web]
-web.api.production.lumentender.com ansible_ssh_host=64.225.18.198
+web.api.production.littlebirds.me ansible_ssh_host=64.225.18.198
 
 [worker]
-worker.api.production.lumentender.com ansible_ssh_host=64.225.27.128
+worker.api.production.littlebirds.me ansible_ssh_host=64.225.27.128
 
 [worker-monitor]
 
 [scheduler]
-scheduler.api.production.lumentender.com ansible_ssh_host=64.225.29.131
+scheduler.api.production.littlebirds.me ansible_ssh_host=64.225.29.131
 
 [redis]
