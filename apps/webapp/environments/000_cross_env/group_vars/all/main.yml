@@ -2,7 +2,7 @@
 # App
 app_name: 'web'
 app_user: '{{ app_name }}'
-app_repo: 'git@bitbucket.org:silverlogic/lb-nextjs.git'
+app_repo: 'git@bitbucket.org:silverlogic/gai-nextjs.git'
 app_domain: '{{ web_domain }}'
 app_use_ssl: true
 app_url: '{{ app_use_ssl | ternary("https", "http") }}://{{ app_domain }}'
