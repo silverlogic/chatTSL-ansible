@@ -34,3 +34,7 @@ app_django_secret_key: '{{ vault_app_django_secret_key }}'
 
 # Worker Monitor
 app_worker_monitor_password: '{{ vault_app_worker_monitor_password }}'
+
+# swagger docs
+app_publish_swagger_doc: true
+app_swagger_doc_path: 'docs'

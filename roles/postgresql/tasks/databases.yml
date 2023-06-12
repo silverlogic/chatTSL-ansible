@@ -76,7 +76,7 @@
   with_items: "{{postgresql_databases}}"
   when: item.plpgsql is defined and item.plpgsql
 
-- name: PostgreSQL | add earthdistance to the database with the requirement
+- name: PostgreSQL | Add earthdistance to the database with the requirement
   become: yes
   become_user: "{{postgresql_service_user}}"
   shell: "{{ postgresql_bin_directory}}/psql {{item.name}} --port={{ postgresql_port | int }} --username {{ postgresql_admin_user }} -c 'create extension if not exists earthdistance;'"
@@ -92,3 +92,10 @@
   failed_when: citext_ext_result.rc != 0 and ("already exists, skipping" not in citext_ext_result.stderr)
   changed_when: citext_ext_result.rc == 0 and ("already exists, skipping" not in citext_ext_result.stderr)
   when: item.citext is defined and item.citext
+
+- name: PostgreSQL | Add pgvector extension
+  become: yes
+  become_user: "{{postgresql_service_user}}"
+  shell: "{{ postgresql_bin_directory}}/psql {{item.name}} --port={{ postgresql_port | int }} --username {{postgresql_admin_user}} -c 'CREATE EXTENSION IF NOT EXISTS vector;'"
+  with_items: "{{postgresql_databases}}"
+  when: item.pgvector is defined and item.pgvector

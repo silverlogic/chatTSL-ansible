@@ -29,5 +29,6 @@ services:
     entrypoint: bash /entrypoints/always.sh /entrypoints/web.sh
     ports:
       - "8000:8000"
+      - "5678:5678"
     volumes:
       - ../TODO_BACKEND_FOLDER_NAME:/src

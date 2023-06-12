@@ -1,0 +1,50 @@
+- name: PostgreSQL | Extensions | Make sure postgresql-server-dev is installed | Debian
+  apt:
+    name:  "postgresql-server-dev-{{ postgresql_version }}"
+    state: present
+    update_cache: yes
+    cache_valid_time: "{{ apt_cache_valid_time | default (3600) }}"
+  when: ansible_os_family == "Debian"
+  notify:
+    - restart postgresql
+
+- name: PostgreSQL | Extensions | Make sure postgresql-server-dev is installed | RedHat
+  yum: 
+    name:  "postgresql-server-dev-{{ postgresql_version }}"
+    state: present 
+    update_cache: yes
+  when: ansible_pkg_mgr == "yum" and ansible_os_family == "RedHat"
+  notify:
+    - restart postgresql
+
+- name: PostgreSQL | Extensions | Make sure postgresql-server-dev is installed | Fedora
+  dnf:
+    name:  "postgresql-server-dev-{{ postgresql_version }}"
+    state: present
+  when: ansible_pkg_mgr == "dnf" and ansible_distribution == "Fedora"
+  notify:
+    - restart postgresql
+
+- name: PostgreSQL | Extensions | Install pgvector | Check if extension is installed
+  stat:
+    path: "/usr/lib/postgresql/{{ postgresql_version }}/lib/vector.so"
+  register: pgvector_extension_file
+
+- name: PostgreSQL | Extensions | Install pgvector | Clone repository
+  git:
+    repo: https://github.com/pgvector/pgvector.git
+    version: v0.4.1
+    dest: /tmp/pgvector
+  when: not pgvector_extension_file.stat.exists
+
+- name: PostgreSQL | Extensions | Install pgvector | Run make command
+  command: make
+  args:
+    chdir: /tmp/pgvector
+  when: not pgvector_extension_file.stat.exists
+
+- name: PostgreSQL | Extensions | Install pgvector | Run make install command
+  command: make install
+  args:
+    chdir: /tmp/pgvector
+  when: not pgvector_extension_file.stat.exists

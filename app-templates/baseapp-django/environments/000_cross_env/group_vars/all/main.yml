@@ -52,6 +52,8 @@ app_django_conf_env:
   BRANCHIO_KEY: '{{ app_branchio_key }}'
   URL: '{{ app_url }}'
   FRONT_URL: 'TODO'
+  PUBLISH_SWAGGER_DOC: '{{ app_publish_swagger_doc }}'
+  SWAGGER_DOC_PATH: '{{ app_swagger_doc_path }}'
 
 # Load balancer
 app_is_load_balanced: "{{ groups['load-balancer'] | default([]) | length | bool }}"

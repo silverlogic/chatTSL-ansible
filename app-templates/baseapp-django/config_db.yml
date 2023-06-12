@@ -1,4 +1,14 @@
 ---
+- name: install database dependencies
+  hosts: db
+  tasks:
+    - name: Install the package "gcc"
+      ansible.builtin.apt:
+        name: gcc
+    - name: Install the package "make"
+      ansible.builtin.apt:
+        name: make
+
 - name: configure database
   hosts: db
   vars:

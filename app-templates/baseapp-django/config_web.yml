@@ -28,5 +28,5 @@
     - { role: nginx, tags: [ app,nginx ], when: not is_docker }
     - { role: python, tags: [ app,deploy ] }
     - { role: django, tags: [ app,deploy ] }
-    
-    - { role: google-chrome, tags: [ app ] }
+
+    - { role: google-chrome, tags: [ app ], when: not is_docker }

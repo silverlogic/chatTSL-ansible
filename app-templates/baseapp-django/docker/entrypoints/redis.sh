@@ -6,4 +6,4 @@ then
     exit 1
 fi
 
-runuser -l redis -c "/usr/bin/redis-server /etc/redis/6379.conf"
+su - redis -s /bin/bash -c "/usr/bin/redis-server /etc/redis/6379.conf"

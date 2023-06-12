@@ -1,4 +1,14 @@
 ---
+- name: install database dependencies
+  hosts: db
+  tasks:
+    - name: Install the package "gcc"
+      ansible.builtin.apt:
+        name: gcc
+    - name: Install the package "make"
+      ansible.builtin.apt:
+        name: make
+
 - name: configure database
   hosts: db
   vars:
@@ -9,9 +19,11 @@
       - db: 'template1'
         extensions:
           - citext
+          - vector
       - db: '{{ app_db_name }}'
         extensions:
           - citext
+          - vector
     postgresql_users:
       - name: '{{ app_db_name }}'
         pass: '{{ app_db_password }}'
@@ -32,10 +44,13 @@
     pg_dump_backup_database_name: '{{ app_db_name }}'
     pg_dump_backup_profiles: '{{ app_db_backup_profiles }}'
 
+    postgresql_ext_install_pgvector: true
+
   roles:
     - { role: server-common, tags: [ server ] }
     - { role: monitoring-common, tags: [ monitoring ] }
 
+    - { role: git, tags: [ app ] }
     - { role: postgresql, tags: [ app ] }
 
     - { role: pg_dump_backup, tags: [ app,pg_dump_backup ], when: is_live_env }

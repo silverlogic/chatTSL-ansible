@@ -10,6 +10,17 @@ app_url: '{{ app_use_ssl | ternary("https", "http") }}://{{ app_domain }}'
 # Nodeapp
 app_nodejs_version: '12.x'
 app_conf_env:
+# TODO - New projects with nextJs are using baseapp-nextjs-core which uses NEXT_PUBLIC_API_BASE_URL as the environment variable for the current api url.
+# if your project is useing the new NextJs template you can remove the comment for NEXT_PUBLIC_API_BASE_URL and the other variables if they make sense for your project
+#  NEXT_PUBLIC_API_BASE_URL: '{{ api_url_current_version }}'
+#  NEXT_PUBLIC_WEBSITE_TITLE: '{{ project_verbose_name }}'
+#  NEXT_PUBLIC_BASE_URL: '{{ app_url }}'
+#  NEXT_SENTRY_DSN: '{{ app_sentry_dsn }}'
+#  NEXT_PUBLIC_SENTRY_PUBLIC_DSN: '{{ app_sentry_public_dsn }}'
+#  NEXT_PUBLIC_SENTRY_ENV: '{{ env }}'
+#  NEXT_PUBLIC_SENTRY_AUTO_BREADCRUMBS: true
+#  NEXT_PUBLIC_SENTRY_RELEASE: '{{ nodeapp_git_revision.after | default(nextjs_git_revision.after) }}'
+#  If you are using the nextJS variables you can remove the next varibles.
   appBaseURL: '{{ app_url }}'
   apiBaseURL: 'TODO'
   apiDateFormat: 'YYYY-MM-DD'
