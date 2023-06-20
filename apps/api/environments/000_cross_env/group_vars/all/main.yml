@@ -84,6 +84,7 @@ app_django_conf_env:
   BRANCHIO_KEY: '{{ app_branchio_key }}'
   URL: '{{ app_url }}'
   FRONT_URL: '{{ webapp_url }}'
+  OPENAI_API_KEY: '{{ app_openai_api_key }}'
 
 # Load balancer
 app_is_load_balanced: "{{ groups['load-balancer'] | default([]) | length | bool }}"

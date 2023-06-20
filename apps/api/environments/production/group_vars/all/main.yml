@@ -36,3 +36,6 @@ app_django_secret_key: '{{ vault_app_django_secret_key }}'
 
 # Worker Monitor
 app_worker_monitor_password: '{{ vault_app_worker_monitor_password }}'
+
+# OpenAI
+app_openai_api_key: '{{ vault_openai_api_key }}'

@@ -47,3 +47,6 @@ django_gunicorn_workers: 1
 
 # Worker Monitor
 app_worker_monitor_password: '1234'
+
+# OpenAI
+app_openai_api_key: '1234'
