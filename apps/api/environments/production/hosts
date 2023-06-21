@@ -19,3 +19,4 @@ worker.api.production.littlebirds.me ansible_ssh_host=64.225.27.128
 scheduler.api.production.littlebirds.me ansible_ssh_host=64.225.29.131
 
 [redis]
+redis.api.production.littlebirds.me ansible_ssh_host=167.99.52.183
