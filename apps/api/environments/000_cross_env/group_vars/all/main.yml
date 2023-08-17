@@ -83,6 +83,9 @@ app_django_conf_env:
   URL: '{{ app_url }}'
   FRONT_URL: '{{ webapp_url }}'
   OPENAI_API_KEY: '{{ app_openai_api_key }}'
+  SLACK_VERIFICATION_TOKEN: '{{ app_slack_verification_token }}'
+  SLACK_SIGNING_SECRET: '{{ app_slack_signing_secret }}'
+  SLACK_BOT_OAUTH_TOKEN: '{{ app_slack_bot_oauth_token }}'
 
 # Load balancer
 app_is_load_balanced: "{{ groups['load-balancer'] | default([]) | length | bool }}"

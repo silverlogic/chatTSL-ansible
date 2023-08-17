@@ -39,3 +39,8 @@ app_worker_monitor_password: '{{ vault_app_worker_monitor_password }}'
 
 # OpenAI
 app_openai_api_key: '{{ vault_openai_api_key }}'
+
+# Slack
+app_slack_verification_token: '{{ vault_slack_verification_token }}'
+app_slack_signing_secret: '{{ vault_slack_signing_secret }}'
+app_slack_bot_oauth_token: '{{ vault_slack_bot_oauth_token }}'

@@ -49,4 +49,9 @@ django_gunicorn_workers: 1
 app_worker_monitor_password: '1234'
 
 # OpenAI
-app_openai_api_key: '1234'
+app_openai_api_key: 'N/A'
+
+# Slack
+app_slack_verification_token: 'N/A'
+app_slack_signing_secret: 'N/A'
+app_slack_bot_oauth_token: 'N/A'
