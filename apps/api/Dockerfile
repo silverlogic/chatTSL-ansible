@@ -1,4 +1,4 @@
-FROM debian:10
+FROM --platform=linux/amd64 debian:10
 
 RUN apt update && apt install -y python python-pydot python-pydot-ng graphviz graphviz-dev libgraphviz-dev wget
 

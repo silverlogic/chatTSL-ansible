@@ -29,4 +29,4 @@
     - { role: python, tags: [ app,deploy ] }
     - { role: django, tags: [ app,deploy ] }
     
-    - { role: google-chrome, tags: [ app ] }
+    # - { role: google-chrome, tags: [ app ] }
